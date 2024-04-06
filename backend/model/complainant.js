@@ -7,6 +7,11 @@ const complainantInfo = mongoose.Schema({
     ref: "person",
   },
 
+  firId: {
+    type: Number,
+    required: true,
+  },
+
   AccusedIds: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "person",
@@ -42,14 +47,9 @@ const complainantInfo = mongoose.Schema({
     },
   },
 
-  NearByPoliceStation: {
-    //pass
-  },
-
   Evidence: {
     type: [String],
   },
-  //add editied
   LastEdited: {
     type: Date,
     default: Date.now,

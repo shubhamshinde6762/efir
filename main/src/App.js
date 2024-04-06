@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import ComplaintForm from "./components/ComplaintForm/ComplaintForm";
 
 import io from "socket.io-client";
+import UserDashboard from "./components/userDash/UserDashboard";
 const socket = io("http://localhost:5000");
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
       <div className="w-full py-1 px-2 shadow flex justify-evenly items-center">
         <NavLink to="/">Home</NavLink>
         <NavLink to="/register/new">Register</NavLink>
+        <NavLink to="/mycomplaints">My Complaints</NavLink>
         {currentUser ? (
           <div
             onClick={() => {
@@ -68,6 +70,14 @@ function App() {
           element={
             <div className="w-full flex justify-center items-center">
               <ComplaintForm />
+            </div>
+          }
+        />
+        <Route
+          path="/mycomplaints"
+          element={
+            <div className="w-full flex justify-center items-center">
+              <UserDashboard currentUser={currentUser} />
             </div>
           }
         />

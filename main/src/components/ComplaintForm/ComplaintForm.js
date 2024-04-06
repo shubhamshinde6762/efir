@@ -408,7 +408,7 @@ const ComplaintForm = ({ user }) => {
           <div className="flex flex-col gap-1">
             {complaintDetails.evidences.map((ele) => (
               <div className="flex gap-2 items-center text-sm bg-slate-100 w-fit px-2 py-1 rounded-lg ">
-                {/* <div>{ele.split(/(\\|\/)/g).pop()}</div> */}
+                <div>{ele.name}</div>
                 <IoMdRemoveCircleOutline
                   onClick={() =>
                     setComplaintDetails((pre) => ({

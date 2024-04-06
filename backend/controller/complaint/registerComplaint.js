@@ -62,6 +62,18 @@ exports.register = async (req, res) => {
       filedBy = new mongoose.Schema.Types.ObjectId(userId);
     }
 
+    let firId;
+    let isUnique = false;
+
+    while (!isUnique) {
+      firId = Math.floor(Math.random() * 10000);
+      const existingRecord = await Complaint.findOne({ firId });
+
+      if (!existingRecord) {
+        isUnique = true;
+      }
+    }
+
     const newComplaint = await Complaint.create({
       VictimIds: VictimIds.map((id) => new mongoose.Schema.Types.ObjectId(id)),
       AccusedIds: AccusedIds.map(
@@ -73,6 +85,7 @@ exports.register = async (req, res) => {
       IncidentDetails: parsedIncidentDetails,
       filedBy,
       Evidence: uploadedUrls,
+      firId,
     });
 
     if (userId) {
