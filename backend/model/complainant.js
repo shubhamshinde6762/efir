@@ -1,35 +1,31 @@
 const mongoose = require("mongoose");
-const Accuse = require("./Accused");
-const Witness = require("./Witness");
 
 const complainantInfo = mongoose.Schema({
   VictimIds: {
-    type: [String],
+    type: [mongoose.Schema.Types.ObjectId],
     required: true,
+    ref: "person",
   },
 
   AccusedIds: {
-    type: [String],
-    ref: Accuse,
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "person",
   },
 
   WitnessIds: {
-    type: [String],
-    ref: Witness,
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "person",
+  },
+
+  filedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "users",
   },
 
   IncidentDetail: {
     type: {
       TimeDateofIncident: {
         type: Date,
-        required: true,
-
-        validate: function (input) {
-          return (
-            typeof new Date(input) === "date" && new Date(input) <= new Date()
-          );
-        },
-        message: (input) => `${input} must be valid date of incident`,
       },
 
       LandMark: {
@@ -44,7 +40,6 @@ const complainantInfo = mongoose.Schema({
         type: String,
       },
     },
-    required: true,
   },
 
   NearByPoliceStation: {
@@ -52,15 +47,13 @@ const complainantInfo = mongoose.Schema({
   },
 
   Evidence: {
-    type: Mixed,
+    type: [String],
   },
   //add editied
   LastEdited: {
     type: Date,
     default: Date.now,
-    //add validation
   },
-  //can edit only in 24 hrs
 });
 
 module.exports = mongoose.model("Complainant", complainantInfo);

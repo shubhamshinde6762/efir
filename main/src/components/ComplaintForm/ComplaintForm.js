@@ -4,8 +4,9 @@ import { IoMdAdd } from "react-icons/io";
 import AddPeople from "./AddPeople";
 import { LiaUserEditSolid } from "react-icons/lia";
 import { AiOutlineUserDelete } from "react-icons/ai";
+import { IoMdRemoveCircleOutline } from "react-icons/io";
 
-const ComplaintForm = () => {
+const ComplaintForm = ({ user }) => {
   const [townTree, setTownTree] = useState({});
   const [addPersonFlag, setAddPersonFlag] = useState("");
   const [complaintDetails, setComplaintDetails] = useState({
@@ -18,6 +19,7 @@ const ComplaintForm = () => {
       District: "",
       SubDistrict: "",
     },
+    evidences: [],
   });
   const [personDetails, setPersonDetails] = useState("");
 
@@ -36,6 +38,47 @@ const ComplaintForm = () => {
     fetch();
   }, []);
 
+
+  const registerHandler = async () => {
+    try {
+        const formData = new FormData();
+        // formData.append("userId", userId);
+        formData.append(
+          "IncidentDetails",
+          JSON.stringify(complaintDetails.IncidentDetail)
+        );
+        formData.append(
+          "VictimArray",
+          JSON.stringify(complaintDetails.VictimArray)
+        );
+        formData.append(
+          "AccusedArray",
+          JSON.stringify(complaintDetails.AccusedArray)
+        );
+        formData.append(
+          "WitnessArray",
+          JSON.stringify(complaintDetails.WitnessArray)
+        );
+        complaintDetails.evidences.forEach((file, index) => {
+          formData.append(`evidences[${index}]`, file);
+        });
+
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/complaints/register-complaint",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("FIR filed successfully:", response.data);
+    } catch (error) {
+      console.error("Error filing FIR:", error);
+    }
+  };
+
   const onIncidentHandler = (event) => {
     const { id, value } = event.target;
     console.log(complaintDetails);
@@ -50,6 +93,23 @@ const ComplaintForm = () => {
       };
     });
   };
+
+  const fileInsertHandler = (e) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+  
+    const fileArray = Array.from(files);
+  
+    setComplaintDetails((prev) => ({
+      ...prev,
+      evidences: [...prev.evidences, ...fileArray],
+    }));
+  };
+  
+  useEffect(() => {
+    console.log(complaintDetails);
+  }, [complaintDetails]);
+  
 
   return (
     <div className="min-w-[275px] p-4  w-full max-w-[900px] shadow-2xl rounded-xl">
@@ -326,6 +386,44 @@ const ComplaintForm = () => {
             </table>
           )}
         </div>
+        <div className=" border-gray-300  space-y-3 p-4  relative border-4 w-full flex flex-col  rounded-2xl">
+          <div className="absolute font-poppins font-bold bg-white px-2 text-xl -top-3 left-2">
+            Evidences
+          </div>
+          <div className="relative">
+            <input
+              type="file"
+              onChange={fileInsertHandler}
+              id="evidence"
+              className="absolute -z-50 hidden"
+            />
+            <label
+              htmlFor="evidence"
+              className="flex gap-1 font-lato select-none hover:scale-105 transition-all duration-300 cursor-pointer text-bold w-fit px-2 py-1 rounded-md  justify-center items-center "
+            >
+              <IoMdAdd className="text-2xl bg-green-500 rounded-full text-white p-1" />
+              Evidence
+            </label>
+          </div>
+          <div className="flex flex-col gap-1">
+            {complaintDetails.evidences.map((ele) => (
+              <div className="flex gap-2 items-center text-sm bg-slate-100 w-fit px-2 py-1 rounded-lg ">
+                {/* <div>{ele.split(/(\\|\/)/g).pop()}</div> */}
+                <IoMdRemoveCircleOutline
+                  onClick={() =>
+                    setComplaintDetails((pre) => ({
+                      ...pre,
+                      ["evidences"]: [
+                        ...pre.evidences.filter((obj) => obj !== ele),
+                      ],
+                    }))
+                  }
+                  className="text-2xl bg-red-500 p-1 rounded-full text-white cursor-pointer hover:scale-105 transition-all duration-300 "
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {addPersonFlag && (
@@ -339,7 +437,10 @@ const ComplaintForm = () => {
         />
       )}
       <div className="w-full justify-center flex my-4">
-        <button className="font-bold font-poppins py-1 px-2 bg-green-500 hover:bg-green-700 text-white rounded-lg hover:scale-105 transition-all duration-500">
+        <button
+          onClick={registerHandler}
+          className="font-bold font-poppins py-1 px-2 bg-green-500 hover:bg-green-700 text-white rounded-lg hover:scale-105 transition-all duration-500"
+        >
           Register Complaint
         </button>
       </div>

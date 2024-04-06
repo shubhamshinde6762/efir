@@ -1,30 +1,34 @@
 const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
-    name:{
-        type:String,
-        required:true,
-    },
+  name: {
+    type: String,
+    required: true,
+  },
 
-    mobile:{
-        type:String,
-        required:true,
-    },
+  mobile: {
+    type: String, 
+    required: true,
+  },
 
-    email:{
-        type:String,
-        required:true
-    },
- 
-    password:{
-        type:String,
-        required:true
-    },
+  email: {
+    type: String,
+    required: true,
+  },
 
-    token : {
-        type:String
-    }
+  password: {
+    type: String,
+    required: true,
+  },
 
+  token: {
+    type: String,
+  },
+
+  filedComplaints: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "complaint",
+  },
 });
 
-module.exports = mongoose.model("Users", schema); 
+module.exports = mongoose.model("Users", schema);
