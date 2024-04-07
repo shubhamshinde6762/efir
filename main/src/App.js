@@ -9,6 +9,7 @@ import ComplaintForm from "./components/ComplaintForm/ComplaintForm";
 import io from "socket.io-client";
 import UserDashboard from "./components/userDash/UserDashboard";
 import Filterbar from "./components/Filter/Filterbar";
+import Displaybar from "./components/Display/Displaybar";
 const socket = io("http://localhost:5000");
 
 function App() {
@@ -69,8 +70,9 @@ function App() {
         <Route
           path="/complaints/dashboard"
           element={
-            <div className="w-screen ">
+            <div className="w-full flex ">
               <Filterbar currentUser={currentUser}/>
+              <Displaybar/>
             </div>
           }/>
         <Route
