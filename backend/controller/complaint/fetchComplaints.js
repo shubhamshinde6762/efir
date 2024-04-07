@@ -75,7 +75,7 @@ exports.fetchComplaintSuper = async (req, res) => {
     if (req.query.fromDateLastEdited && req.query.toDateLastEdited) {
       filter["LastEdited"] = {
         $gte: new Date(req.query.fromDateLastEdited),
-        $lte: new Date(req.query.toDateLastEdited),
+        $lte: new Date(req.query.toDateLastEdited) || new Date.now,
       };
     }
 

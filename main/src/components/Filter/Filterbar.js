@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-function Filterbar({ onFilter }) {
+function Filterbar({ currentUser }) {
   const [filters, setFilters] = useState({
     fromDateIncident: "",
     toDateIncident: "",
@@ -39,51 +39,55 @@ function Filterbar({ onFilter }) {
     }));
   };
 
-  useEffect(() => {
-    generateComplaintFetchLink();
+  useEffect(async () => {
+    try {
+      const URL = generateComplaintFetchLink();
+      const result = await axios.get(URL);
+
+      console.log(result)
+    } catch (err) {}
   }, [filters]);
 
-  const generateComplaintFetchLink = (baseUrl, queryParams) => {
+  const generateComplaintFetchLink = (baseUrl) => {
+    baseUrl = `http://localhost:5000/api/v1/complaints/fetchComplaint/Super/${currentUser._id}`;
     const url = new URL(baseUrl);
-  
-    // Add pagination parameters
-    if (queryParams.page) {
-      url.searchParams.set('page', toString(queryParams.page));
+
+    if (filters.page) {
+      url.searchParams.set("page", toString(filters.page));
     }
-  
-    if (queryParams.limit) {
-      url.searchParams.set('limit', toString(queryParams.limit));
+
+    if (filters.limit) {
+      url.searchParams.set("limit", toString(filters.limit));
     }
-  
-    // Add filter parameters
-    if (queryParams.fromDateIncident) {
-      url.searchParams.set('fromDateIncident', queryParams.fromDateIncident);
+
+    if (filters.fromDateIncident) {
+      url.searchParams.set("fromDateIncident", filters.fromDateIncident);
     }
-  
-    if (queryParams.toDateIncident) {
-      url.searchParams.set('toDateIncident', queryParams.toDateIncident);
+
+    if (filters.toDateIncident) {
+      url.searchParams.set("toDateIncident", filters.toDateIncident);
     }
-  
-    if (queryParams.fromDateLastEdited) {
-      url.searchParams.set('fromDateLastEdited', queryParams.fromDateLastEdited);
+
+    if (filters.fromDateLastEdited) {
+      url.searchParams.set("fromDateLastEdited", filters.fromDateLastEdited);
     }
-  
-    if (queryParams.toDateLastEdited) {
-      url.searchParams.set('toDateLastEdited', queryParams.toDateLastEdited);
+
+    if (filters.toDateLastEdited) {
+      url.searchParams.set("toDateLastEdited", filters.toDateLastEdited);
     }
-  
-    if (queryParams.district) {
-      url.searchParams.set('district', queryParams.district);
+
+    if (filters.district) {
+      url.searchParams.set("district", filters.district);
     }
-  
-    if (queryParams.subdistrict) {
-      url.searchParams.set('subdistrict', queryParams.subdistrict);
+
+    if (filters.subdistrict) {
+      url.searchParams.set("subdistrict", filters.subdistrict);
     }
-  
-    if (queryParams.aadhar) {
-      url.searchParams.set('aadhar', queryParams.aadhar);
+
+    if (filters.aadhar) {
+      url.searchParams.set("aadhar", filters.aadhar);
     }
-  
+
     return url.toString();
   };
   return (
@@ -109,15 +113,16 @@ function Filterbar({ onFilter }) {
         />
       </div>
       <div className="flex m-4">
-
-      <label className="block text-gray-700 text-sm font-bold mb-2 ml-7 mr-3">To</label>
-      <input
-        type="date"
-        name="toDateIncident"
-        value={filters.filingDate}
-        onChange={handleFilterChange}
-        className="shadow rounded-lg px-3 py-1 w-[8.7rem]"
-      />
+        <label className="block text-gray-700 text-sm font-bold mb-2 ml-7 mr-3">
+          To
+        </label>
+        <input
+          type="date"
+          name="toDateIncident"
+          value={filters.filingDate}
+          onChange={handleFilterChange}
+          className="shadow rounded-lg px-3 py-1 w-[8.7rem]"
+        />
       </div>
 
       <div className="mt-4">
@@ -183,10 +188,14 @@ function Filterbar({ onFilter }) {
       </div>
       <div>
         <label className="block text-gray-700 text-sm font-bold mb-2">
-            Aadhaar Number
+          Aadhaar Number
         </label>
-        <input type="text" className="shadow rounded-lg px-3 py-1  " name="aadhar" onChange={handleFilterChange}/>
-      
+        <input
+          type="text"
+          className="shadow rounded-lg px-3 py-1  "
+          name="aadhar"
+          onChange={handleFilterChange}
+        />
       </div>
     </div>
   );

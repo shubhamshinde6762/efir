@@ -67,10 +67,10 @@ function App() {
       </div>
       <Routes>
         <Route
-          path="/"
+          path="/complaints/dashboard"
           element={
             <div className="w-screen ">
-              <Filterbar/>
+              <Filterbar currentUser={currentUser}/>
             </div>
           }/>
         <Route
