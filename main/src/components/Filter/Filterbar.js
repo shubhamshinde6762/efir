@@ -14,6 +14,7 @@ function Filterbar({ currentUser }) {
     limit: 10,
   });
   const [townTree, setTownTree] = useState({});
+  // const [complaints, setComplaints]
 
   useEffect(() => {
     const fetchTownTree = async () => {
@@ -39,25 +40,28 @@ function Filterbar({ currentUser }) {
     }));
   };
 
-  useEffect(async () => {
-    try {
-      const URL = generateComplaintFetchLink();
-      const result = await axios.get(URL);
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const URL = generateComplaintFetchLink();
+        const result = await axios.get(URL);
+        console.log(result);
+      } catch (err) {}
+    };
 
-      console.log(result)
-    } catch (err) {}
+    fetch();
   }, [filters]);
 
-  const generateComplaintFetchLink = (baseUrl) => {
-    baseUrl = `http://localhost:5000/api/v1/complaints/fetchComplaint/Super/${currentUser._id}`;
+  const generateComplaintFetchLink = () => {
+    let baseUrl = `http://localhost:5000/api/v1/complaints/fetchSuper/${currentUser._id}`;
     const url = new URL(baseUrl);
 
     if (filters.page) {
-      url.searchParams.set("page", toString(filters.page));
+      url.searchParams.set("page", filters.page.toString());
     }
 
     if (filters.limit) {
-      url.searchParams.set("limit", toString(filters.limit));
+      url.searchParams.set("limit", filters.limit.toString());
     }
 
     if (filters.fromDateIncident) {
@@ -80,8 +84,8 @@ function Filterbar({ currentUser }) {
       url.searchParams.set("district", filters.district);
     }
 
-    if (filters.subdistrict) {
-      url.searchParams.set("subdistrict", filters.subdistrict);
+    if (filters.subDistrict) {
+      url.searchParams.set("subDistrict", filters.subDistrict);
     }
 
     if (filters.aadhar) {
@@ -90,6 +94,7 @@ function Filterbar({ currentUser }) {
 
     return url.toString();
   };
+
   return (
     <div className="flex-col w-[300px] items-center bg-white rounded-sm shadow-sm border border-gray-300 py-3 px-1 text-center m-[8px]">
       <h3 className="text-gray-900 font-medium text-sm md:text-base text-center">
