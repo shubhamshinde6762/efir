@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 
-function Displaybar() {
-  const [complaints, setComplaints] = useState([])
+function Displaybar({complaints}) {
+  // const [complaints, setComplaints] = useState([])
   return (
     <div className='bg-slate-200 h-[90vh] flex-grow my-2 mr-2'>
       <h2 className='text-center text-xl font-medium border-2 border-red-400'>Complaints</h2>
@@ -21,7 +21,7 @@ function Displaybar() {
       </div>
       {
         complaints.map(ele => (
-          <></>
+          <div>{ele.firId}</div>
         ))
       }
 

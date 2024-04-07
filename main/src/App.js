@@ -15,6 +15,7 @@ const socket = io("http://localhost:5000");
 function App() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState();
+  const [complaints, setComplaintList] = useState([]);
 
   useEffect(async () => {
     const autoLogin = async () => {
@@ -71,10 +72,15 @@ function App() {
           path="/complaints/dashboard"
           element={
             <div className="w-full flex ">
-              <Filterbar currentUser={currentUser}/>
-              <Displaybar/>
+              <Filterbar
+                complaints={complaints}
+                setComplaintList={setComplaintList}
+                currentUser={currentUser}
+              />
+              <Displaybar complaints={complaints} />
             </div>
-          }/>
+          }
+        />
         <Route
           path="/register/new"
           element={
@@ -103,11 +109,7 @@ function App() {
         />
         <Route
           path="/professionalDashboard"
-          element={
-            <Login
-              currentUser={currentUser}
-            />
-          }
+          element={<Login currentUser={currentUser} />}
         />
       </Routes>
     </div>

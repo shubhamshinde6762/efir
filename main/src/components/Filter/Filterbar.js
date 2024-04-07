@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-function Filterbar({ currentUser }) {
+function Filterbar({ currentUser, complaints, setComplaintList }) {
   const [filters, setFilters] = useState({
     fromDateIncident: "",
     toDateIncident: "",
@@ -14,7 +14,6 @@ function Filterbar({ currentUser }) {
     limit: 10,
   });
   const [townTree, setTownTree] = useState({});
-  // const [complaints, setComplaints]
 
   useEffect(() => {
     const fetchTownTree = async () => {
@@ -45,7 +44,8 @@ function Filterbar({ currentUser }) {
       try {
         const URL = generateComplaintFetchLink();
         const result = await axios.get(URL);
-        console.log(result);
+        console.log(result.data.complaints);
+        setComplaintList(result.data.complaints);
       } catch (err) {}
     };
 
@@ -103,7 +103,7 @@ function Filterbar({ currentUser }) {
       <hr />
 
       <label className=" text-gray-700 text-sm font-bold mb-2 mt-2">
-        Expected date of filing complaint:
+        From date of Incident:
       </label>
       <div className="flex m-4">
         <label className="  block text-gray-700 text-sm font-bold mb-2 ml-7 mr-3">
@@ -112,7 +112,7 @@ function Filterbar({ currentUser }) {
         <input
           type="date"
           name="fromDateIncident"
-          value={filters.filingDate}
+          value={filters.fromDateIncident}
           onChange={handleFilterChange}
           className="shadow rounded-lg px-3 py-1 w-[8.7rem]"
         />
@@ -124,7 +124,7 @@ function Filterbar({ currentUser }) {
         <input
           type="date"
           name="toDateIncident"
-          value={filters.filingDate}
+          value={filters.toDateIncident}
           onChange={handleFilterChange}
           className="shadow rounded-lg px-3 py-1 w-[8.7rem]"
         />
@@ -132,12 +132,12 @@ function Filterbar({ currentUser }) {
 
       <div className="mt-4">
         <label className="block text-gray-700 text-sm font-bold mb-2">
-          From date of Incident:
+          Expected date of filing complaint:
         </label>
         <input
           type="date"
           name="fromDateLastEdited"
-          value={filters.incidentDate}
+          value={filters.fromDateLastEdited}
           onChange={handleFilterChange}
           className="shadow rounded-lg px-3 py-1 w-[8.7rem]"
         />
@@ -149,7 +149,7 @@ function Filterbar({ currentUser }) {
         <input
           type="date"
           name="toDateLastEdited"
-          value={filters.incidentDate}
+          value={filters.toDateLastEdited}
           onChange={handleFilterChange}
           className="shadow rounded-lg px-3 py-1 w-[8.7rem]"
         />
