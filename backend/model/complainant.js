@@ -3,8 +3,7 @@ const mongoose = require("mongoose");
 const complainantInfo = mongoose.Schema({
   VictimIds: {
     type: [mongoose.Schema.Types.ObjectId],
-    required: true,
-    ref: "person",
+    ref: "Person",
   },
 
   firId: {
@@ -14,17 +13,17 @@ const complainantInfo = mongoose.Schema({
 
   AccusedIds: {
     type: [mongoose.Schema.Types.ObjectId],
-    ref: "person",
+    ref: "Person",
   },
 
   WitnessIds: {
     type: [mongoose.Schema.Types.ObjectId],
-    ref: "person",
+    ref: "Person",
   },
 
   filedBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
+    ref: "Users",
   },
 
   IncidentDetail: {
@@ -56,4 +55,4 @@ const complainantInfo = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Complainant", complainantInfo);
+module.exports = mongoose.model("complaint", complainantInfo);

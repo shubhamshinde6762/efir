@@ -1,6 +1,6 @@
 const user = require("../../model/user");
 const Complaint = require("../../model/complainant");
-const PersonSchema = require("../../model/person");
+const personSchema = require("../../model/person");
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary").v2;
 
@@ -19,8 +19,20 @@ exports.register = async (req, res) => {
 
     const createPersonArray = async (personArray) => {
       const personIds = [];
-      for (const personData of personArray) {
-        const newPerson = new PersonSchema(personData);
+      for (let personData of personArray) {
+        personData = {
+          ...personData,
+          age: parseInt(personData.age),
+          aadhar: parseInt(personData.aadhar),
+          contact: parseInt(personData.contact),
+        };
+
+        const filteredPersonData = Object.fromEntries(
+          Object.entries(personData).filter(([key, value]) => value)
+        );
+
+        console.log(filteredPersonData);
+        const newPerson = new personSchema(filteredPersonData);
         await newPerson.save();
         personIds.push(newPerson._id);
       }
@@ -59,7 +71,7 @@ exports.register = async (req, res) => {
 
     let filedBy = null;
     if (userId) {
-      filedBy = new mongoose.Schema.Types.ObjectId(userId);
+      filedBy = new mongoose.Types.ObjectId(userId);
     }
 
     let firId;
@@ -75,13 +87,9 @@ exports.register = async (req, res) => {
     }
 
     const newComplaint = await Complaint.create({
-      VictimIds: VictimIds.map((id) => new mongoose.Schema.Types.ObjectId(id)),
-      AccusedIds: AccusedIds.map(
-        (id) => new mongoose.Schema.Types.ObjectId(id)
-      ),
-      WitnessIds: WitnessIds.map(
-        (id) => new mongoose.Schema.Types.ObjectId(id)
-      ),
+      VictimIds: VictimIds.map((id) => new mongoose.Types.ObjectId(id)),
+      AccusedIds: AccusedIds.map((id) => new mongoose.Types.ObjectId(id)),
+      WitnessIds: WitnessIds.map((id) => new mongoose.Types.ObjectId(id)),
       IncidentDetails: parsedIncidentDetails,
       filedBy,
       Evidence: uploadedUrls,
@@ -93,9 +101,7 @@ exports.register = async (req, res) => {
         { _id: userId },
         {
           $addToSet: {
-            filedComplaints: new mongoose.Schema.Types.ObjectId(
-              newComplaint._id
-            ),
+            filedComplaints: new mongoose.Types.ObjectId(newComplaint._id),
           },
         }
       );

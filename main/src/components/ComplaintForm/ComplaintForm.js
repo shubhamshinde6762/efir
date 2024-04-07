@@ -6,7 +6,7 @@ import { LiaUserEditSolid } from "react-icons/lia";
 import { AiOutlineUserDelete } from "react-icons/ai";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
 
-const ComplaintForm = ({ user }) => {
+const ComplaintForm = ({ currentUser }) => {
   const [townTree, setTownTree] = useState({});
   const [addPersonFlag, setAddPersonFlag] = useState("");
   const [complaintDetails, setComplaintDetails] = useState({
@@ -42,7 +42,7 @@ const ComplaintForm = ({ user }) => {
   const registerHandler = async () => {
     try {
         const formData = new FormData();
-        // formData.append("userId", userId);
+        formData.append("userId", currentUser._id);
         formData.append(
           "IncidentDetails",
           JSON.stringify(complaintDetails.IncidentDetail)
@@ -53,7 +53,7 @@ const ComplaintForm = ({ user }) => {
         );
         formData.append(
           "AccusedArray",
-          JSON.stringify(complaintDetails.AccusedArray)
+          JSON.stringify(complaintDetails.AccusedArray) 
         );
         formData.append(
           "WitnessArray",

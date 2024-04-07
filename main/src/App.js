@@ -69,7 +69,7 @@ function App() {
           path="/register/new"
           element={
             <div className="w-full flex justify-center items-center">
-              <ComplaintForm />
+              <ComplaintForm currentUser={currentUser} />
             </div>
           }
         />
@@ -88,6 +88,14 @@ function App() {
               currentUser={currentUser}
               socket={socket}
               setCurrentUser={setCurrentUser}
+            />
+          }
+        />
+        <Route
+          path="/professionalDashboard"
+          element={
+            <Login
+              currentUser={currentUser}
             />
           }
         />

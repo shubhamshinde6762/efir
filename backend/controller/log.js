@@ -81,13 +81,14 @@ exports.signIn = async (req, res) => {
 exports.logIn = async (req, res) => {
   try {
     let { mobile, password, email } = req.body;
-
-    if (!mobile || !password || !email)
+    
+    if ((!mobile && !email) || !password)
     {
       email = res.user.email;
       password = res.user.password;
       mobile = res.user.mobile
     }
+    console.log(123);
     // console.log(email, res.user, mobile)
 
     
@@ -104,7 +105,6 @@ exports.logIn = async (req, res) => {
     else response = await user.findOne({ mobile });
     console.log(email, response)
 
-    //console.log(123);
 
     if (!response) {
       res.status(401).json({
