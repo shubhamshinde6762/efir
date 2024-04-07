@@ -44,13 +44,14 @@ exports.fetchComplaint = async (req, res) => {
 
 exports.fetchComplaintSuper = async (req, res) => {
   try {
+    console.log(123)
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
     const filter = {};
 
-    const userId = req.param.userId;
+    const userId = req.params.userId;
 
     if (!userId) {
       return res.status(401).json({
@@ -58,12 +59,12 @@ exports.fetchComplaintSuper = async (req, res) => {
       });
     }
 
-    const currentUser = await user.findById(userId);
-    if (!currentUser || currentUser.role != "super") {
-      return res.status(401).json({
-        message: "Unauthorized",
-      });
-    }
+    const currentUser = await User.findById(userId);
+    // if (!currentUser || currentUser.role != "super") {
+    //   return res.status(401).json({
+    //     message: "Unauthorized",
+    //   });
+    // }
 
     if (req.query.fromDateIncident && req.query.toDateIncident) {
       filter["IncidentDetail.TimeDateofIncident"] = {
