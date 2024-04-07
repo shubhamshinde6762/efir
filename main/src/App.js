@@ -8,6 +8,7 @@ import ComplaintForm from "./components/ComplaintForm/ComplaintForm";
 
 import io from "socket.io-client";
 import UserDashboard from "./components/userDash/UserDashboard";
+import Filterbar from "./components/Filter/Filterbar";
 const socket = io("http://localhost:5000");
 
 function App() {
@@ -65,6 +66,13 @@ function App() {
         )}
       </div>
       <Routes>
+        <Route
+          path="/"
+          element={
+            <div className="w-screen ">
+              <Filterbar/>
+            </div>
+          }/>
         <Route
           path="/register/new"
           element={
