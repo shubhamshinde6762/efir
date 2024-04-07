@@ -96,6 +96,8 @@ exports.fetchComplaintSuper = async (req, res) => {
       ];
     }
 
+    console.log(filter)
+
     const complaints = await Complaint.find(filter)
       .skip(skip)
       .limit(limit)

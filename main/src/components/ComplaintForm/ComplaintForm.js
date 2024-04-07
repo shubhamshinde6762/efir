@@ -128,6 +128,9 @@ const ComplaintForm = ({ currentUser }) => {
             </span>
             <input
               type="date"
+              onChange={onIncidentHandler}
+              id="TimeDateofIncident"
+              value={complaintDetails.IncidentDetail.TimeDateofIncident}
               className="shadow rounded-lg px-3 py-1 w-[8.7rem]"
             />
           </lable>
