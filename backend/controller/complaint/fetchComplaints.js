@@ -44,7 +44,7 @@ exports.fetchComplaint = async (req, res) => {
 
 exports.fetchComplaintSuper = async (req, res) => {
   try {
-    console.log(123)
+    console.log(123);
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
@@ -76,7 +76,7 @@ exports.fetchComplaintSuper = async (req, res) => {
     if (req.query.fromDateLastEdited && req.query.toDateLastEdited) {
       filter["LastEdited"] = {
         $gte: new Date(req.query.fromDateLastEdited),
-        $lte: new Date(req.query.toDateLastEdited) || new Date.now,
+        $lte: new Date(req.query.toDateLastEdited) || new Date.now(),
       };
     }
 
@@ -84,8 +84,10 @@ exports.fetchComplaintSuper = async (req, res) => {
       filter["IncidentDetail.District"] = req.query.district;
     }
 
-    if (req.query.subdistrict) {
-      filter["IncidentDetail.SubDistrict"] = req.query.subdistrict;
+    // console.log(req.query.subDistrict);
+
+    if (req.query.subDistrict) {
+      filter["IncidentDetail.SubDistrict"] = req.query.subDistrict;
     }
 
     if (req.query.aadhar) {
@@ -96,7 +98,7 @@ exports.fetchComplaintSuper = async (req, res) => {
       ];
     }
 
-    console.log(filter)
+    console.log(filter);
 
     const complaints = await Complaint.find(filter)
       .skip(skip)

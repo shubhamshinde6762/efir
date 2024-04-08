@@ -71,7 +71,7 @@ function App() {
         <Route
           path="/complaints/dashboard"
           element={
-            <div className="w-full flex ">
+            <div className="w-[100%] flex ">
               <Filterbar
                 complaints={complaints}
                 setComplaintList={setComplaintList}

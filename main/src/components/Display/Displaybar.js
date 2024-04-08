@@ -1,33 +1,83 @@
-import React,{useState} from 'react'
+import React, { useEffect, useState } from "react";
+import Complaintview from "./Complaintview";
 
-function Displaybar({complaints}) {
-  // const [complaints, setComplaints] = useState([])
+function Displaybar({ complaints }) {
+  const [currentComplaint, setCurrentComplaint] = useState("");
+
+  useEffect(() => {
+    try{
+      setCurrentComplaint("");
+    }catch(err){}
+  }, [complaints])
   return (
-    <div className='bg-slate-200 h-[90vh] flex-grow my-2 mr-2'>
-      <h2 className='text-center text-xl font-medium border-2 border-red-400'>Complaints</h2>
-      <div className='flex border-2 border-yellow-400 text-center justify-between'>
-        <div className='border-2 border-white w-[25%]  tracking-tight'>
-        Complaint Id's
+    <div className="w-full">
+      {!currentComplaint && (
+        <div className="h-[90vh] flex-grow my-2 mr-2">
+          <h2 className="text-center text-2xl  mb-2 font-bold">Complaints</h2>
+          <div
+            className="flex text-center justify-between  font-bold"
+            style={{ backgroundColor: "#AEDEFC" }}
+          >
+            <div className=" w-[33%] md:w-[25%] p-2">Complaint Id's</div>
+            <div className=" w-[33%] md:w-[25%] p-2">Date of Filing</div>
+            <div className=" w-[33%] md:w-[25%] p-2 hidden md:block">
+              District
+            </div>
+            <div className=" w-[33%] md:w-[25%] p-2">View Complaint</div>
+          </div>
+
+          <div className="my-2">
+            {complaints.map((complaint, index) => {
+              let color = "";
+              if (index % 2) color = "#F5F5F5";
+              return (
+                <div key={index} className="flex text-center">
+                  <div
+                    className=" w-[33%] md:w-[25%] p-2"
+                    style={{ backgroundColor: color }}
+                  >
+                    {complaint.firId}
+                  </div>
+                  <div
+                    className=" w-[33%] md:w-[25%] p-2"
+                    style={{ backgroundColor: color }}
+                  >
+                    {complaint.LastEdited.slice(0, 10)}
+                  </div>
+                  <div
+                    className="hidden md:block w-[25%] p-2"
+                    style={{ backgroundColor: color }}
+                  >
+                    {complaint &&
+                      complaint.IncidentDetail &&
+                      complaint.IncidentDetail.District}
+                  </div>
+                  <div
+                    className=" w-[33%] md:w-[25%] p-2"
+                    style={{ backgroundColor: color }}
+                  >
+                    <button
+                      onClick={() => setCurrentComplaint(complaint)}
+                      class=" bg-gradient-to-br from-blue-400 to-blue-500 hover:bg-gradient-to-tl  text-white font-medium text-sm py-1 px-4 rounded-full focus:outline-none transition duration-200 ease-in-out"
+                    >
+                      View
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
-        <div className='border-2 border-white w-[25%] tracking-tight'>
-        Date of Filing
-        </div>
-        <div className='border-2 border-white w-[25%] tracking-tight'>
-        District
-        </div >
-        <div className='border-2 border-white w-[25%] tracking-tight'>
-        View Complaint
-        </div>
+      )}
+      {}
+      <div className="mx-4 xs:mx-1">
+        <Complaintview
+          complaintDetails={currentComplaint}
+          setComplaintDetails={setCurrentComplaint}
+        />
       </div>
-      {
-        complaints.map(ele => (
-          <div>{ele.firId}</div>
-        ))
-      }
-
-
     </div>
-  )
+  );
 }
 
-export default Displaybar
+export default Displaybar;

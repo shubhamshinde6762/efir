@@ -43,6 +43,10 @@ const complainantInfo = mongoose.Schema({
       SubDistrict: {
         type: String,
       },
+
+      IncidentDescription: {
+        type: String,
+      },
     },
   },
 

@@ -18,6 +18,7 @@ const ComplaintForm = ({ currentUser }) => {
       LandMark: "",
       District: "",
       SubDistrict: "",
+      IncidentDescription: "",
     },
     evidences: [],
   });
@@ -38,30 +39,29 @@ const ComplaintForm = ({ currentUser }) => {
     fetch();
   }, []);
 
-
   const registerHandler = async () => {
     try {
-        const formData = new FormData();
-        formData.append("userId", currentUser._id);
-        formData.append(
-          "IncidentDetails",
-          JSON.stringify(complaintDetails.IncidentDetail)
-        );
-        formData.append(
-          "VictimArray",
-          JSON.stringify(complaintDetails.VictimArray)
-        );
-        formData.append(
-          "AccusedArray",
-          JSON.stringify(complaintDetails.AccusedArray) 
-        );
-        formData.append(
-          "WitnessArray",
-          JSON.stringify(complaintDetails.WitnessArray)
-        );
-        complaintDetails.evidences.forEach((file, index) => {
-          formData.append(`evidences[${index}]`, file);
-        });
+      const formData = new FormData();
+      formData.append("userId", currentUser._id);
+      formData.append(
+        "IncidentDetails",
+        JSON.stringify(complaintDetails.IncidentDetail)
+      );
+      formData.append(
+        "VictimArray",
+        JSON.stringify(complaintDetails.VictimArray)
+      );
+      formData.append(
+        "AccusedArray",
+        JSON.stringify(complaintDetails.AccusedArray)
+      );
+      formData.append(
+        "WitnessArray",
+        JSON.stringify(complaintDetails.WitnessArray)
+      );
+      complaintDetails.evidences.forEach((file, index) => {
+        formData.append(`evidences[${index}]`, file);
+      });
 
       const response = await axios.post(
         "http://localhost:5000/api/v1/complaints/register-complaint",
@@ -97,19 +97,18 @@ const ComplaintForm = ({ currentUser }) => {
   const fileInsertHandler = (e) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
-  
+
     const fileArray = Array.from(files);
-  
+
     setComplaintDetails((prev) => ({
       ...prev,
       evidences: [...prev.evidences, ...fileArray],
     }));
   };
-  
+
   useEffect(() => {
     console.log(complaintDetails);
   }, [complaintDetails]);
-  
 
   return (
     <div className="min-w-[275px] p-4  w-full max-w-[900px] shadow-2xl rounded-xl">
@@ -141,6 +140,9 @@ const ComplaintForm = ({ currentUser }) => {
             <lable className="mx-2 py-2 flex flex-col space-y-3">
               <textarea
                 placeholder="Landmark..."
+                id="LandMark"
+                value={complaintDetails.IncidentDetail.LandMark}
+                onChange={onIncidentHandler}
                 className=" p-3 rounded-xl resize-none shadow w-full"
               ></textarea>
               <div className="flex gap-x-8 flex-wrap">
@@ -184,6 +186,9 @@ const ComplaintForm = ({ currentUser }) => {
               Incident Description:
             </div>
             <textarea
+              id="IncidentDescription"
+              value={complaintDetails.IncidentDetail.IncidentDescription}
+              onChange={onIncidentHandler}
               placeholder="Incident Description..."
               className=" p-3 rounded-xl resize-none shadow w-full"
             ></textarea>
