@@ -14,7 +14,6 @@ function Filterbar({ currentUser }) {
     limit: 10,
   });
   const [townTree, setTownTree] = useState({});
-  // const [complaints, setComplaints]
 
   useEffect(() => {
     const fetchTownTree = async () => {
