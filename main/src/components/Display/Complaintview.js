@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { IoMdAdd } from "react-icons/io";
-// import AddPeople from "./AddPeople";
-import { LiaUserEditSolid } from "react-icons/lia";
-import { AiOutlineUserDelete } from "react-icons/ai";
-import { IoMdRemoveCircleOutline } from "react-icons/io";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import Personview from "./Personview";
 
 const Complaintview = ({ complaintDetails, setComplaintDetails }) => {
   const [addPersonFlag, setAddPersonFlag] = useState("");
   const [personDetails, setPersonDetails] = useState("");
-
   useEffect(() => {
     console.log(complaintDetails);
   }, [complaintDetails]);
@@ -20,7 +14,7 @@ const Complaintview = ({ complaintDetails, setComplaintDetails }) => {
       <div className="min-w-[275px] relative p-4  w-full flex-grow shadow-2xl rounded-xl">
         <div
           onClick={() => setComplaintDetails("")}
-          className="absolute top-4 left-3 rounded-full bg-green-600 hover:bg-green-700 transition-all duration-200 text-xl p-1 text-white"
+          className="absolute top-4 left-3 rounded-full bg-green-600 cursor-pointer hover:bg-green-700 transition-all duration-200 text-xl p-1 text-white"
         >
           <IoMdArrowRoundBack />
         </div>
@@ -172,12 +166,13 @@ const Complaintview = ({ complaintDetails, setComplaintDetails }) => {
                           <td className=" flex gap-3 text-sm font- text-white text-center justify-center items-center py-1 px-2">
                             <div
                               onClick={() => {
-                                setPersonDetails(ele);
-                                setAddPersonFlag("VictimArray");
+                                setPersonDetails(ele)
+                                setAddPersonFlag("VictimArray")
                               }}
                               className="rounded-full bg-green-600 cursor-pointer hover:scale-105 transition-all duration-300 hover:bg-green-700 px-2 py-1"
                             >
                               View
+
                             </div>
                           </td>
                         </tr>
@@ -235,7 +230,7 @@ const Complaintview = ({ complaintDetails, setComplaintDetails }) => {
                                 setPersonDetails(ele);
                                 setAddPersonFlag("AccusedArray");
                               }}
-                              className="rounded-full bg-green-600 cursor-pointer hover:scale-105 transition-all duration-300 hover:bg-green-700 px-2 py-1"
+                              className="rounded-full bg-green-600 cursor-pointer hover:scale-105 transition-all duration-300 hover:bg-green-700 px-2 py-1" 
                             >
                               View
                             </div>
@@ -329,16 +324,12 @@ const Complaintview = ({ complaintDetails, setComplaintDetails }) => {
             )}
         </div>
 
-        {/* {addPersonFlag && (
-        <AddPeople
+        {personDetails && (
+        <Personview
           addPersonFlag={addPersonFlag}
-          personDetailsFromMainForm={personDetails}
-          setPersonDetailsFromMainForm={setPersonDetails}
-          setAddPersonFlag={setAddPersonFlag}
-          setComplaintDetails={setComplaintDetails}
-          complaintDetails={complaintDetails}
+          personDetails={personDetails} setAddPersonFlag={setAddPersonFlag} setPersonDetails={setPersonDetails}
         />
-      )} */}
+      )}
       </div>
     )
   );
