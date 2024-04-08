@@ -9,11 +9,10 @@ import ComplaintForm from "./components/ComplaintForm/ComplaintForm";
 import io from "socket.io-client";
 import UserDashboard from "./components/userDash/UserDashboard";
 import Filterbar from "./components/Filter/Filterbar";
-<<<<<<< HEAD
+
 import Intro from "./Intro";
-=======
+
 import Displaybar from "./components/Display/Displaybar";
->>>>>>> 3bac23a42921a589fcdb72d1d3b9f8f6a56d6f8c
 const socket = io("http://localhost:5000");
 
 function App() {
@@ -51,7 +50,7 @@ function App() {
   }, []);
   return (
     <div className="w-full">
-    <Intro/>
+      <Intro />
       <div>
         <Toaster />
       </div>

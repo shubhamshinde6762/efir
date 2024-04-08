@@ -29,7 +29,7 @@ exports.fetchComplaint = async (req, res) => {
       populate: {
         path: "VictimIds AccusedIds WitnessIds filedBy",
       },
-    });
+    }); 
 
     if (!userReq) {
       return res.status(404).json({ message: "User not found" });
