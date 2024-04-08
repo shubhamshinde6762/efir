@@ -3,7 +3,6 @@ import Complaintview from "./Complaintview";
 
 function Displaybar({ complaints }) {
   const [currentComplaint, setCurrentComplaint] = useState("");
-
   useEffect(() => {
     try{
       setCurrentComplaint("");
