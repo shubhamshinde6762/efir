@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-function Filterbar({ currentUser }) {
+function Filterbar({ currentUser, complaints, setComplaintList }) {
   const [filters, setFilters] = useState({
     fromDateIncident: "",
     toDateIncident: "",
@@ -44,7 +44,8 @@ function Filterbar({ currentUser }) {
       try {
         const URL = generateComplaintFetchLink();
         const result = await axios.get(URL);
-        console.log(result);
+        console.log(result.data.complaints);
+        setComplaintList(result.data.complaints);
       } catch (err) {}
     };
 
@@ -95,66 +96,71 @@ function Filterbar({ currentUser }) {
   };
 
   return (
-    <div className="flex-col w-[300px] items-center bg-white rounded-sm shadow-sm border border-gray-300 py-3 px-1 text-center m-[8px]">
-      <h3 className="text-gray-900 font-medium text-sm md:text-base text-center">
+    <div className="flex-col justify-center font-poppins w-fit items-center bg-white rounded-md shadow-sm  m-2 md:shadow-md border border-gray-300 p-2 text-center">
+      <h3 className="text-gray-900 text-xl xs:text-lg font-bold text-center">
         Filter
       </h3>
       <hr />
-
-      <label className=" text-gray-700 text-sm font-bold mb-2 mt-2">
-        Expected date of filing complaint:
+      <label className="block text-gray-700 text-sm font-bold m-3 text-left">
+        Expected date of Incident:
       </label>
-      <div className="flex m-4">
-        <label className="  block text-gray-700 text-sm font-bold mb-2 ml-7 mr-3">
+      <div className="flex gap-3 items-center m-4">
+        <label
+          className="  block text-gray-700 text-sm"
+          htmlFor="fromDateIncident"
+        >
           From
         </label>
         <input
           type="date"
           name="fromDateIncident"
-          value={filters.filingDate}
+          value={filters.fromDateIncident}
           onChange={handleFilterChange}
-          className="shadow rounded-lg px-3 py-1 w-[8.7rem]"
+          className="shadow rounded-lg px-3 py-1 w-[10rem]"
         />
       </div>
-      <div className="flex m-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2 ml-7 mr-3">
+      <div className="flex gap-7 items-center m-4">
+        <label className="block text-gray-700 text-sm ">
           To
         </label>
         <input
           type="date"
           name="toDateIncident"
-          value={filters.filingDate}
+          value={filters.toDateIncident}
           onChange={handleFilterChange}
-          className="shadow rounded-lg px-3 py-1 w-[8.7rem]"
+          className="shadow rounded-lg px-3 py-1 w-[10rem]"
         />
       </div>
 
-      <div className="mt-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
-          From date of Incident:
+      <label className="block text-gray-700 text-sm font-bold m-3 text-left">
+        Expected date of filing complaint:
+      </label>
+      <div className="flex gap-3 items-center m-4">
+        <label className="  block text-gray-700 text-sm">
+          From
         </label>
         <input
           type="date"
           name="fromDateLastEdited"
-          value={filters.incidentDate}
+          value={filters.fromDateLastEdited}
           onChange={handleFilterChange}
-          className="shadow rounded-lg px-3 py-1 w-[8.7rem]"
+          className="shadow rounded-lg px-3 py-1 w-[10rem]"
         />
       </div>
-      <div className="mt-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
-          To date of Incident:
+      <div className="flex gap-7 items-center m-4">
+        <label className="block text-gray-700 text-sm ">
+          To:
         </label>
         <input
           type="date"
           name="toDateLastEdited"
-          value={filters.incidentDate}
+          value={filters.toDateLastEdited}
           onChange={handleFilterChange}
-          className="shadow rounded-lg px-3 py-1 w-[8.7rem]"
+          className="shadow rounded-lg px-3 py-1 w-[10rem]"
         />
       </div>
-      <div className="mt-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
+      <div className="mt-4 m-4 flex flex-col gap-1">
+        <label className="block text-gray-700 text-sm font-bold text-left">
           District:
         </label>
         <select
@@ -171,8 +177,8 @@ function Filterbar({ currentUser }) {
           ))}
         </select>
       </div>
-      <div className="mt-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
+      <div className="mt-4 m-4 flex flex-col gap-1">
+        <label className="block text-gray-700 text-sm font-bold text-left">
           Sub-District:
         </label>
         <select
@@ -191,7 +197,7 @@ function Filterbar({ currentUser }) {
         </select>
       </div>
       <div>
-        <label className="block text-gray-700 text-sm font-bold mb-2">
+        <label className="block text-gray-700 text-sm font-bold m-3 text-left">
           Aadhaar Number
         </label>
         <input

@@ -42,7 +42,12 @@ exports.register = async (req, res) => {
     const parsedVictimArray = JSON.parse(VictimArray);
     const parsedAccusedArray = JSON.parse(AccusedArray);
     const parsedWitnessArray = JSON.parse(WitnessArray);
-    const parsedIncidentDetails = JSON.parse(IncidentDetails);
+    let parsedIncidentDetails = JSON.parse(IncidentDetails);
+    console.log(parsedIncidentDetails)
+    parsedIncidentDetails = {
+      ...parsedIncidentDetails,
+      TimeDateofIncident: new Date(parsedIncidentDetails.TimeDateofIncident),
+    };
 
     const VictimIds = await createPersonArray(parsedVictimArray);
     const AccusedIds = await createPersonArray(parsedAccusedArray);
@@ -90,7 +95,7 @@ exports.register = async (req, res) => {
       VictimIds: VictimIds.map((id) => new mongoose.Types.ObjectId(id)),
       AccusedIds: AccusedIds.map((id) => new mongoose.Types.ObjectId(id)),
       WitnessIds: WitnessIds.map((id) => new mongoose.Types.ObjectId(id)),
-      IncidentDetails: parsedIncidentDetails,
+      IncidentDetail: parsedIncidentDetails,
       filedBy,
       Evidence: uploadedUrls,
       firId,

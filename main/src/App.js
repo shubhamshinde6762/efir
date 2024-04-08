@@ -9,12 +9,17 @@ import ComplaintForm from "./components/ComplaintForm/ComplaintForm";
 import io from "socket.io-client";
 import UserDashboard from "./components/userDash/UserDashboard";
 import Filterbar from "./components/Filter/Filterbar";
+<<<<<<< HEAD
 import Intro from "./Intro";
+=======
+import Displaybar from "./components/Display/Displaybar";
+>>>>>>> 3bac23a42921a589fcdb72d1d3b9f8f6a56d6f8c
 const socket = io("http://localhost:5000");
 
 function App() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState();
+  const [complaints, setComplaintList] = useState([]);
 
   useEffect(async () => {
     const autoLogin = async () => {
@@ -71,10 +76,16 @@ function App() {
         <Route
           path="/complaints/dashboard"
           element={
-            <div className="w-screen ">
-              <Filterbar currentUser={currentUser}/>
+            <div className="w-[100%] flex ">
+              <Filterbar
+                complaints={complaints}
+                setComplaintList={setComplaintList}
+                currentUser={currentUser}
+              />
+              <Displaybar complaints={complaints} />
             </div>
-          }/>
+          }
+        />
         <Route
           path="/register/new"
           element={
@@ -103,11 +114,7 @@ function App() {
         />
         <Route
           path="/professionalDashboard"
-          element={
-            <Login
-              currentUser={currentUser}
-            />
-          }
+          element={<Login currentUser={currentUser} />}
         />
       </Routes>
     </div>
