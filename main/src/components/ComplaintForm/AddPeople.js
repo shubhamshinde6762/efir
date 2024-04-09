@@ -17,7 +17,7 @@ const AddPeople = ({
     occupation: "",
     aadhar: Array(12).fill(""),
   });
-
+  const [remark, setRemark] = useState("")
   useEffect(() => {
     if (personDetailsFromMainForm !== "")
       setPersonDetails(() => ({
@@ -236,7 +236,7 @@ const AddPeople = ({
           <button
             className="text-base font-poppins py-1 px-2 bg-green-500 hover:bg-green-600 transition-all duration-300 text-white whitespace-no-wrap border border-gray-200 rounded-md shadow-sm focus:outline-none focus:shadow-none"
             onClick={handleSubmit}
-          >
+          > 
             Add
           </button>
           </div>

@@ -42,7 +42,7 @@ const Personview = ({ addPersonFlag,setAddPersonFlag, personDetails, setPersonDe
                   : " Witness Information"}
               </div>
               <div className="flex flex-col gap-1 justify-start items-start w-full">
-                <label className=" font-bold ">Name</label>
+                <label className=" font-bold ">Name</label> 
                 <input disabled
                   type="text"
                   name="name"
