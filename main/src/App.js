@@ -75,6 +75,8 @@ function App() {
         <NavLink to="/">Home</NavLink>
         <NavLink to="/register/new">Register</NavLink>
         <NavLink to="/mycomplaints">My Complaints</NavLink>
+        <NavLink to="/complaints/dashboard">police</NavLink>
+
         {currentUser ? (
           <div
             onClick={() => {

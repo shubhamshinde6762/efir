@@ -47,7 +47,7 @@ const Intro = () => {
           }`}
         ></img>
       </h1>
-      <div clas>
+      <div className="text-center mx-4">
         {
           <ReactTyped
             className="text-2xl font-bold font-poppins text-white"
