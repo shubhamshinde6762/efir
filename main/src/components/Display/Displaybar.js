@@ -134,9 +134,7 @@ function Displaybar({ complaints, setComplaintList, setFilters }) {
                       <a
                         href="#"
                         onClick={() => changeCurrPage(n)}
-                        className={`block w-10 h-10 leading-10 bg-white text-center text-decoration-none text-gray-700 rounded-md  shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out ${
-                          currentPage === n ? "bg-[#AEDEFC] text-white" : ""
-                        }`}
+                        className={`block w-10 h-10 leading-10  text-center text-decoration-none text-gray-700 rounded-md shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out ${currentPage === n ? "bg-[#AEDEFC]": "white"}`}
                       >
                         {n}
                       </a>
