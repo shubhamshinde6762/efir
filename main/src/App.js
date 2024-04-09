@@ -20,6 +20,18 @@ function App() {
   const [complaints, setComplaintList] = useState([]);
   const [isVisible, setIsVisible] = useState(true);
   const isWideScreen = useMediaQuery("(min-width: 500px)");
+  const [filters, setFilters] = useState({
+    fromDateIncident: "",
+    toDateIncident: "",
+    fromDateLastEdited: "",
+    toDateLastEdited: "",
+    district: "",
+    subDistrict: "",
+    uniqueUserId: "",
+    status: "",
+    page: 1,
+    limit: 10,
+  });
 
   useEffect(() => {
     setIsVisible(isWideScreen);
@@ -93,8 +105,14 @@ function App() {
                 complaints={complaints}
                 setComplaintList={setComplaintList}
                 currentUser={currentUser}
+                filters={filters}
+                setFilters={setFilters}
               />
-              <Displaybar complaints={complaints} />
+              <Displaybar
+              setFilters={setFilters}
+                complaints={complaints}
+                setComplaintList={setComplaintList}
+              />
             </div>
           }
         />

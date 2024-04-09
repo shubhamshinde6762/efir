@@ -5,10 +5,10 @@ const connectedUser = new mongoose.Schema({
         type:String,
         required:true,
     },
-
+ 
     socketIds:{
         type:[String],
     }
-})
+}) 
 
 module.exports = mongoose.model("connectedUsers", connectedUser);

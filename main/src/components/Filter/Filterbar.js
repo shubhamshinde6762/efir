@@ -8,19 +8,10 @@ function Filterbar({
   setComplaintList,
   isVisible,
   setIsVisible,
+  filters,
+  setFilters
 }) {
-  const [filters, setFilters] = useState({
-    fromDateIncident: "",
-    toDateIncident: "",
-    fromDateLastEdited: "",
-    toDateLastEdited: "",
-    district: "",
-    subDistrict: "",
-    uniqueUserId: "",
-    status: "",
-    page: 1,
-    limit: 10,
-  });
+  
 
   const [townTree, setTownTree] = useState({});
 
@@ -54,8 +45,9 @@ function Filterbar({
       try {
         const URL = generateComplaintFetchLink();
         const result = await axios.get(URL);
-        console.log(result.data.complaints);
-        setComplaintList(result.data.complaints);
+        console.log(result.data);
+
+        setComplaintList(result.data);
       } catch (err) {}
     };
 
