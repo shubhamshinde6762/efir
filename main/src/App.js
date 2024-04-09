@@ -5,13 +5,12 @@ import Login from "./components/Login";
 import axios from "axios";
 import { Toaster } from "react-hot-toast";
 import ComplaintForm from "./components/ComplaintForm/ComplaintForm";
-
+import { IoFilter } from "react-icons/io5";
 import io from "socket.io-client";
 import UserDashboard from "./components/userDash/UserDashboard";
 import Filterbar from "./components/Filter/Filterbar";
-
+import { useMediaQuery } from "@react-hook/media-query";
 import Intro from "./Intro";
-
 import Displaybar from "./components/Display/Displaybar";
 const socket = io("http://localhost:5000");
 
@@ -19,6 +18,12 @@ function App() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState();
   const [complaints, setComplaintList] = useState([]);
+  const [isVisible, setIsVisible] = useState(true);
+  const isWideScreen = useMediaQuery("(min-width: 500px)");
+
+  useEffect(() => {
+    setIsVisible(isWideScreen);
+  }, [isWideScreen]);
 
   useEffect(async () => {
     const autoLogin = async () => {
@@ -76,7 +81,15 @@ function App() {
           path="/complaints/dashboard"
           element={
             <div className="w-[100%] flex ">
+              <div
+                onClick={() => setIsVisible((pre) => !pre)}
+                className="absolute top-0 left-0 text-2xl cursor-pointer"
+              >
+                <IoFilter />
+              </div>
               <Filterbar
+                setIsVisible={setIsVisible}
+                isVisible={isVisible}
                 complaints={complaints}
                 setComplaintList={setComplaintList}
                 currentUser={currentUser}

@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { IoCloseOutline } from "react-icons/io5";
 
-function Filterbar({ currentUser, complaints, setComplaintList }) {
+function Filterbar({
+  currentUser,
+  complaints,
+  setComplaintList,
+  isVisible,
+  setIsVisible,
+}) {
   const [filters, setFilters] = useState({
     fromDateIncident: "",
     toDateIncident: "",
@@ -14,6 +21,7 @@ function Filterbar({ currentUser, complaints, setComplaintList }) {
     page: 1,
     limit: 10,
   });
+
   const [townTree, setTownTree] = useState({});
 
   useEffect(() => {
@@ -106,142 +114,150 @@ function Filterbar({ currentUser, complaints, setComplaintList }) {
   };
 
   return (
-    <div className="flex-col justify-center gap-3  font-poppins w-fit items-center bg-white rounded-md shadow-sm  m-2 md:shadow-md border border-gray-300 text-center">
-      <h3 className="text-gray-900 text-xl xs:text-lg font-bold text-center">
-        Filter
-      </h3>
-      <hr />
-      <div className="flex flex-col justify-center items-center gap-2 my-2">
-        <label className="block text-gray-700 text-sm font-bold text-center">
-          Expected date of Incident:
-        </label>
-        <div className="flex gap-1 items-center">
-          <label
-            className="  block text-gray-700 text-sm"
-            htmlFor="fromDateIncident"
-          >
-            From
+    <div
+      className={`w-fit h-[95vh] sticky xs:absolute xs:w-screen xs:h-screen xs:top-0 xs:left-0  xs:bg-opacity-30 flex xs:items-center transition-all duration-500 justify-left xs:justify-center ${
+        isVisible
+          ? "translate-x-[0] xs:translate-y-[0] xs:bg-black"
+          : " -translate-x-[100vw] xs:translate-x-[0] xs:-translate-y-[200vh]  w-0"
+      }`}
+    >
+      <div className="flex-col justify-center gap-3 relative max-w-[280px]  font-poppins w-fit h-fit p-2 items-center bg-rose-100 rounded-r-xl xs:rounded-xl border text-center">
+        <IoCloseOutline
+          onClick={() => setIsVisible(false)}
+          className="text-2xl text-white p-1 absolute -top-2 xs:block hidden  -right-2 bg-red-400 rounded-full"
+        />
+        <div className="flex flex-col justify-center items-center gap-2">
+          <label className="block text-gray-700 text-sm font-bold text-left ">
+            Expected date of Incident:
           </label>
-          <input
-            type="date"
-            name="fromDateIncident"
-            value={filters.fromDateIncident}
-            onChange={handleFilterChange}
-            className="shadow rounded-lg text-sm px-3 py-1 w-[9rem]"
-          />
+          <div className="flex gap-1 items-center">
+            <label
+              className="  block text-gray-700 text-sm"
+              htmlFor="fromDateIncident"
+            >
+              From
+            </label>
+            <input
+              type="date"
+              name="fromDateIncident"
+              value={filters.fromDateIncident}
+              onChange={handleFilterChange}
+              className="shadow rounded-lg text-sm px-2 py-1 w-[8.3rem]"
+            />
+          </div>
+          <div className="flex gap-5 items-center ">
+            <label className="block text-gray-700 text-sm ">To</label>
+            <input
+              type="date"
+              name="toDateIncident"
+              value={filters.toDateIncident}
+              onChange={handleFilterChange}
+              className="shadow rounded-lg text-sm px-2  py-1 w-[8.3rem]"
+            />
+          </div>
         </div>
-        <div className="flex gap-5 items-center ">
-          <label className="block text-gray-700 text-sm ">To</label>
-          <input
-            type="date"
-            name="toDateIncident"
-            value={filters.toDateIncident}
-            onChange={handleFilterChange}
-            className="shadow rounded-lg text-sm px-3 py-1 w-[9rem]"
-          />
-        </div>
-      </div>
 
-      <div className="flex flex-col justify-center items-center gap-2 my-2">
-        <label className="block text-gray-700 text-sm font-bold  text-cebter">
-          Expected date of filing complaint:
-        </label>
-        <div className="flex gap-1 items-center">
-          <label className="  block text-gray-700 text-sm">From</label>
-          <input
-            type="date"
-            name="fromDateLastEdited"
-            value={filters.fromDateLastEdited}
-            onChange={handleFilterChange}
-            className="shadow rounded-lg text-sm px-3 py-1 w-[9rem]"
-          />
+        <div className="flex flex-col justify-center items-center gap-2 my-2">
+          <label className="block text-gray-700 text-sm font-bold  text-left">
+            Expected date of filing complaint:
+          </label>
+          <div className="flex gap-1 items-center">
+            <label className="  block text-gray-700 text-sm">From</label>
+            <input
+              type="date"
+              name="fromDateLastEdited"
+              value={filters.fromDateLastEdited}
+              onChange={handleFilterChange}
+              className="shadow rounded-lg text-sm px-2 py-1 w-[8.3rem]"
+            />
+          </div>
+          <div className="flex gap-5 items-center">
+            <label className="block text-gray-700   text-sm ">To:</label>
+            <input
+              type="date"
+              name="toDateLastEdited"
+              value={filters.toDateLastEdited}
+              onChange={handleFilterChange}
+              className="shadow rounded-lg px-2 text-sm py-1 w-[8.3rem]"
+            />
+          </div>
         </div>
-        <div className="flex gap-5 items-center">
-          <label className="block text-gray-700  text-sm ">To:</label>
-          <input
-            type="date"
-            name="toDateLastEdited"
-            value={filters.toDateLastEdited}
+        <div className=" flex flex-col justify-center  gap-1 mb-2">
+          <label className="block text-gray-700 text-sm font-bold text-left">
+            District:
+          </label>
+          <select
+            name="district"
+            value={filters.district}
             onChange={handleFilterChange}
-            className="shadow rounded-lg px-3 text-sm py-1 w-[9rem]"
-          />
-        </div>
-      </div>
-      <div className=" flex flex-col justify-center mx-4 gap-1 mb-2">
-        <label className="block text-gray-700 text-sm font-bold text-left">
-          District:
-        </label>
-        <select
-          name="district"
-          value={filters.district}
-          onChange={handleFilterChange}
-          className="px-2 py-1 text-sm shadow rounded-lg"
-        >
-          <option value="">Select District</option>
-          {Object.keys(townTree).map((district) => (
-            <option key={district} value={district}>
-              {district}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className=" mx-4 flex flex-col gap-1">
-        <label className="block text-gray-700 text-sm font-bold text-left">
-          Sub-District:
-        </label>
-        <select
-          name="subDistrict"
-          value={filters.subDistrict}
-          onChange={handleFilterChange}
-          className="px-2 py-1 text-sm shadow rounded-lg"
-        >
-          <option value="">Select Sub-District</option>
-          {townTree[filters.district] &&
-            townTree[filters.district].map((subDistrict) => (
-              <option key={subDistrict} value={subDistrict}>
-                {subDistrict}
+            className="px-2 py-1 text-sm shadow rounded-lg"
+          >
+            <option value="">Select District</option>
+            {Object.keys(townTree).map((district) => (
+              <option key={district} value={district}>
+                {district}
               </option>
             ))}
-        </select>
-      </div>
-      <div className=" flex flex-col justify-center mx-4 gap-1 my-2">
-        <label className="block text-gray-700 text-sm font-bold text-left">
-          Status:
-        </label>
-        <select
-          name="status"
-          value={filters.status}
-          onChange={handleFilterChange}
-          className="px-2 py-1 text-sm shadow rounded-lg"
-        >
-          <option value="">All</option>
-          <option value="Pending">Pending</option>
-          <option value="Completed">Completed</option>
-          <option value="Park">Park</option>
-        </select>
-      </div>
-      <div className="flex flex-col gap-1 mx-4 my-2">
-        <label className="block text-gray-700 text-sm font-bold text-left">
-          Official Identification Number
-        </label>
-        <input
-          type="text"
-          className="shadow rounded-lg text-sm px-3 py-1  "
-          name="uniqueUserId"
-          value={filters.uniqueUserId}
-          onChange={handleFilterChange}
-        />
-      </div>
-      <div className="flex flex-col gap-1 mx-4 my-2">
-        <label className="block text-gray-700 text-sm font-bold text-left">
-          Aadhaar Number
-        </label>
-        <input
-          type="text"
-          className="shadow rounded-lg text-sm px-3 py-1  "
-          name="aadhar"
-          onChange={handleFilterChange}
-        />
+          </select>
+        </div>
+        <div className="  flex flex-col gap-1">
+          <label className="block text-gray-700 text-sm font-bold text-left">
+            Sub-District:
+          </label>
+          <select
+            name="subDistrict"
+            value={filters.subDistrict}
+            onChange={handleFilterChange}
+            className="px-2 py-1 text-sm shadow rounded-lg"
+          >
+            <option value="">Select Sub-District</option>
+            {townTree[filters.district] &&
+              townTree[filters.district].map((subDistrict) => (
+                <option key={subDistrict} value={subDistrict}>
+                  {subDistrict}
+                </option>
+              ))}
+          </select>
+        </div>
+        <div className=" flex flex-col justify-center  gap-1 my-2">
+          <label className="block text-gray-700 text-sm font-bold text-left">
+            Status:
+          </label>
+          <select
+            name="status"
+            value={filters.status}
+            onChange={handleFilterChange}
+            className="px-2 py-1 text-sm shadow rounded-lg"
+          >
+            <option value="">All</option>
+            <option value="Pending">Pending</option>
+            <option value="Completed">Completed</option>
+            <option value="Park">Park</option>
+          </select>
+        </div>
+        <div className="flex flex-col gap-1  my-2">
+          <label className="block text-gray-700 text-sm font-bold text-left">
+            Official Identification Number
+          </label>
+          <input
+            type="text"
+            className="shadow rounded-lg text-sm  py-1  "
+            name="uniqueUserId"
+            value={filters.uniqueUserId}
+            onChange={handleFilterChange}
+          />
+        </div>
+        <div className="flex flex-col gap-1  my-2">
+          <label className="block text-gray-700 text-sm font-bold text-left">
+            Aadhaar Number
+          </label>
+          <input
+            type="text"
+            className="shadow rounded-lg text-sm  py-1  "
+            name="aadhar"
+            onChange={handleFilterChange}
+          />
+        </div>
       </div>
     </div>
   );

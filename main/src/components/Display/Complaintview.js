@@ -11,7 +11,7 @@ const Complaintview = ({ complaintDetails, setComplaintDetails }) => {
 
   return (
     complaintDetails && (
-      <div className="min-w-[275px] relative p-4  w-full flex-grow shadow-2xl rounded-xl">
+      <div className="min-w-[275px] transition-all duration-500 relative p-4  w-full flex-grow shadow-2xl rounded-xl">
         <div
           onClick={() => setComplaintDetails("")}
           className="absolute top-4 left-3 rounded-full bg-green-600 cursor-pointer hover:bg-green-700 transition-all duration-200 text-xl p-1 text-white"

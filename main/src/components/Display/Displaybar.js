@@ -4,14 +4,14 @@ import Complaintview from "./Complaintview";
 function Displaybar({ complaints }) {
   const [currentComplaint, setCurrentComplaint] = useState("");
   useEffect(() => {
-    try{
+    try {
       setCurrentComplaint("");
-    }catch(err){}
-  }, [complaints])
+    } catch (err) {}
+  }, [complaints]);
   return (
-    <div className="w-full">
+    <div className="w-full transition-all duration-500">
       {!currentComplaint && (
-        <div className="h-[90vh] flex-grow my-2 mr-2">
+        <div className="h-[90vh] flex-grow my-2 mr-2 transition-all duration-500">
           <h2 className="text-center text-2xl  mb-2 font-bold">Complaints</h2>
           <div
             className="flex text-center justify-between  font-bold"
@@ -69,7 +69,7 @@ function Displaybar({ complaints }) {
         </div>
       )}
       {}
-      <div className="mx-4 xs:mx-1">
+      <div className="mx-4 xs:mx-1 transition-all duration-500">
         <Complaintview
           complaintDetails={currentComplaint}
           setComplaintDetails={setCurrentComplaint}
