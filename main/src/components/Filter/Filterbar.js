@@ -107,10 +107,10 @@ function Filterbar({
 
   return (
     <div
-      className={`w-fit h-[95vh] sticky xs:absolute xs:w-screen xs:h-screen xs:top-0 xs:left-0  xs:bg-opacity-30 flex xs:items-center transition-all duration-500 justify-left xs:justify-center ${
+      className={`w-fit h-[95vh] sticky xs:absolute xs:w-screen xs:h-screen xs:top-0 xs:left-0  xs:bg-opacity-30 flex items-center transition-all duration-500 justify-left xs:justify-center ${
         isVisible
-          ? "translate-x-[0] xs:translate-y-[0] xs:bg-black"
-          : " -translate-x-[100vw] xs:translate-x-[0] xs:-translate-y-[200vh]  w-0"
+          ? " translate-x-[0] xs:translate-y-[0] xs:bg-black "
+          : " -translate-x-[100vw] xs:translate-x-[0] xs:-translate-y-[200vh] w-[0px]"
       }`}
     >
       <div className="flex-col justify-center gap-3 relative max-w-[280px]  font-poppins w-fit h-fit p-2 items-center bg-rose-100 rounded-r-xl xs:rounded-xl border text-center">

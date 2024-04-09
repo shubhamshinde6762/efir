@@ -92,7 +92,7 @@ function App() {
         <Route
           path="/complaints/dashboard"
           element={
-            <div className="w-[100%] flex ">
+            <div className="w-[100%] flex gap-3 select-none">
               <div
                 onClick={() => setIsVisible((pre) => !pre)}
                 className="absolute top-0 left-0 text-2xl cursor-pointer"
@@ -109,7 +109,7 @@ function App() {
                 setFilters={setFilters}
               />
               <Displaybar
-              setFilters={setFilters}
+                setFilters={setFilters}
                 complaints={complaints}
                 setComplaintList={setComplaintList}
               />

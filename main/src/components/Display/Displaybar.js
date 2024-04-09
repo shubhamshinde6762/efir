@@ -53,7 +53,7 @@ function Displaybar({ complaints, setComplaintList, setFilters }) {
     } catch (err) {}
   }, [complaints]);
   return (
-    <div className="w-full transition-all duration-500">
+    <div className="w-full flex-grow transition-all duration-500">
       {!currentComplaint && (
         <div className="h-[90vh] flex-grow my-2 mr-2 transition-all duration-500">
           <h2 className="text-center text-2xl  mb-2 font-bold">Complaints</h2>
@@ -113,47 +113,68 @@ function Displaybar({ complaints, setComplaintList, setFilters }) {
                 );
               })}
           </div>
-          {!currentComplaint && (
-            <nav className="flex  justify-center my-4">
-              <ul className="flex gap-x-2">
-                {currentPage !== 1 && (
-                  <li className="inline-block list-none">
-                    <a
-                      href="#"
-                      onClick={prevPage}
-                      className="flex justify-center items-center w-10 h-10 leading-10 bg-white text-center text-decoration-none text-gray-700 rounded-l-full rounded-r-none shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out "
+          {!currentComplaint &&
+            complaints.complaints &&
+            complaints.complaints.length > 0 && (
+              <nav className="flex  justify-center my-4">
+                <ul className="flex gap-x-2">
+                  {currentPage !== 1 && (
+                    <li className="inline-block list-none">
+                      <a
+                        href="#"
+                        onClick={prevPage}
+                        className="flex justify-center items-center w-10 h-10 leading-10 bg-white text-center text-decoration-none text-gray-700 rounded-l-full rounded-r-none shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out "
+                      >
+                        <IoMdArrowBack />
+                      </a>
+                    </li>
+                  )}
+                  {numbers.map((n, i) => (
+                    <li key={i} className="inline-block list-none">
+                      <a
+                        href="#"
+                        onClick={() => changeCurrPage(n)}
+                        className={`block w-10 h-10 leading-10 bg-white text-center text-decoration-none text-gray-700 rounded-md  shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out ${
+                          currentPage === n ? "bg-[#AEDEFC] text-white" : ""
+                        }`}
+                      >
+                        {n}
+                      </a>
+                    </li>
+                  ))}
+                  {currentPage !== totalPage && (
+                    <li className="inline-block list-none">
+                      <a
+                        href="#"
+                        onClick={nextPage}
+                        className="flex justify-center items-center w-10 h-10 leading-10 bg-white text-center text-decoration-none text-gray-700 rounded-l-none rounded-r-full shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out "
+                      >
+                        <IoMdArrowForward />
+                      </a>
+                    </li>
+                  )}
+                </ul>
+                {
+                  <div className="text-sm flex justify-center items-center gap-2 mx-2">
+                    <select
+                      className="cursor-pointer ring-indigo-500 ring-2 rounded-xl font-bold"
+                      onChange={(e) =>
+                        setFilters((pre) => ({
+                          ...pre,
+                          limit: e.target.value,
+                        }))
+                      }
                     >
-                      <IoMdArrowBack />
-                    </a>
-                  </li>
-                )}
-                {numbers.map((n, i) => (
-                  <li key={i} className="inline-block list-none">
-                    <a
-                      href="#"
-                      onClick={() => changeCurrPage(n)}
-                      className={`block w-10 h-10 leading-10 bg-white text-center text-decoration-none text-gray-700 rounded-md  shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out ${
-                        currentPage === n ? "bg-[#AEDEFC] text-white" : ""
-                      }`}
-                    >
-                      {n}
-                    </a>
-                  </li>
-                ))}
-                {currentPage !== totalPage && (
-                  <li className="inline-block list-none">
-                    <a
-                      href="#"
-                      onClick={nextPage}
-                      className="flex justify-center items-center w-10 h-10 leading-10 bg-white text-center text-decoration-none text-gray-700 rounded-l-none rounded-r-full shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out "
-                    >
-                      <IoMdArrowForward />
-                    </a>
-                  </li>
-                )}
-              </ul>
-            </nav>
-          )}
+                      <option value={10}>10</option>
+                      <option value={20}>20</option>
+                      <option value={30}>30</option>
+                      <option value={40}>40</option>
+                      <option value={50}>50</option>
+                    </select>
+                  </div>
+                }
+              </nav>
+            )}
         </div>
       )}
       {}
