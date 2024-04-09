@@ -113,6 +113,47 @@ function Displaybar({ complaints, setComplaintList, setFilters }) {
                 );
               })}
           </div>
+          {!currentComplaint && (
+            <nav className="flex  justify-center my-4">
+              <ul className="flex gap-x-2">
+                {currentPage !== 1 && (
+                  <li className="inline-block list-none">
+                    <a
+                      href="#"
+                      onClick={prevPage}
+                      className="flex justify-center items-center w-10 h-10 leading-10 bg-white text-center text-decoration-none text-gray-700 rounded-l-full rounded-r-none shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out "
+                    >
+                      <IoMdArrowBack />
+                    </a>
+                  </li>
+                )}
+                {numbers.map((n, i) => (
+                  <li key={i} className="inline-block list-none">
+                    <a
+                      href="#"
+                      onClick={() => changeCurrPage(n)}
+                      className={`block w-10 h-10 leading-10 bg-white text-center text-decoration-none text-gray-700 rounded-md  shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out ${
+                        currentPage === n ? "bg-[#AEDEFC] text-white" : ""
+                      }`}
+                    >
+                      {n}
+                    </a>
+                  </li>
+                ))}
+                {currentPage !== totalPage && (
+                  <li className="inline-block list-none">
+                    <a
+                      href="#"
+                      onClick={nextPage}
+                      className="flex justify-center items-center w-10 h-10 leading-10 bg-white text-center text-decoration-none text-gray-700 rounded-l-none rounded-r-full shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out "
+                    >
+                      <IoMdArrowForward />
+                    </a>
+                  </li>
+                )}
+              </ul>
+            </nav>
+          )}
         </div>
       )}
       {}
@@ -122,47 +163,6 @@ function Displaybar({ complaints, setComplaintList, setFilters }) {
           setComplaintDetails={setCurrentComplaint}
         />
       </div>
-      {!currentComplaint && (
-        <nav className="flex absolute bottom-0 left-0 right-0 justify-center my-4">
-          <ul className="flex gap-x-2">
-            {currentPage !== 1 && (
-              <li className="inline-block list-none">
-                <a
-                  href="#"
-                  onClick={prevPage}
-                  className="flex justify-center items-center w-10 h-10 leading-10 bg-white text-center text-decoration-none text-gray-700 rounded-l-full rounded-r-none shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out "
-                >
-                  <IoMdArrowBack />
-                </a>
-              </li>
-            )}
-            {numbers.map((n, i) => (
-              <li key={i} className="inline-block list-none">
-                <a
-                  href="#"
-                  onClick={() => changeCurrPage(n)}
-                  className={`block w-10 h-10 leading-10 bg-white text-center text-decoration-none text-gray-700 rounded-md  shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out ${
-                    currentPage === n ? "bg-[#AEDEFC] text-white" : ""
-                  }`}
-                >
-                  {n}
-                </a>
-              </li>
-            ))}
-            {currentPage !== totalPage && (
-              <li className="inline-block list-none">
-                <a
-                  href="#"
-                  onClick={nextPage}
-                  className="flex justify-center items-center w-10 h-10 leading-10 bg-white text-center text-decoration-none text-gray-700 rounded-l-none rounded-r-full shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out "
-                >
-                  <IoMdArrowForward />
-                </a>
-              </li>
-            )}
-          </ul>
-        </nav>
-      )}
     </div>
   );
 }
