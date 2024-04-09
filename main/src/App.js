@@ -114,6 +114,7 @@ function App() {
                 setFilters={setFilters}
                 complaints={complaints}
                 setComplaintList={setComplaintList}
+                currentUser={currentUser}
               />
             </div>
           }

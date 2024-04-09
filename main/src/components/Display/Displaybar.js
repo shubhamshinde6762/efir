@@ -3,7 +3,7 @@ import Complaintview from "./Complaintview";
 import { IoMdArrowBack } from "react-icons/io";
 import { IoMdArrowForward } from "react-icons/io";
 
-function Displaybar({ complaints, setComplaintList, setFilters }) {
+function Displaybar({ complaints, setComplaintList, setFilters, currentUser }) {
   const [currentComplaint, setCurrentComplaint] = useState("");
   const [totalPage, setTotalPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -180,6 +180,7 @@ function Displaybar({ complaints, setComplaintList, setFilters }) {
         <Complaintview
           complaintDetails={currentComplaint}
           setComplaintDetails={setCurrentComplaint}
+          currentUser={currentUser}
         />
       </div>
     </div>

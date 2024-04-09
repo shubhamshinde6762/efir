@@ -4,10 +4,12 @@ const mongoose = require("mongoose");
 
 exports.handler = async (req, res) => {
   try {
-    const userId = mongoose.Types.ObjectId(req.body.userId);
+    const userId = new mongoose.Types.ObjectId(req.body.userId);
     const complaintId = req.body.complaintId;
     const remark = req.body.remark;
     const state = req.query.state;
+
+    console.log(state, remark, complaintId, userId);
 
     if (
       !state ||
@@ -36,18 +38,18 @@ exports.handler = async (req, res) => {
     // }
 
     if (state === "true") {
-      reqComplaint.complainantStatus = {
+      reqComplaint.complaintStatus = {
         date: new Date(),
-        uniqueUserId : userId,
-        user: connectedUser.uniqueUserId,
+        uniqueUserId: connectedUser.uniqueUserId,
+        user: userId,
         status: "Completed",
         remark: remark || "No remark provided",
       };
     } else {
-      reqComplaint.complainantStatus = {
+      reqComplaint.complaintStatus = {
         date: new Date(),
-        uniqueUserId : userId,
-        user: connectedUser.uniqueUserId,
+        uniqueUserId: connectedUser.uniqueUserId,
+        user: userId,
         status: "Park",
         remark: remark || "No remark provided",
       };

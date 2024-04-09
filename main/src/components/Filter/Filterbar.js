@@ -9,10 +9,8 @@ function Filterbar({
   isVisible,
   setIsVisible,
   filters,
-  setFilters
+  setFilters,
 }) {
-  
-
   const [townTree, setTownTree] = useState({});
 
   useEffect(() => {
@@ -116,7 +114,7 @@ function Filterbar({
       <div className="flex-col justify-center gap-3 relative max-w-[400px]  font-poppins w-fit h-fit p-5 items-center bg-rose-100 rounded-r-xl xs:rounded-xl border text-center">
         <IoCloseOutline
           onClick={() => setIsVisible(false)}
-          className="text-2xl text-white p-1 absolute -top-2 xs:block hidden  -right-2 bg-red-400 rounded-full"
+          className="text-3xl text-white p-1 absolute -top-2 xs:block hidden  -right-2 bg-red-400 rounded-full"
         />
         <div className="flex flex-col justify-center items-center gap-2">
           <label className="block text-gray-700 text-sm font-bold text-left ">
@@ -247,6 +245,7 @@ function Filterbar({
             type="text"
             className="shadow rounded-lg text-sm  py-1  "
             name="aadhar"
+            value={filters.aadhar}
             onChange={handleFilterChange}
           />
         </div>

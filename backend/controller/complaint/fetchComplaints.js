@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 
 exports.fetchComplaint = async (req, res) => {
   try {
+    console.log(123);
     const firId = req.param.firId;
 
     if (firId) {
