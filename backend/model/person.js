@@ -23,7 +23,7 @@ const PersonSchema = mongoose.Schema({
   },
 
   aadhar: {
-    type: Number,
+    type: String,
   },
 });
 

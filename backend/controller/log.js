@@ -1,39 +1,60 @@
 const user = require("../model/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const otpGenerator = require('otp-generator')
+const otpGenerator = require("otp-generator");
+
+const generateUniqueUserId = async () => {
+  const capitals = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const digits = "0123456789";
+
+  const randomCapital = capitals.charAt(
+    Math.floor(Math.random() * capitals.length)
+  );
+  let randomDigits = "";
+  for (let i = 0; i < 4; i++) {
+    randomDigits += digits.charAt(Math.floor(Math.random() * digits.length));
+  }
+
+  const newUniqueUserId = randomCapital + randomDigits;
+
+  const existingUser = await user.findOne({ uniqueUserId: newUniqueUserId });
+  if (existingUser) {
+    return generateUniqueUserId();
+  }
+
+  return newUniqueUserId;
+};
 
 exports.signIn = async (req, res) => {
   try {
     const { name, email, mobile, password, District, SubDistrict } = req.body;
 
-    
     if (!name || !password || !mobile || !District || !SubDistrict || !email) {
       res.status(400).json({
         error: "Fill All Details ",
       });
       return;
     }
-    
+
     let existingUser = await user.findOne({ mobile });
-    
+
     if (existingUser) {
       res.status(400).json({
         message: "400-MOBILE",
       });
       return;
     }
-    
+
     existingUser = await user.findOne({ email });
     // console.log(email);
-    
+
     if (existingUser) {
       res.status(400).json({
         message: "400-EMAIL",
-      }); 
+      });
       return;
     }
-    
+
     let hashpw;
     try {
       hashpw = await bcrypt.hash(password, 10);
@@ -43,12 +64,14 @@ exports.signIn = async (req, res) => {
       });
     }
     //console.log(name,email, password, hashpw);
+    const uniqueUserId = generateUniqueUserId();
 
     const data = await user.create({
       name,
       email,
       password: hashpw,
       mobile,
+      uniqueUserId,
       District,
       SubDistrict,
     });
@@ -81,17 +104,15 @@ exports.signIn = async (req, res) => {
 exports.logIn = async (req, res) => {
   try {
     let { mobile, password, email } = req.body;
-    
-    if ((!mobile && !email) || !password)
-    {
+
+    if ((!mobile && !email) || !password) {
       email = res.user.email;
       password = res.user.password;
-      mobile = res.user.mobile
+      mobile = res.user.mobile;
     }
     console.log(123);
     // console.log(email, res.user, mobile)
 
-    
     //console.log(identity, password)
     if (!mobile || !password) {
       res.status(400).json({
@@ -103,8 +124,7 @@ exports.logIn = async (req, res) => {
     let response = {};
     if (email) response = await user.findOne({ email });
     else response = await user.findOne({ mobile });
-    console.log(email, response)
-
+    console.log(email, response);
 
     if (!response) {
       res.status(401).json({
@@ -116,10 +136,13 @@ exports.logIn = async (req, res) => {
     const payload = {
       mobile: response.mobile,
       email: response.email,
+      uniqueUserId: response.uniqueUserId,
     };
 
-
-    if (await bcrypt.compare(password, response.password) || (res.user && res.user.password === response.password)) {
+    if (
+      (await bcrypt.compare(password, response.password)) ||
+      (res.user && res.user.password === response.password)
+    ) {
       let token = jwt.sign(payload, "shubham", { expiresIn: "2h" });
       response.token = token;
       response.password = undefined;
@@ -150,7 +173,7 @@ exports.logIn = async (req, res) => {
 
 exports.logInWithOtp = async (req, res) => {
   try {
-    const {email } = req.body;
+    const { email } = req.body;
 
     //console.log(identity, password)
     if (!email) {
@@ -171,9 +194,10 @@ exports.logInWithOtp = async (req, res) => {
       return;
     }
 
-    otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
-
-    
+    otpGenerator.generate(6, {
+      upperCaseAlphabets: false,
+      specialChars: false,
+    });
   } catch (err) {
     res.status(400).json({
       message: "Unknown Error",

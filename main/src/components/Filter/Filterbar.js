@@ -9,7 +9,8 @@ function Filterbar({ currentUser, complaints, setComplaintList }) {
     toDateLastEdited: "",
     district: "",
     subDistrict: "",
-    aadhar: "",
+    uniqueUserId: "",
+    status: "",
     page: 1,
     limit: 10,
   });
@@ -35,6 +36,7 @@ function Filterbar({ currentUser, complaints, setComplaintList }) {
     const { name, value } = e.target;
     setFilters((prevFilters) => ({
       ...prevFilters,
+      ["page"]: 1,
       [name]: value,
     }));
   };
@@ -88,6 +90,14 @@ function Filterbar({ currentUser, complaints, setComplaintList }) {
       url.searchParams.set("subDistrict", filters.subDistrict);
     }
 
+    if (filters.status) {
+      url.searchParams.set("status", filters.status);
+    }
+
+    if (filters.uniqueUserId) {
+      url.searchParams.set("uniqueUserId", filters.uniqueUserId);
+    }
+
     if (filters.aadhar) {
       url.searchParams.set("aadhar", filters.aadhar);
     }
@@ -96,70 +106,68 @@ function Filterbar({ currentUser, complaints, setComplaintList }) {
   };
 
   return (
-    <div className="flex-col justify-center font-poppins w-fit items-center bg-white rounded-md shadow-sm  m-2 md:shadow-md border border-gray-300 p-2 text-center">
+    <div className="flex-col justify-center gap-3  font-poppins w-fit items-center bg-white rounded-md shadow-sm  m-2 md:shadow-md border border-gray-300 text-center">
       <h3 className="text-gray-900 text-xl xs:text-lg font-bold text-center">
         Filter
       </h3>
       <hr />
-      <label className="block text-gray-700 text-sm font-bold m-3 text-left">
-        Expected date of Incident:
-      </label>
-      <div className="flex gap-3 items-center m-4">
-        <label
-          className="  block text-gray-700 text-sm"
-          htmlFor="fromDateIncident"
-        >
-          From
+      <div className="flex flex-col justify-center items-center gap-2 my-2">
+        <label className="block text-gray-700 text-sm font-bold text-center">
+          Expected date of Incident:
         </label>
-        <input
-          type="date"
-          name="fromDateIncident"
-          value={filters.fromDateIncident}
-          onChange={handleFilterChange}
-          className="shadow rounded-lg px-3 py-1 w-[10rem]"
-        />
-      </div>
-      <div className="flex gap-7 items-center m-4">
-        <label className="block text-gray-700 text-sm ">
-          To
-        </label>
-        <input
-          type="date"
-          name="toDateIncident"
-          value={filters.toDateIncident}
-          onChange={handleFilterChange}
-          className="shadow rounded-lg px-3 py-1 w-[10rem]"
-        />
+        <div className="flex gap-1 items-center">
+          <label
+            className="  block text-gray-700 text-sm"
+            htmlFor="fromDateIncident"
+          >
+            From
+          </label>
+          <input
+            type="date"
+            name="fromDateIncident"
+            value={filters.fromDateIncident}
+            onChange={handleFilterChange}
+            className="shadow rounded-lg text-sm px-3 py-1 w-[9rem]"
+          />
+        </div>
+        <div className="flex gap-5 items-center ">
+          <label className="block text-gray-700 text-sm ">To</label>
+          <input
+            type="date"
+            name="toDateIncident"
+            value={filters.toDateIncident}
+            onChange={handleFilterChange}
+            className="shadow rounded-lg text-sm px-3 py-1 w-[9rem]"
+          />
+        </div>
       </div>
 
-      <label className="block text-gray-700 text-sm font-bold m-3 text-left">
-        Expected date of filing complaint:
-      </label>
-      <div className="flex gap-3 items-center m-4">
-        <label className="  block text-gray-700 text-sm">
-          From
+      <div className="flex flex-col justify-center items-center gap-2 my-2">
+        <label className="block text-gray-700 text-sm font-bold  text-cebter">
+          Expected date of filing complaint:
         </label>
-        <input
-          type="date"
-          name="fromDateLastEdited"
-          value={filters.fromDateLastEdited}
-          onChange={handleFilterChange}
-          className="shadow rounded-lg px-3 py-1 w-[10rem]"
-        />
+        <div className="flex gap-1 items-center">
+          <label className="  block text-gray-700 text-sm">From</label>
+          <input
+            type="date"
+            name="fromDateLastEdited"
+            value={filters.fromDateLastEdited}
+            onChange={handleFilterChange}
+            className="shadow rounded-lg text-sm px-3 py-1 w-[9rem]"
+          />
+        </div>
+        <div className="flex gap-5 items-center">
+          <label className="block text-gray-700  text-sm ">To:</label>
+          <input
+            type="date"
+            name="toDateLastEdited"
+            value={filters.toDateLastEdited}
+            onChange={handleFilterChange}
+            className="shadow rounded-lg px-3 text-sm py-1 w-[9rem]"
+          />
+        </div>
       </div>
-      <div className="flex gap-7 items-center m-4">
-        <label className="block text-gray-700 text-sm ">
-          To:
-        </label>
-        <input
-          type="date"
-          name="toDateLastEdited"
-          value={filters.toDateLastEdited}
-          onChange={handleFilterChange}
-          className="shadow rounded-lg px-3 py-1 w-[10rem]"
-        />
-      </div>
-      <div className="mt-4 m-4 flex flex-col gap-1">
+      <div className=" flex flex-col justify-center mx-4 gap-1 mb-2">
         <label className="block text-gray-700 text-sm font-bold text-left">
           District:
         </label>
@@ -167,7 +175,7 @@ function Filterbar({ currentUser, complaints, setComplaintList }) {
           name="district"
           value={filters.district}
           onChange={handleFilterChange}
-          className="px-2 py-1 shadow rounded-lg"
+          className="px-2 py-1 text-sm shadow rounded-lg"
         >
           <option value="">Select District</option>
           {Object.keys(townTree).map((district) => (
@@ -177,7 +185,7 @@ function Filterbar({ currentUser, complaints, setComplaintList }) {
           ))}
         </select>
       </div>
-      <div className="mt-4 m-4 flex flex-col gap-1">
+      <div className=" mx-4 flex flex-col gap-1">
         <label className="block text-gray-700 text-sm font-bold text-left">
           Sub-District:
         </label>
@@ -185,7 +193,7 @@ function Filterbar({ currentUser, complaints, setComplaintList }) {
           name="subDistrict"
           value={filters.subDistrict}
           onChange={handleFilterChange}
-          className="px-2 py-1 shadow rounded-lg"
+          className="px-2 py-1 text-sm shadow rounded-lg"
         >
           <option value="">Select Sub-District</option>
           {townTree[filters.district] &&
@@ -196,13 +204,41 @@ function Filterbar({ currentUser, complaints, setComplaintList }) {
             ))}
         </select>
       </div>
-      <div>
-        <label className="block text-gray-700 text-sm font-bold m-3 text-left">
+      <div className=" flex flex-col justify-center mx-4 gap-1 my-2">
+        <label className="block text-gray-700 text-sm font-bold text-left">
+          Status:
+        </label>
+        <select
+          name="status"
+          value={filters.status}
+          onChange={handleFilterChange}
+          className="px-2 py-1 text-sm shadow rounded-lg"
+        >
+          <option value="">All</option>
+          <option value="Pending">Pending</option>
+          <option value="Completed">Completed</option>
+          <option value="Park">Park</option>
+        </select>
+      </div>
+      <div className="flex flex-col gap-1 mx-4 my-2">
+        <label className="block text-gray-700 text-sm font-bold text-left">
+          Official Identification Number
+        </label>
+        <input
+          type="text"
+          className="shadow rounded-lg text-sm px-3 py-1  "
+          name="uniqueUserId"
+          value={filters.uniqueUserId}
+          onChange={handleFilterChange}
+        />
+      </div>
+      <div className="flex flex-col gap-1 mx-4 my-2">
+        <label className="block text-gray-700 text-sm font-bold text-left">
           Aadhaar Number
         </label>
         <input
           type="text"
-          className="shadow rounded-lg px-3 py-1  "
+          className="shadow rounded-lg text-sm px-3 py-1  "
           name="aadhar"
           onChange={handleFilterChange}
         />

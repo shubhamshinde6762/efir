@@ -6,8 +6,13 @@ const schema = new mongoose.Schema({
     required: true,
   },
 
+  uniqueUserId: {
+    type: "String",
+    default: "12345",
+  }, 
+
   mobile: {
-    type: String, 
+    type: String,
     required: true,
   },
 

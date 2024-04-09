@@ -1,5 +1,6 @@
 const User = require("../../model/user");
 const Complaint = require("../../model/complainant");
+const personSchema = require("../../model/person");
 const mongoose = require("mongoose");
 
 exports.fetchComplaint = async (req, res) => {
@@ -29,7 +30,7 @@ exports.fetchComplaint = async (req, res) => {
       populate: {
         path: "VictimIds AccusedIds WitnessIds filedBy",
       },
-    }); 
+    });
 
     if (!userReq) {
       return res.status(404).json({ message: "User not found" });
@@ -44,7 +45,6 @@ exports.fetchComplaint = async (req, res) => {
 
 exports.fetchComplaintSuper = async (req, res) => {
   try {
-    console.log(123);
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
@@ -84,27 +84,44 @@ exports.fetchComplaintSuper = async (req, res) => {
       filter["IncidentDetail.District"] = req.query.district;
     }
 
-    // console.log(req.query.subDistrict);
-
     if (req.query.subDistrict) {
       filter["IncidentDetail.SubDistrict"] = req.query.subDistrict;
     }
 
     if (req.query.aadhar) {
-      filter["$or"] = [
-        { "VictimIds.aadhar": req.query.aadhar },
-        { "AccusedIds.aadhar": req.query.aadhar },
-        { "WitnessIds.aadhar": req.query.aadhar },
-      ];
+      console.log(req.query.aadhar);
+      const person = await personSchema.findOne({ aadhar: req.query.aadhar });
+      console.log(person);
+
+      if (person) {
+        filter["$or"] = [
+          { VictimIds: { $elemMatch: { $eq: person._id } } },
+          { AccusedIds: { $elemMatch: { $eq: person._id } } },
+          { WitnessIds: { $elemMatch: { $eq: person._id } } },
+        ];
+      }
+    }
+
+    if (req.query.status) {
+      filter["complaintStatus.status"] = req.query.status;
+    }
+
+    if (req.query.uniqueUserId) {
+      filter["complaintStatus.uniqueUserId"] = {
+        $regex: `^${req.query.uniqueUserId}`,
+        $options: "i",
+      };
     }
 
     console.log(filter);
 
     const complaints = await Complaint.find(filter)
+      .sort({ LastEdited: -1 })
       .skip(skip)
       .limit(limit)
-      .populate("VictimIds AccusedIds WitnessIds filedBy")
-      .sort({ LastEdited: -1 });
+      .populate({
+        path: "VictimIds AccusedIds WitnessIds filedBy complaintStatus.user",
+      });
 
     const totalComplaints = await Complaint.countDocuments(filter);
 

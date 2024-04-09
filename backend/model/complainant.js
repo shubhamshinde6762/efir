@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const user = require("./user");
 
 const complainantInfo = mongoose.Schema({
   VictimIds: {
@@ -24,6 +25,38 @@ const complainantInfo = mongoose.Schema({
   filedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Users",
+  },
+
+  complaintStatus: {
+    type: {
+      date: {
+        type: Date,
+      },
+
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
+      },
+
+      uniqueUserId: {
+        type: "String",
+        // default: "12345",
+      },
+
+      status: {
+        type: String,
+        default: "Pending",
+      },
+
+      remark: {
+        type: String,
+      },
+    },
+
+    default: {
+      // uniqueUserId: "12345",
+      status: "Pending",
+    },
   },
 
   IncidentDetail: {

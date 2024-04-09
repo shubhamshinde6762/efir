@@ -90,7 +90,7 @@ const AddPeople = ({
       age: personDetails.age !== "" ? parseInt(personDetails.age) : "",
       contact:
         personDetails.contact !== "" ? parseInt(personDetails.contact) : "",
-      aadhar: aadharNumber !== "" ? parseInt(aadharNumber) : "",
+      aadhar: aadharNumber !== "" ? (aadharNumber) : "",
     };
 
     setComplaintDetails((prevDetails) => {
