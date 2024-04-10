@@ -114,6 +114,8 @@ function App() {
                 setFilters={setFilters}
                 complaints={complaints}
                 setComplaintList={setComplaintList}
+                myComplaints={false}
+                heading={"Complaints"}
               />
             </div>
           }
@@ -130,7 +132,7 @@ function App() {
           path="/mycomplaints"
           element={
             <div className="w-full flex justify-center items-center">
-              <UserDashboard currentUser={currentUser} />
+              <UserDashboard currentUser={currentUser} myComplaints={true} setFilters={setFilters} heading={"My Complaints"} />
             </div>
           }
         />

@@ -19,16 +19,15 @@ const Complaintview = ({ complaintDetails, setComplaintDetails }) => {
   const remarkHandler = (e) => {
     setRemark(e.target.value);
   };
-
+  useEffect(() => {
+    console.log(status);
+  }, [status]);
   const statusHandler = (e) => {
-    
     const statusValue = e.target.name;
-    if(statusValue != true && statusValue != false ){
-      console.log("Error")
-    }
-    else{
+    if (statusValue !== "true" && statusValue !== "false") {
+      console.log("Error");
+    } else {
       setStatus(statusValue);
-      console.log(status);
     }
   };
   return (
@@ -419,7 +418,8 @@ const Complaintview = ({ complaintDetails, setComplaintDetails }) => {
               </button>
               {remark && (
                 <button
-                  class="inline-block min-w-max bg-gradient-to-br from-red-400 to-red-500 hover:from-red-500 hover:to-red-600 border-0 rounded-md shadow-md text-white font-medium text-sm py-2 px-4 focus:outline-none transition duration-300 ease-in-out mx-1" name="false"
+                  class="inline-block min-w-max bg-gradient-to-br from-red-400 to-red-500 hover:from-red-500 hover:to-red-600 border-0 rounded-md shadow-md text-white font-medium text-sm py-2 px-4 focus:outline-none transition duration-300 ease-in-out mx-1"
+                  name="false"
                   onClick={statusHandler}
                 >
                   REJECT
@@ -427,7 +427,11 @@ const Complaintview = ({ complaintDetails, setComplaintDetails }) => {
               )}
             </div>
           </div>
-            {!remark && <label className=" font-semibold  text-red-600 md:text-base text-sm">*Enter remark to reject complaint</label>}
+          {!remark && (
+            <label className=" font-semibold  text-red-600 md:text-base text-sm">
+              *Enter remark to reject complaint
+            </label>
+          )}
         </div>
 
         {personDetails && (
