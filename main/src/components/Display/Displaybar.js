@@ -9,6 +9,7 @@ function Displaybar({
   myComplaints,
   setFilters,
   currentUser,
+  filters,
 }) {
   const [currentComplaint, setCurrentComplaint] = useState("");
   const [totalPage, setTotalPage] = useState(1);
@@ -191,6 +192,7 @@ function Displaybar({
                         limit: e.target.value,
                       }))
                     }
+                    value={filters.limit}
                   >
                     <option value={10}>10</option>
                     <option value={20}>20</option>

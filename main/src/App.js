@@ -165,6 +165,7 @@ function App() {
                     className="w-full"
                   >
                     <Displaybar
+                    filters={filters}
                       setFilters={setFilters}
                       complaints={complaints}
                       setComplaintList={setComplaintList}
