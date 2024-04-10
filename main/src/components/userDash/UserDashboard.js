@@ -1,16 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import Displaybar from "../Display/Displaybar";
 
-const UserDashboard = ({ currentUser }) => {
+const UserDashboard = ({ currentUser, setFilters }) => {
   const [complaintList, setComplaintList] = useState([]);
-  const navidateIo = useNavigate();
-
-  useEffect(() => {
-    try {
-      if (!currentUser) navidateIo("/");
-    } catch (error) {}
-  }, [currentUser]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -24,14 +17,29 @@ const UserDashboard = ({ currentUser }) => {
         console.log(result);
 
         if (result) {
-          setComplaintList(result.fir);
+          setComplaintList({
+            complaints: result.data.fir,
+          });
         }
       } catch (err) {}
     };
     fetch();
   }, [currentUser]);
+  useEffect(() => {
+    console.log("Complaint list", complaintList);
+  }, [complaintList]);
 
-  return <div>My Complaints</div>;
+  return (
+    <div className="w-[99%]">
+      <Displaybar
+        complaints={complaintList}
+        setComplaintList={setComplaintList}
+        setFilters={setFilters}
+        heading={"My Complaints"}
+        myComplaints={true}
+      />
+    </div>
+  );
 };
 
 export default UserDashboard;

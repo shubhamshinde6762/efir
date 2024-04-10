@@ -3,12 +3,23 @@ import { motion } from "framer-motion";
 import Complaintview from "./Complaintview";
 import { IoMdArrowBack, IoMdArrowForward } from "react-icons/io";
 
-function Displaybar({ complaints, setComplaintList, setFilters, currentUser }) {
+function Displaybar({
+  complaints,
+  setComplaintList,
+  myComplaints,
+  setFilters,
+  currentUser,
+}) {
   const [currentComplaint, setCurrentComplaint] = useState("");
   const [totalPage, setTotalPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [numbers, setNumbers] = useState([0]);
   const [key, setKey] = useState(0);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+
+  // if (myComplaints === true) {
+  //   complaints = { complaints: complaints };
+  // }
 
   useEffect(() => {
     try {
@@ -85,38 +96,52 @@ function Displaybar({ complaints, setComplaintList, setFilters, currentUser }) {
                 let color = "";
                 if (index % 2) color = "#F5F5F5";
                 return (
-                  <motion.div
-                    key={index} // Ensure each row has a unique key
-                    className="flex text-center"
-                    style={{ backgroundColor: color }}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                  >
-                    <div className="w-[33%] md:w-[25%] p-2">
-                      {complaint.firId}
-                    </div>
-                    <div className="w-[33%] md:w-[25%] p-2">
-                      {complaint.LastEdited.slice(0, 10)}
-                    </div>
-                    <div className="hidden md:block w-[25%] p-2">
-                      {complaint &&
-                        complaint.IncidentDetail &&
-                        complaint.IncidentDetail.District}
-                    </div>
-                    <div className="w-[33%] md:w-[25%] p-2">
-                      <button
-                        onClick={() => setCurrentComplaint(complaint)}
-                        className="bg-gradient-to-br from-blue-400 to-blue-500 hover:bg-gradient-to-tl text-white font-medium text-sm py-1 px-4 rounded-full focus:outline-none transition duration-200 ease-in-out"
-                      >
-                        View
-                      </button>
-                    </div>
-                  </motion.div>
+                  <div className="flex-col">
+                    <motion.div
+                      key={index} // Ensure each row has a unique key
+                      className="flex relative cursor-pointer text-center"
+                      style={{ backgroundColor: color }}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      onMouseEnter={() => setHoveredIndex(index)}
+                      onMouseLeave={() => setHoveredIndex(null)}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                    >
+                      <div className="w-[33%] md:w-[25%] p-2">
+                        {complaint.firId}
+                      </div>
+                      <div className="w-[33%] md:w-[25%] p-2">
+                        {complaint.LastEdited.slice(0, 10)}
+                      </div>
+                      <div className="hidden md:block w-[25%] p-2">
+                        {complaint &&
+                          complaint.IncidentDetail &&
+                          complaint.IncidentDetail.District}
+                      </div>
+                      <div className="w-[33%] md:w-[25%] p-2">
+                        <button
+                          onClick={() => setCurrentComplaint(complaint)}
+                          className="bg-gradient-to-br from-blue-400 to-blue-500 hover:bg-gradient-to-tl text-white font-medium text-sm py-1 px-4 rounded-full focus:outline-none transition duration-200 ease-in-out"
+                        >
+                          View
+                        </button>
+                      </div>
+                      {myComplaints && hoveredIndex === index && (
+                        <div>
+                          <div className="absolute w-full top-10 left-0 flex justify-center min-h-8    ">
+                            <div className="font-semibold bg-green-200 font-poppins rounded-full  z-20 py-1 px-2 text-center">
+                              Status: {complaint.complaintStatus.status}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </motion.div>
+                  </div>
                 );
               })}
           </div>
           {!currentComplaint &&
+            !myComplaints &&
             complaints.complaints &&
             complaints.complaints.length > 0 && (
               <nav className="flex justify-center my-4">
@@ -182,6 +207,7 @@ function Displaybar({ complaints, setComplaintList, setFilters, currentUser }) {
         <Complaintview
           complaintDetails={currentComplaint}
           setComplaintDetails={setCurrentComplaint}
+          myComplaints={true}
           currentUser={currentUser}
           setFilters={setFilters}
         />

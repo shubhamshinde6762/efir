@@ -8,6 +8,7 @@ const Complaintview = ({
   setComplaintDetails,
   currentUser,
   setFilters,
+  myComplaints,
 }) => {
   const [addPersonFlag, setAddPersonFlag] = useState("");
   const [personDetails, setPersonDetails] = useState("");
@@ -16,7 +17,7 @@ const Complaintview = ({
 
   useEffect(() => {
     console.log(complaintDetails);
-    setRemark("")
+    setRemark("");
   }, [complaintDetails]);
 
   // useEffect(() => {
@@ -479,7 +480,8 @@ const Complaintview = ({
           <div className="flex items-center space-x-4">
             {" "}
             {/* Flex container for buttons */}
-            {complaintDetails.complaintStatus &&
+            {!myComplaints &&
+              complaintDetails.complaintStatus &&
               complaintDetails.complaintStatus.status &&
               complaintDetails.complaintStatus.status === "Pending" && (
                 <textarea
@@ -490,68 +492,69 @@ const Complaintview = ({
                   onChange={remarkHandler}
                 ></textarea>
               )}
-            {complaintDetails.complaintStatus &&
-              complaintDetails.complaintStatus.status &&
-              complaintDetails.complaintStatus.status !== "Pending" && (
-                <div className="overflow-x-auto">
-                  <table className="min-w-full table-auto border-collapse border border-gray-200">
-                    <thead className="bg-gray-100">
-                      <tr>
-                        <th className="px-4 py-2">Date</th>
-                        <th className="px-4 py-2">Remark</th>
-                        <th className="px-4 py-2">Status</th>
-                        <th className="px-4 py-2">User ID</th>
-                        <th className="px-4 py-2">Taken By</th>
-                        <th className="px-4 py-2">Mobile</th>
-                        <th className="px-4 py-2">Email</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td className="px-4 py-2 text-center">
-                          {complaintDetails.complaintStatus.date
-                            ? new Date(
-                                complaintDetails.complaintStatus.date
-                              ).toLocaleDateString()
-                            : "N/A"}
-                        </td>
-                        <td className="px-4 py-2 text-center">
-                          {complaintDetails.complaintStatus.remark || "N/A"}
-                        </td>
-                        <td className="px-4 py-2 text-center">
-                          {complaintDetails.complaintStatus.status || "N/A"}
-                        </td>
-                        <td className="px-4 py-2 text-center">
-                          {complaintDetails.complaintStatus.uniqueUserId ||
-                            "N/A"}
-                        </td>
-                        <td className="px-4 py-2 text-center">
-                          {complaintDetails.complaintStatus.user &&
-                          complaintDetails.complaintStatus.user.name
-                            ? complaintDetails.complaintStatus.user.name
-                            : "N/A"}
-                        </td>
-                        <td className="px-4 py-2 text-center">
-                          {complaintDetails.complaintStatus.user &&
-                          complaintDetails.complaintStatus.user.mobile
-                            ? complaintDetails.complaintStatus.user.mobile
-                            : "N/A"}
-                        </td>
-                        <td className="px-4 py-2 text-center">
-                          {complaintDetails.complaintStatus.user &&
-                          complaintDetails.complaintStatus.user.email
-                            ? complaintDetails.complaintStatus.user.email
-                            : "N/A"}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              )}
+            {(myComplaints ||
+              (complaintDetails.complaintStatus &&
+                complaintDetails.complaintStatus.status &&
+                complaintDetails.complaintStatus.status !== "Pending")) && (
+              <div className="overflow-x-auto">
+                <table className="min-w-full table-auto border-collapse border border-gray-200">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="px-4 py-2">Date</th>
+                      <th className="px-4 py-2">Remark</th>
+                      <th className="px-4 py-2">Status</th>
+                      <th className="px-4 py-2">User ID</th>
+                      <th className="px-4 py-2">Taken By</th>
+                      <th className="px-4 py-2">Mobile</th>
+                      <th className="px-4 py-2">Email</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="px-4 py-2 text-center">
+                        {complaintDetails.complaintStatus.date
+                          ? new Date(
+                              complaintDetails.complaintStatus.date
+                            ).toLocaleDateString()
+                          : "N/A"}
+                      </td>
+                      <td className="px-4 py-2 text-center">
+                        {complaintDetails.complaintStatus.remark || "N/A"}
+                      </td>
+                      <td className="px-4 py-2 text-center">
+                        {complaintDetails.complaintStatus.status || "N/A"}
+                      </td>
+                      <td className="px-4 py-2 text-center">
+                        {complaintDetails.complaintStatus.uniqueUserId || "N/A"}
+                      </td>
+                      <td className="px-4 py-2 text-center">
+                        {complaintDetails.complaintStatus.user &&
+                        complaintDetails.complaintStatus.user.name
+                          ? complaintDetails.complaintStatus.user.name
+                          : "N/A"}
+                      </td>
+                      <td className="px-4 py-2 text-center">
+                        {complaintDetails.complaintStatus.user &&
+                        complaintDetails.complaintStatus.user.mobile
+                          ? complaintDetails.complaintStatus.user.mobile
+                          : "N/A"}
+                      </td>
+                      <td className="px-4 py-2 text-center">
+                        {complaintDetails.complaintStatus.user &&
+                        complaintDetails.complaintStatus.user.email
+                          ? complaintDetails.complaintStatus.user.email
+                          : "N/A"}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            )}
             <div className=" flex-col sm:flex-row flex-grow space-y-2 items-end sm:justify-center  sm:space-x-0 ">
               {" "}
               {/* Flex container for buttons */}
-              {complaintDetails.complaintStatus &&
+              {!myComplaints &&
+                complaintDetails.complaintStatus &&
                 complaintDetails.complaintStatus.status &&
                 complaintDetails.complaintStatus.status === "Pending" && (
                   <div>
@@ -574,7 +577,8 @@ const Complaintview = ({
                 )}
             </div>
           </div>
-          {complaintDetails.complaintStatus &&
+          {!myComplaints &&
+            complaintDetails.complaintStatus &&
             complaintDetails.complaintStatus.status &&
             complaintDetails.complaintStatus.status === "Pending" &&
             !remark && (

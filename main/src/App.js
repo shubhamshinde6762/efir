@@ -198,7 +198,12 @@ function App() {
                   transition={{ duration: 0.5 }}
                   className="w-full flex justify-center items-center"
                 >
-                  <UserDashboard currentUser={currentUser} />
+                  <UserDashboard
+                    currentUser={currentUser}
+                    myComplaints={true}
+                    setFilters={setFilters}
+                    heading={"My Complaints"}
+                  />{" "}
                 </motion.div>
               }
             />
