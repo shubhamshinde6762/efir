@@ -11,6 +11,11 @@ const schema = new mongoose.Schema({
     default: "12345",
   }, 
 
+  role : {
+    type : String
+  
+  },
+
   mobile: {
     type: String,
     required: true,

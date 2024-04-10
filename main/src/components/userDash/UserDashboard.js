@@ -1,9 +1,16 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const UserDashboard = ({ currentUser }) => {
   const [complaintList, setComplaintList] = useState([]);
-  
+  const navidateIo = useNavigate();
+
+  useEffect(() => {
+    try {
+      if (!currentUser) navidateIo("/");
+    } catch (error) {}
+  }, [currentUser]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -14,11 +21,10 @@ const UserDashboard = ({ currentUser }) => {
             userId: currentUser._id,
           }
         );
-        console.log(result)
+        console.log(result);
 
         if (result) {
           setComplaintList(result.fir);
-
         }
       } catch (err) {}
     };

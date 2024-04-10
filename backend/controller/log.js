@@ -63,8 +63,10 @@ exports.signIn = async (req, res) => {
         error: "error in Hashing",
       });
     }
-    //console.log(name,email, password, hashpw);
-    const uniqueUserId = generateUniqueUserId();
+    console.log(name, email, password, hashpw);
+    const uniqueUserId = await generateUniqueUserId();
+
+    console.log(uniqueUserId);
 
     const data = await user.create({
       name,
@@ -110,7 +112,7 @@ exports.logIn = async (req, res) => {
       password = res.user.password;
       mobile = res.user.mobile;
     }
-    console.log(123);
+    console.log(mobile, email, password);
     // console.log(email, res.user, mobile)
 
     //console.log(identity, password)
@@ -121,9 +123,8 @@ exports.logIn = async (req, res) => {
       return;
     }
 
-    let response = {};
-    if (email) response = await user.findOne({ email });
-    else response = await user.findOne({ mobile });
+    let response = await user.findOne({ email: mobile });
+    if (!response) response = await user.findOne({ mobile });
     console.log(email, response);
 
     if (!response) {

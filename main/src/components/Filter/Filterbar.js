@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { IoCloseOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 function Filterbar({
   currentUser,
@@ -12,6 +13,14 @@ function Filterbar({
   setFilters,
 }) {
   const [townTree, setTownTree] = useState({});
+  const navidateIo = useNavigate();
+
+  useEffect(() => {
+    try {
+      if (!currentUser || (currentUser.role && currentUser.role !== "super"))
+        navidateIo("/");
+    } catch (error) {}
+  }, [currentUser]);
 
   useEffect(() => {
     const fetchTownTree = async () => {

@@ -7,4 +7,4 @@ router.post("/sendOtp", sentOtp);
 router.post("/verifyOtp", verifyOtp, logIn);
 
  
-module.exports = router; 
+module.exports = router;  

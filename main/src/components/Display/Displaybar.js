@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import Complaintview from "./Complaintview";
-import { IoMdArrowBack } from "react-icons/io";
-import { IoMdArrowForward } from "react-icons/io";
+import { IoMdArrowBack, IoMdArrowForward } from "react-icons/io";
 
 function Displaybar({ complaints, setComplaintList, setFilters, currentUser }) {
   const [currentComplaint, setCurrentComplaint] = useState("");
   const [totalPage, setTotalPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [numbers, setNumbers] = useState([0]);
+  const [key, setKey] = useState(0);
 
   useEffect(() => {
     try {
@@ -19,7 +20,6 @@ function Displaybar({ complaints, setComplaintList, setFilters, currentUser }) {
   useEffect(() => {
     try {
       setNumbers([...Array(totalPage + 1).keys()].slice(1));
-      console.log(totalPage);
     } catch (error) {}
   }, [totalPage]);
 
@@ -39,7 +39,6 @@ function Displaybar({ complaints, setComplaintList, setFilters, currentUser }) {
   };
 
   const nextPage = () => {
-    console.log(totalPage, currentPage);
     if (currentPage !== totalPage)
       setFilters((pre) => ({
         ...pre,
@@ -52,21 +51,30 @@ function Displaybar({ complaints, setComplaintList, setFilters, currentUser }) {
       setCurrentComplaint("");
     } catch (err) {}
   }, [complaints]);
+
+  // Update key whenever content changes
+  useEffect(() => {
+    setKey((prevKey) => prevKey + 1);
+  }, [complaints]);
+
   return (
     <div className="w-full flex-grow transition-all duration-500">
       {!currentComplaint && (
-        <div className="h-[90vh] flex-grow my-2 mr-2 transition-all duration-500">
+        <div
+          key={key}
+          className="h-[90vh] flex-grow my-2 mr-2 transition-all duration-500"
+        >
           <h2 className="text-center text-2xl  mb-2 font-bold">Complaints</h2>
           <div
             className="flex text-center justify-between  font-bold"
             style={{ backgroundColor: "#AEDEFC" }}
           >
-            <div className=" w-[33%] md:w-[25%] p-2">Complaint Id's</div>
-            <div className=" w-[33%] md:w-[25%] p-2">Date of Filing</div>
-            <div className=" w-[33%] md:w-[25%] p-2 hidden md:block">
+            <div className="w-[33%] md:w-[25%] p-2">Complaint Id's</div>
+            <div className="w-[33%] md:w-[25%] p-2">Date of Filing</div>
+            <div className="w-[33%] md:w-[25%] p-2 hidden md:block">
               District
             </div>
-            <div className=" w-[33%] md:w-[25%] p-2">View Complaint</div>
+            <div className="w-[33%] md:w-[25%] p-2">View Complaint</div>
           </div>
 
           <div className="my-2">
@@ -77,46 +85,41 @@ function Displaybar({ complaints, setComplaintList, setFilters, currentUser }) {
                 let color = "";
                 if (index % 2) color = "#F5F5F5";
                 return (
-                  <div key={index} className="flex text-center">
-                    <div
-                      className=" w-[33%] md:w-[25%] p-2"
-                      style={{ backgroundColor: color }}
-                    >
+                  <motion.div
+                    key={index} // Ensure each row has a unique key
+                    className="flex text-center"
+                    style={{ backgroundColor: color }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <div className="w-[33%] md:w-[25%] p-2">
                       {complaint.firId}
                     </div>
-                    <div
-                      className=" w-[33%] md:w-[25%] p-2"
-                      style={{ backgroundColor: color }}
-                    >
+                    <div className="w-[33%] md:w-[25%] p-2">
                       {complaint.LastEdited.slice(0, 10)}
                     </div>
-                    <div
-                      className="hidden md:block w-[25%] p-2"
-                      style={{ backgroundColor: color }}
-                    >
+                    <div className="hidden md:block w-[25%] p-2">
                       {complaint &&
                         complaint.IncidentDetail &&
                         complaint.IncidentDetail.District}
                     </div>
-                    <div
-                      className=" w-[33%] md:w-[25%] p-2"
-                      style={{ backgroundColor: color }}
-                    >
+                    <div className="w-[33%] md:w-[25%] p-2">
                       <button
                         onClick={() => setCurrentComplaint(complaint)}
-                        class=" bg-gradient-to-br from-blue-400 to-blue-500 hover:bg-gradient-to-tl  text-white font-medium text-sm py-1 px-4 rounded-full focus:outline-none transition duration-200 ease-in-out"
+                        className="bg-gradient-to-br from-blue-400 to-blue-500 hover:bg-gradient-to-tl text-white font-medium text-sm py-1 px-4 rounded-full focus:outline-none transition duration-200 ease-in-out"
                       >
                         View
                       </button>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
           </div>
           {!currentComplaint &&
             complaints.complaints &&
             complaints.complaints.length > 0 && (
-              <nav className="flex  justify-center my-4">
+              <nav className="flex justify-center my-4">
                 <ul className="flex gap-x-2">
                   {currentPage !== 1 && (
                     <li className="inline-block list-none">
@@ -134,7 +137,9 @@ function Displaybar({ complaints, setComplaintList, setFilters, currentUser }) {
                       <a
                         href="#"
                         onClick={() => changeCurrPage(n)}
-                        className={`block w-10 h-10 leading-10  text-center text-decoration-none text-gray-700 rounded-md shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out ${currentPage === n ? "bg-[#AEDEFC]": "white"}`}
+                        className={`block w-10 h-10 leading-10 text-center text-decoration-none text-gray-700 rounded-md shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out ${
+                          currentPage === n ? "bg-[#AEDEFC]" : "white"
+                        }`}
                       >
                         {n}
                       </a>
@@ -152,30 +157,27 @@ function Displaybar({ complaints, setComplaintList, setFilters, currentUser }) {
                     </li>
                   )}
                 </ul>
-                {
-                  <div className="text-sm flex justify-center items-center gap-2 mx-2">
-                    <select
-                      className="cursor-pointer ring-indigo-500 ring-2 rounded-xl font-bold"
-                      onChange={(e) =>
-                        setFilters((pre) => ({
-                          ...pre,
-                          limit: e.target.value,
-                        }))
-                      }
-                    >
-                      <option value={10}>10</option>
-                      <option value={20}>20</option>
-                      <option value={30}>30</option>
-                      <option value={40}>40</option>
-                      <option value={50}>50</option>
-                    </select>
-                  </div>
-                }
+                <div className="text-sm flex justify-center items-center gap-2 mx-2">
+                  <select
+                    className="cursor-pointer ring-indigo-500 ring-2 rounded-xl font-bold"
+                    onChange={(e) =>
+                      setFilters((pre) => ({
+                        ...pre,
+                        limit: e.target.value,
+                      }))
+                    }
+                  >
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={30}>30</option>
+                    <option value={40}>40</option>
+                    <option value={50}>50</option>
+                  </select>
+                </div>
               </nav>
             )}
         </div>
       )}
-      {}
       <div className="mx-4 xs:mx-1 transition-all duration-500">
         <Complaintview
           complaintDetails={currentComplaint}
