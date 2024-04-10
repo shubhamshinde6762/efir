@@ -40,7 +40,6 @@ const Landing = ({}) => {
           <ReactTyped
             className="text-yellow-400 text-4xl xs:text-2xl"
             strings={[
-              "Empowering Your Rights",
               "Championing Accountability",
               "Defending Equality",
               "Advocating for Change",
