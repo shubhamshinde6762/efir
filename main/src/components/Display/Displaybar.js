@@ -209,7 +209,7 @@ function Displaybar({
         <Complaintview
           complaintDetails={currentComplaint}
           setComplaintDetails={setCurrentComplaint}
-          myComplaints={true}
+          myComplaints={myComplaints}
           currentUser={currentUser}
           setFilters={setFilters}
         />
