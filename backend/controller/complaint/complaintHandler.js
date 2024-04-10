@@ -50,7 +50,7 @@ exports.handler = async (req, res) => {
         date: new Date(),
         uniqueUserId: connectedUser.uniqueUserId,
         user: userId,
-        status: "Park",
+        status: "Park", 
         remark: remark || "No remark provided",
       };
     }

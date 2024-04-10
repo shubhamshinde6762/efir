@@ -3,7 +3,12 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import Personview from "./Personview";
 import axios from "axios";
 
-const Complaintview = ({ complaintDetails, setComplaintDetails, currentUser }) => {
+const Complaintview = ({
+  complaintDetails,
+  setComplaintDetails,
+  currentUser,
+  setFilters,
+}) => {
   const [addPersonFlag, setAddPersonFlag] = useState("");
   const [personDetails, setPersonDetails] = useState("");
   const [remark, setRemark] = useState("");
@@ -11,14 +16,21 @@ const Complaintview = ({ complaintDetails, setComplaintDetails, currentUser }) =
 
   useEffect(() => {
     console.log(complaintDetails);
+    setRemark("")
   }, [complaintDetails]);
 
-  useEffect(() => {
-    console.log(complaintDetails);
-  }, [complaintDetails]);
+  // useEffect(() => {
+  //   console.log(complaintDetails);
+  // }, [complaintDetails]);
 
   const remarkHandler = (e) => {
-    setRemark(e.target.value);
+    if (
+      complaintDetails.complaintStatus &&
+      complaintDetails.complaintStatus.status &&
+      complaintDetails.complaintStatus.status === "Pending"
+    ) {
+      setRemark(e.target.value);
+    }
   };
 
   const statusHandler = async (e) => {
@@ -26,7 +38,7 @@ const Complaintview = ({ complaintDetails, setComplaintDetails, currentUser }) =
     if (statusValue != "true" && statusValue != "false") {
       console.log("Error");
     } else {
-      console.log(123)
+      console.log(123);
       const response = await axios.post(
         `http://localhost:5000/api/v1/complaints/handleComlplaints/superUser?state=${e.target.name}`,
         {
@@ -36,7 +48,14 @@ const Complaintview = ({ complaintDetails, setComplaintDetails, currentUser }) =
         }
       );
 
-      console.log(response)
+      console.log(response);
+
+      if (response) {
+        setFilters((pre) => ({
+          ...pre,
+        }));
+        // setComplaintDetails(response.data.updatedComplaint);
+      }
       // setStatus(statusValue);
       // console.log(status);
     }
@@ -151,61 +170,109 @@ const Complaintview = ({ complaintDetails, setComplaintDetails, currentUser }) =
                 //   complaintDetails.IncidentDetail &&}
               ></textarea>
             </lable>
-            <div className="relative p-3 border-slate-200 border-2 rounded-xl">
-              <div className="absolute font-poppins font-bold bg-white px-2 -top-3 left-2">
-                Complaint filed by
-              </div>
-              <label className="mx-2 py-2 flex flex-col space-y-3">
-                <div className="flex flex-row gap-4 xs:flex-wrap max-w-[3/4]">
-                  <div className="flex flex-col gap-1 min-w-0 w-full">
-                    <label className="font-bold">Name:</label>
-                    <input
-                      disabled
-                      type="text"
-                      name="age"
-                      value={
-                        complaintDetails &&
-                        complaintDetails.filedBy &&
-                        complaintDetails.filedBy.name
-                      }
-                      placeholder="Age"
-                      className="shadow rounded-lg px-3 py-1 max-w-96"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1 min-w-0 w-full">
-                    <label className="text-[1rem] font-bold">
-                      Contact Number:
-                    </label>
-                    <input
-                      disabled
-                      type="text"
-                      name="contact"
-                      value={
-                        complaintDetails &&
-                        complaintDetails.filedBy &&
-                        complaintDetails.filedBy.mobile
-                      }
-                      placeholder="Contact Number"
-                      className="shadow rounded-lg px-3 py-1 max-w-96"
-                    />
-                  </div>
+            {complaintDetails && complaintDetails.filedBy && (
+              <div className="relative p-3 border-slate-200 border-2 rounded-xl">
+                <div className="absolute font-poppins font-bold bg-white px-2 -top-3 left-2">
+                  Complaint filed by
                 </div>
+                <label className="mx-2 py-2 flex flex-col space-y-3">
+                  <div className="flex flex-row gap-4 xs:flex-wrap max-w-[3/4]">
+                    <div className="flex flex-col gap-1 min-w-0 w-full">
+                      <label className="font-bold">Name:</label>
+                      <input
+                        disabled
+                        type="text"
+                        name="age"
+                        value={
+                          complaintDetails &&
+                          complaintDetails.filedBy &&
+                          complaintDetails.filedBy.name
+                        }
+                        placeholder="Age"
+                        className="shadow rounded-lg px-3 py-1 max-w-96"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1 min-w-0 w-full">
+                      <label className="text-[1rem] font-bold">
+                        Contact Number:
+                      </label>
+                      <input
+                        disabled
+                        type="text"
+                        name="contact"
+                        value={
+                          complaintDetails &&
+                          complaintDetails.filedBy &&
+                          complaintDetails.filedBy.mobile
+                        }
+                        placeholder="Contact Number"
+                        className="shadow rounded-lg px-3 py-1 max-w-96"
+                      />
+                    </div>
+                  </div>
 
-                <div className="mr-4 text-[1rem] font-bold inline-block ">
-                  Email ID:
-                </div>
-                <input
-                  type="text"
-                  disabled
-                  value={
-                    complaintDetails &&
-                    complaintDetails.filedBy &&
-                    complaintDetails.filedBy.email
-                  }
-                  className="shadow rounded-lg px-3 py-1 w-full max-w-[500px]"
-                ></input>
-              </label>
-            </div>
+                  <div className="mr-4 text-[1rem] font-bold inline-block ">
+                    Email ID:
+                  </div>
+                  <input
+                    type="text"
+                    disabled
+                    value={
+                      complaintDetails &&
+                      complaintDetails.filedBy &&
+                      complaintDetails.filedBy.email
+                    }
+                    className="shadow rounded-lg px-3 py-1 w-full max-w-[500px]"
+                  ></input>
+
+                  <div className="flex gap-x-8 flex-wrap">
+                    <div>
+                      <span className="mr-4 text-[1rem] font-bold">
+                        District:
+                      </span>
+
+                      <select
+                        id="District"
+                        disabled
+                        className="px-2 py-1 shadow rounded-lg"
+                      >
+                        <option selected>
+                          {complaintDetails &&
+                          complaintDetails.filedBy &&
+                          complaintDetails.filedBy.District
+                            ? complaintDetails.IncidentDetail.District
+                            : "Not Mentioned"}
+                        </option>
+                      </select>
+                    </div>
+                    <div>
+                      <span className="text-[1rem] font-bold">
+                        Sub-District:
+                      </span>
+
+                      <select
+                        id="SubDistrict"
+                        disabled
+                        value={
+                          complaintDetails &&
+                          complaintDetails.filedBy &&
+                          complaintDetails.filedBy.SubDistrict
+                        }
+                        className="px-2 py-1 shadow rounded-lg"
+                      >
+                        <option selected>
+                          {complaintDetails &&
+                          complaintDetails.IncidentDetail &&
+                          complaintDetails.IncidentDetail.SubDistrict
+                            ? complaintDetails.IncidentDetail.SubDistrict
+                            : "Not Mentioned"}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            )}
           </div>
           {complaintDetails &&
             complaintDetails.VictimIds &&
@@ -407,42 +474,114 @@ const Complaintview = ({ complaintDetails, setComplaintDetails, currentUser }) =
               </div>
             )}
         </div>
-        <div className="border-gray-300 space-y-3 p-4 relative border-4 w-full flex flex-col rounded-2xl">
+        <div className="border-gray-300 space-y-3 my-2 p-4 relative border-4 w-full flex flex-col rounded-2xl">
           <div className="mr-4 text-[1rem] font-bold">Remark:</div>
           <div className="flex items-center space-x-4">
             {" "}
             {/* Flex container for buttons */}
-            <textarea
-              className="p-3 rounded-xl resize-none shadow w-[75%] min-w-24"
-              value={remark}
-              onChange={remarkHandler}
-            ></textarea>
+            {complaintDetails.complaintStatus &&
+              complaintDetails.complaintStatus.status &&
+              complaintDetails.complaintStatus.status === "Pending" && (
+                <textarea
+                  className={
+                    "p-3 rounded-xl resize-none shadow w-[75%] min-w-24 "
+                  }
+                  value={remark}
+                  onChange={remarkHandler}
+                ></textarea>
+              )}
+            {complaintDetails.complaintStatus &&
+              complaintDetails.complaintStatus.status &&
+              complaintDetails.complaintStatus.status !== "Pending" && (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full table-auto border-collapse border border-gray-200">
+                    <thead className="bg-gray-100">
+                      <tr>
+                        <th className="px-4 py-2">Date</th>
+                        <th className="px-4 py-2">Remark</th>
+                        <th className="px-4 py-2">Status</th>
+                        <th className="px-4 py-2">User ID</th>
+                        <th className="px-4 py-2">Taken By</th>
+                        <th className="px-4 py-2">Mobile</th>
+                        <th className="px-4 py-2">Email</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td className="px-4 py-2 text-center">
+                          {complaintDetails.complaintStatus.date
+                            ? new Date(
+                                complaintDetails.complaintStatus.date
+                              ).toLocaleDateString()
+                            : "N/A"}
+                        </td>
+                        <td className="px-4 py-2 text-center">
+                          {complaintDetails.complaintStatus.remark || "N/A"}
+                        </td>
+                        <td className="px-4 py-2 text-center">
+                          {complaintDetails.complaintStatus.status || "N/A"}
+                        </td>
+                        <td className="px-4 py-2 text-center">
+                          {complaintDetails.complaintStatus.uniqueUserId ||
+                            "N/A"}
+                        </td>
+                        <td className="px-4 py-2 text-center">
+                          {complaintDetails.complaintStatus.user &&
+                          complaintDetails.complaintStatus.user.name
+                            ? complaintDetails.complaintStatus.user.name
+                            : "N/A"}
+                        </td>
+                        <td className="px-4 py-2 text-center">
+                          {complaintDetails.complaintStatus.user &&
+                          complaintDetails.complaintStatus.user.mobile
+                            ? complaintDetails.complaintStatus.user.mobile
+                            : "N/A"}
+                        </td>
+                        <td className="px-4 py-2 text-center">
+                          {complaintDetails.complaintStatus.user &&
+                          complaintDetails.complaintStatus.user.email
+                            ? complaintDetails.complaintStatus.user.email
+                            : "N/A"}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              )}
             <div className=" flex-col sm:flex-row flex-grow space-y-2 items-end sm:justify-center  sm:space-x-0 ">
               {" "}
               {/* Flex container for buttons */}
-              <button
-                class="inline-block min-w-max  bg-gradient-to-br from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-600 border-0 rounded-md shadow-md text-white font-medium text-sm py-2 px-4 focus:outline-none transition duration-300 ease-in-out mx-1"
-                name="true"
-                onClick={statusHandler}
-              >
-                ACCEPT
-              </button>
-              {remark && (
-                <button
-                  class="inline-block min-w-max bg-gradient-to-br from-red-400 to-red-500 hover:from-red-500 hover:to-red-600 border-0 rounded-md shadow-md text-white font-medium text-sm py-2 px-4 focus:outline-none transition duration-300 ease-in-out mx-1"
-                  name="false"
-                  onClick={statusHandler}
-                >
-                  REJECT
-                </button>
-              )}
+              {complaintDetails.complaintStatus &&
+                complaintDetails.complaintStatus.status &&
+                complaintDetails.complaintStatus.status === "Pending" && (
+                  <div>
+                    <button
+                      class="inline-block min-w-max  bg-gradient-to-br from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-600 border-0 rounded-md shadow-md text-white font-medium text-sm py-2 px-4 focus:outline-none transition duration-300 ease-in-out mx-1"
+                      name="true"
+                      onClick={statusHandler}
+                    >
+                      Process
+                    </button>
+
+                    <button
+                      class="inline-block min-w-max bg-gradient-to-br from-red-400 to-red-500 hover:from-red-500 hover:to-red-600 border-0 rounded-md shadow-md text-white font-medium text-sm py-2 px-4 focus:outline-none transition duration-300 ease-in-out mx-1"
+                      name="false"
+                      onClick={statusHandler}
+                    >
+                      Park
+                    </button>
+                  </div>
+                )}
             </div>
           </div>
-          {!remark && (
-            <label className=" font-semibold  text-red-600 md:text-base text-sm">
-              *Enter remark to reject complaint
-            </label>
-          )}
+          {complaintDetails.complaintStatus &&
+            complaintDetails.complaintStatus.status &&
+            complaintDetails.complaintStatus.status === "Pending" &&
+            !remark && (
+              <label className=" font-semibold  text-red-600 md:text-base text-sm">
+                *Enter remark to reject complaint
+              </label>
+            )}
         </div>
 
         {personDetails && (

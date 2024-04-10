@@ -181,6 +181,7 @@ function Displaybar({ complaints, setComplaintList, setFilters, currentUser }) {
           complaintDetails={currentComplaint}
           setComplaintDetails={setCurrentComplaint}
           currentUser={currentUser}
+          setFilters={setFilters}
         />
       </div>
     </div>
