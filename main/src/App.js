@@ -128,7 +128,7 @@ function App() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -100 }}
                   transition={{ duration: 0.2 }}
-                  className="w-[100%] flex gap-3 select-none"
+                  className="flex gap-3 w-full select-none"
                 >
                   <motion.div
                     initial={{ opacity: 0, x: -100 }}
@@ -136,7 +136,7 @@ function App() {
                     exit={{ opacity: 0, x: -100 }}
                     transition={{ duration: 0.5 }}
                     onClick={() => setIsVisible((pre) => !pre)}
-                    className="absolute top-0 left-0 text-2xl cursor-pointer"
+                    className="absolute w-full top-0 left-0 text-2xl cursor-pointer"
                   >
                     <IoFilter />
                   </motion.div>
@@ -145,6 +145,7 @@ function App() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -100 }}
                     transition={{ duration: 0.5 }}
+                    className="w-fit"
                   >
                     <Filterbar
                       setIsVisible={setIsVisible}

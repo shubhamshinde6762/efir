@@ -117,10 +117,10 @@ function Filterbar({
       className={`w-fit h-[95vh] sticky xs:absolute xs:w-screen xs:h-screen xs:top-0 xs:left-0   xs:bg-opacity-30 flex items-center transition-all duration-500 justify-left xs:justify-center ${
         isVisible
           ? " translate-x-[0] xs:translate-y-[0] xs:bg-black "
-          : " -translate-x-[100vw] xs:translate-x-[0] xs:-translate-y-[200vh] w-[0px]"
+          : " -translate-x-[100vw] xs:translate-x-[0] xs:-translate-y-[200vh] max-w-[0px] "
       }`}
     >
-      <div className="flex-col justify-center gap-3 relative max-w-[400px]  font-poppins w-fit h-fit p-5 items-center bg-rose-100 rounded-r-xl xs:rounded-xl border text-center">
+      <div className="flex-col justify-center gap-3 relative max-w-[400px]   font-poppins w-fit h-fit p-5 items-center bg-rose-100 rounded-r-xl xs:rounded-xl border text-center">
         <IoCloseOutline
           onClick={() => setIsVisible(false)}
           className="text-3xl text-white p-1 absolute -top-2 xs:block hidden  -right-2 bg-red-400 rounded-full"
