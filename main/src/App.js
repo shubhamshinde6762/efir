@@ -13,7 +13,9 @@ import Filterbar from "./components/Filter/Filterbar";
 import { useMediaQuery } from "@react-hook/media-query";
 import Intro from "./Intro";
 import Displaybar from "./components/Display/Displaybar";
+import { HiMenu } from "react-icons/hi";
 import Home from "./components/home/Home";
+import Menu from "./components/home/Menu";
 const socket = io("http://localhost:5000");
 
 function App() {
@@ -78,10 +80,10 @@ function App() {
     autoLogin();
   }, []);
   return (
-    <motion.div // Wrap your main div with motion.div for overall page animations
-      initial={{ opacity: 0 }} // Initial animation state
-      animate={{ opacity: 1 }} // Animation state when component mounts
-      exit={{ opacity: 0 }} // Animation state when component unmounts
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
     >
       <Intro />
       {renderUi && (
@@ -89,36 +91,53 @@ function App() {
           <div>
             <Toaster />
           </div>
-          <nav className="w-full z-50  rounded-b-xl font-poppins py-1 px-2 bg-white bg-opacity-15 text-white font-bold flex justify-evenly items-center">
+          <motion.nav
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.5 }}
+            className="w- z-50 rounded-b-2xl font-poppins py-1 bg-white bg-opacity-25 text-white font-bold flex justify-between mx-2 px-4 items-center"
+          >
             <NavLink to="/">
-              <img
+              <motion.img
+                initial={{ scale: 10 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.3, duration: 0.3 }}
                 className="w-36"
                 src="https://res.cloudinary.com/dd6sontgf/image/upload/v1712742588/efir-high-resolution-logo-transparent-removebg-preview_ynbiu0.png"
-              ></img>
+                alt="logo"
+              />
             </NavLink>
-            <NavLink to="/register">
-              <div className="">Register</div>
-            </NavLink>
-            {currentUser &&
-              (currentUser.role === "super" ? (
-                <NavLink to="/complaints/dashboard">Dashboard</NavLink>
+            <div className="flex gap-7 mx-4">
+              <NavLink to="/register">Register</NavLink>
+              {currentUser && currentUser.role === "super" ? (
+                <NavLink className={"xs:hidden"} to="/complaints/dashboard">
+                  Dashboard
+                </NavLink>
               ) : (
-                <NavLink to="/mycomplaints">My Complaints</NavLink>
-              ))}
-
-            {currentUser ? (
-              <div
-                onClick={() => {
-                  setCurrentUser();
-                  localStorage.clear();
-                }}
-              >
-                LogOut
-              </div>
-            ) : (
-              <NavLink to="/login">Login</NavLink>
-            )}
-          </nav>
+                <NavLink className={"xs:hidden"} to="/mycomplaints">
+                  My Complaints
+                </NavLink>
+              )}
+              <NavLink to="/about" className={"xs:hidden"}>
+                About
+              </NavLink>
+              {currentUser ? (
+                <div
+                  onClick={() => {
+                    setCurrentUser();
+                    localStorage.clear();
+                  }}
+                >
+                  LogOut
+                </div>
+              ) : (
+                <NavLink className={"xs:hidden"} to="/login">
+                  Login
+                </NavLink>
+              )}
+            </div>
+            <Menu currentUser={currentUser} />
+          </motion.nav>
           <Routes>
             <Route
               path="/complaints/dashboard"
@@ -165,7 +184,7 @@ function App() {
                     className="w-full"
                   >
                     <Displaybar
-                    filters={filters}
+                      filters={filters}
                       setFilters={setFilters}
                       complaints={complaints}
                       setComplaintList={setComplaintList}

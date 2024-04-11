@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MdVisibilityOff, MdVisibility } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 import axios from "axios";
 
@@ -36,7 +37,7 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
   const [userDetails, setUserDetails] = useState({
     name: "",
     mobile: "",
-    email:"",
+    email: "",
     password: "",
     CPassword: "",
     RememberMe: false,
@@ -87,8 +88,14 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
   }, []);
 
   return (
-    <div className="w-full h-full flex justify-center items-center">
-      <div className="flex flex-col items-center shadow p-10 gap-2 py-4 rounded-xl min-w-[260px] w-[30%]">
+    <motion.div // Wrap the LoginDiv with motion.div
+      initial={{ opacity: 0, y: 0, x: -100 }}
+      animate={{ opacity: 1, y: 0, x: 0 }}
+      exit={{ opacity: 0, y: 0, x: 100 }}
+      transition={{ duration: 0.5, delay: 0.1 }}
+      className="w-full h-full flex justify-center items-center"
+    >
+      <div className="flex flex-col bg-white  bg-opacity-50 text-white items-center shadow p-6 m-4 gap-2 py-4 rounded-xl min-w-[260px] w-[400px]">
         <div className="w-fit text-xl font-bold">Register Here</div>
         <div className="w-full">
           <p className="">Name</p>
@@ -98,7 +105,7 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
             value={userDetails["name"]}
             name="name"
             onChange={changeHandler}
-            className="px-2 py-1 bg-gray-100 rounded-lg shadow w-full"
+            className="px-2 py-1 bg-gray-100 text-black bg-opacity-65 rounded-lg shadow w-full"
           />
         </div>
         <div className="w-full">
@@ -109,7 +116,7 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
             value={userDetails["mobile"]}
             name="mobile"
             onChange={changeHandler}
-            className="px-2 py-1 bg-gray-100 rounded-lg shadow w-full"
+            className="px-2 py-1 bg-gray-100 text-black bg-opacity-65 rounded-lg shadow w-full"
           />
         </div>
         <div className="w-full">
@@ -120,7 +127,7 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
             value={userDetails["email"]}
             name="email"
             onChange={changeHandler}
-            className="px-2 py-1 bg-gray-100 rounded-lg shadow w-full"
+            className="px-2 py-1 bg-gray-100 text-black bg-opacity-65  rounded-lg shadow w-full"
           />
         </div>
         <div className="w-full">
@@ -130,7 +137,7 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
             value={userDetails["District"]}
             name="District"
             onChange={changeHandler}
-            className="px-2 py-1 bg-gray-100 rounded-lg shadow w-full"
+            className="px-2 py-1 bg-gray-100 text-black bg-opacity-65 rounded-lg shadow w-full"
           >
             <option selected>Select District</option>
             {Object.keys(townTree).map((ele) => (
@@ -141,7 +148,7 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
         <div className="w-full">
           <p>SubDistrict</p>
           {userDetails.District === "Select District" ? (
-            <div className="px-2 py-1 bg-gray-100 rounded-lg shadow w-full text-gray-500">
+            <div className="px-2 py-1 bg-gray-100 rounded-lg  shadow w-full text-gray-500">
               Please Select District
             </div>
           ) : (
@@ -150,7 +157,7 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
               value={userDetails["SubDistrict"]}
               name="SubDistrict"
               onChange={changeHandler}
-              className="px-2 py-1 bg-gray-100 rounded-lg shadow w-full"
+              className="px-2 py-1 bg-gray-100 text-black  bg-opacity-65 rounded-lg shadow w-full"
             >
               <option selected>Select SubDistrict</option>
               {townTree[userDetails["District"]].map((ele) => (
@@ -168,11 +175,11 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
             value={userDetails["password"]}
             name="password"
             onChange={changeHandler}
-            className="px-2 py-1 bg-gray-100 rounded-lg shadow w-full"
+            className="px-2 py-1 text-black bg-gray-100 bg-opacity-65 rounded-lg shadow w-full"
           />
           <label
             id="password"
-            className="absolute right-2 top-8"
+            className="absolute right-2 text-black top-8"
             onClick={() =>
               setPVisible((state) => {
                 state.password = !state.password;
@@ -192,11 +199,11 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
             value={userDetails["CPassword"]}
             name="CPassword"
             onChange={changeHandler}
-            className="px-2 py-1 bg-gray-100 rounded-lg shadow w-full"
+            className="px-2 py-1 text-black bg-gray-100 bg-opacity-65 rounded-lg shadow w-full"
           />
           <label
             id="cpassword"
-            className="absolute right-2 top-8"
+            className="absolute right-2 top-8 text-black"
             onClick={() =>
               setPVisible((state) => {
                 state.cpassword = !state.cpassword;
@@ -229,10 +236,16 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
           SignUp
         </div>
         <div>
-          Already have an account? <span onClick={() => setLogin(state => !state)} className="text-sky-600 cursor-pointer ">LogIn Here</span>
+          Already have an account?{" "}
+          <span
+            onClick={() => setLogin((state) => !state)}
+            className="text-yellow-400 font-bold cursor-pointer "
+          >
+            LogIn Here
+          </span>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

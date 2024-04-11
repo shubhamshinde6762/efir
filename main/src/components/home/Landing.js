@@ -30,7 +30,7 @@ const Landing = ({}) => {
         <motion.img
           initial={{ y: 100, opacity: 0, rotate: 30 }}
           animate={{ y: 0, opacity: 1, rotate: 0 }}
-          exit={{ opacity: 0, rotate: -90 }} 
+          exit={{ opacity: 0, rotate: -90 }}
           transition={{ delay: 1.1 }}
           className="max-w-[200px] xs:max-w-[120px]"
           src="https://res.cloudinary.com/dd6sontgf/image/upload/v1712747549/_Pngtree_law_and_justice_illustration_3718775-removebg-preview_krbxyh.png"

@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { MdVisibilityOff, MdVisibility } from "react-icons/md";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { motion } from "framer-motion"; // Import motion from Framer Motion
 
 const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
   const [otp, setOtp] = useState(new Array(6).fill(""));
@@ -120,10 +121,6 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
     return /^\d+$/.test(input);
   }
 
-  // function isEmail(input) {
-  //   return /\S+@\S+\.\S+/.test(input);
-  // }
-
   useEffect(() => {
     console.log(userDetails);
   }, [userDetails]);
@@ -180,15 +177,21 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
   };
 
   return (
-    <div className="w-full h-full flex justify-center items-center">
-      <div className="flex flex-col items-center shadow p-10 gap-2 py-4 rounded-xl min-w-[280px] w-[30%]">
-        <div className="w-fit text-xl font-bold">Login</div>
-        <div className="w-full flex  justify-center cursor-pointer items-center py-2 bg-slate-100 px-3 rounded-2xl">
+    <motion.div 
+      initial={{ opacity: 0, y: 0, x: 100 }}
+      animate={{ opacity: 1, y: 0, x: 0 }}
+      exit={{ opacity: 0, y: 0, x: -100 }}
+      transition={{ duration: 0.5, delay: 0.1 }}
+      className="w-full h-full flex justify-center z-10 items-center "
+    >
+      <div className="flex flex-col bg-white bg-opacity-50 items-center shadow p-6 m-4 gap-2 py-4 rounded-xl min-w-[280px] w-[400px]">
+        <div className="w-fit text-xl text-white font-bold">Login</div>
+        <div className="w-full flex   justify-center cursor-pointer items-center py-2 bg-slate-100 bg-opacity-70 px-3 rounded-2xl">
           <div
             onClick={() => setLoginMode("password")}
-            className={`flex-grow transition-all duration-300 text-center px-2  ${
+            className={`flex-grow transition-all duration-300 text-center px-2 py-1  ${
               loginMode === "password"
-                ? "bg-gray-200 shadow rounded-full scale-105"
+                ? "bg-white shadow font-bold rounded-full scale-105"
                 : "text-gray-700"
             }`}
           >
@@ -196,16 +199,16 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
           </div>
           <div
             onClick={() => setLoginMode("otp")}
-            className={`flex-grow  transition-all duration-300  text-center px-2  ${
+            className={`flex-grow  transition-all duration-300 py-1 text-center px-2  ${
               loginMode === "otp"
-                ? "bg-gray-200 shadow rounded-full scale-105"
+                ? "bg-white shadow font-bold rounded-full scale-105"
                 : "text-gray-700"
             }`}
           >
             <p>Login with Otp</p>
           </div>
         </div>
-        <div className="w-full">
+        <div className="w-full text-white">
           <p>{loginMode == "password" ? "Email/Mobile" : "Email"}</p>
           <input
             placeholder={loginMode === "password" ? "Email/Mobile" : "Email"}
@@ -213,12 +216,12 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
             value={userDetails["mobile"]}
             name="mobile"
             onChange={changeHandler}
-            className="px-2 py-1 bg-gray-100 rounded-lg shadow w-full"
+            className="px-2 py-1 bg-gray-100  bg-opacity-70 rounded-lg shadow w-full"
           />
         </div>
 
         {loginMode === "password" ? (
-          <div className="w-full relative">
+          <div className="w-full relative text-white">
             <p>Password</p>
             <input
               placeholder="password"
@@ -227,11 +230,11 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
               value={userDetails["password"]}
               name="password"
               onChange={changeHandler}
-              className="px-2 py-1 bg-gray-100 rounded-lg shadow w-full"
+              className="px-2 py-1 bg-gray-100 bg-opacity-70 rounded-lg shadow w-full"
             />
             <label
               id="password"
-              className="absolute right-2 top-8"
+              className="absolute right-2 text-black top-8"
               onClick={() =>
                 setPVisible((state) => {
                   state.password = !state.password;
@@ -251,7 +254,7 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
               Send Otp
             </div>
             {isOtpSent && (
-              <div className="w-full">
+              <div className="w-full text-white">
                 <p>Otp</p>
                 <div className="flex gap-2">
                   {new Array(6).fill().map((ele, index) => (
@@ -262,7 +265,7 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
                       value={otp[index]}
                       onChange={(event) => numChangeHandler(event, index)}
                       inputMode="numeric"
-                      className="px-2 py-1 text-center bg-gray-100 rounded-lg shadow w-full"
+                      className="px-2 py-1 text-center bg-gray-100 bg-opacity-65 text-black font-bold rounded-lg shadow w-full"
                     />
                   ))}
                 </div>
@@ -271,7 +274,7 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
           </div>
         )}
         {(loginMode === "password" || isOtpSent) && (
-          <div className="w-full">
+          <div className="w-full text-white">
             <label
               htmlFor="RememberMe"
               className="cursor-pointer select-none text-sm flex items-center gap-1 pl-2"
@@ -299,17 +302,17 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
             Login
           </div>
         )}
-        <div>
+        <div className="text-white">
           Don't have an account?{" "}
           <span
             onClick={() => setLogin((state) => !state)}
-            className="text-sky-600 cursor-pointer "
+            className="text-yellow-400 font-bold cursor-pointer "
           >
             SignUp Here
           </span>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

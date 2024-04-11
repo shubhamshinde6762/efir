@@ -8,7 +8,7 @@ exports.auth = (req, res, next)=> {
         
         if (!token) 
         {
-            res.status(401).json({
+            res.status(401).json({ 
                 status:"401-USER"
             })
             return;
