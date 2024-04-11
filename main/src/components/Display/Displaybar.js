@@ -10,6 +10,7 @@ function Displaybar({
   setFilters,
   currentUser,
   filters,
+  heading
 }) {
   const [currentComplaint, setCurrentComplaint] = useState("");
   const [totalPage, setTotalPage] = useState(1);
@@ -17,10 +18,6 @@ function Displaybar({
   const [numbers, setNumbers] = useState([0]);
   const [key, setKey] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState(null);
-
-  // if (myComplaints === true) {
-  //   complaints = { complaints: complaints };
-  // }
 
   useEffect(() => {
     try {
@@ -64,10 +61,22 @@ function Displaybar({
     } catch (err) {}
   }, [complaints]);
 
-  // Update key whenever content changes
   useEffect(() => {
     setKey((prevKey) => prevKey + 1);
   }, [complaints]);
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Completed":
+        return "bg-green-200";
+      case "Park":
+        return "bg-red-200";
+      case "Pending":
+        return "bg-blue-200";
+      default:
+        return "bg-gray-200";
+    }
+  };
 
   return (
     <div className="w-full flex-grow transition-all duration-500">
@@ -76,7 +85,7 @@ function Displaybar({
           key={key}
           className="h-[90vh] flex-grow my-2 mr-2 transition-all duration-500"
         >
-          <h2 className="text-center text-2xl  mb-2 font-bold">Complaints</h2>
+          <h2 className="text-center text-2xl  mb-2 font-bold">{heading}</h2>
           <div
             className="flex text-center justify-between  font-bold"
             style={{ backgroundColor: "#AEDEFC" }}
@@ -97,16 +106,12 @@ function Displaybar({
                 let color = "";
                 if (index % 2) color = "#F5F5F5";
                 return (
-                  <div className="flex-col">
-                    <motion.div
-                      key={index} // Ensure each row has a unique key
+                  <div key={index} className="flex-col">
+                    <div
                       className="flex relative cursor-pointer text-center"
                       style={{ backgroundColor: color }}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
                       onMouseEnter={() => setHoveredIndex(index)}
                       onMouseLeave={() => setHoveredIndex(null)}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
                     >
                       <div className="w-[33%] md:w-[25%] p-2">
                         {complaint.firId}
@@ -127,20 +132,29 @@ function Displaybar({
                           View
                         </button>
                       </div>
-                      {myComplaints && hoveredIndex === index && (
-                        <div>
-                          <div className="absolute w-full top-10 left-0 flex justify-center min-h-8    ">
-                            <div className="font-semibold bg-green-200 font-poppins rounded-full  z-20 py-1 px-2 text-center">
-                              Status: {complaint.complaintStatus.status}
-                            </div>
-                          </div>
+                    </div>
+                    {hoveredIndex === index && (
+                      <div className="flex justify-around border-x-2 border-b-2 border-x-slate-200 mb-2 p-2 rounded-b-xl shadow-md">
+                        <div className={`status-overlay font-semibold ${getStatusColor(complaint.complaintStatus.status)} font-poppins rounded-full py-1 px-2 text-center sm:text-base text-sm`}>
+                          Status: {complaint.complaintStatus.status}
                         </div>
-                      )}
-                    </motion.div>
+                        {complaint.complaintStatus.status === "Pending" && !complaint.complaintStatus.remark && (
+                          <div className={`status-overlay font-semibold font-poppins rounded-full py-1 px-2 text-center sm:text-base text-sm `}>
+                            Remark: Not assessed
+                          </div>
+                        )}
+                        {complaint.complaintStatus.status !== "Pending" && complaint.complaintStatus.remark && (
+                          <div className={`status-overlay font-semibold font-poppins rounded-full py-1 px-2 text-center sm:text-base text-sm`}>
+                            Remark: {complaint.complaintStatus.remark}
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 );
               })}
           </div>
+
           {!currentComplaint &&
             !myComplaints &&
             complaints.complaints &&
@@ -149,37 +163,34 @@ function Displaybar({
                 <ul className="flex gap-x-2">
                   {currentPage !== 1 && (
                     <li className="inline-block list-none">
-                      <a
-                        href="#"
+                      <button
                         onClick={prevPage}
-                        className="flex justify-center items-center w-10 h-10 leading-10 bg-white text-center text-decoration-none text-gray-700 rounded-l-full rounded-r-none shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out "
+                        className="flex justify-center items-center w-10 h-10 leading-10 bg-white text-center text-decoration-none text-gray-700 rounded-l-full rounded-r-none shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out"
                       >
                         <IoMdArrowBack />
-                      </a>
+                      </button>
                     </li>
                   )}
                   {numbers.map((n, i) => (
                     <li key={i} className="inline-block list-none">
-                      <a
-                        href="#"
+                      <button
                         onClick={() => changeCurrPage(n)}
-                        className={`block w-10 h-10 leading-10 text-center text-decoration-none text-gray-700 rounded-md shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out ${
+                        className={`block w-10 h-10 leading-10  text-center text-decoration-none text-gray-700 rounded-md shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out ${
                           currentPage === n ? "bg-[#AEDEFC]" : "white"
                         }`}
                       >
                         {n}
-                      </a>
+                      </button>
                     </li>
                   ))}
                   {currentPage !== totalPage && (
                     <li className="inline-block list-none">
-                      <a
-                        href="#"
+                      <button
                         onClick={nextPage}
-                        className="flex justify-center items-center w-10 h-10 leading-10 bg-white text-center text-decoration-none text-gray-700 rounded-l-none rounded-r-full shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out "
+                        className="flex justify-center items-center w-10 h-10 leading-10 bg-white text-center text-decoration-none text-gray-700 rounded-l-none rounded-r-full shadow-md hover:text-white hover:bg-[#AEDEFC] transition-all duration-300 ease-in-out"
                       >
                         <IoMdArrowForward />
-                      </a>
+                      </button>
                     </li>
                   )}
                 </ul>
