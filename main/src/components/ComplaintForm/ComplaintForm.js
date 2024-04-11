@@ -5,6 +5,7 @@ import AddPeople from "./AddPeople";
 import { LiaUserEditSolid } from "react-icons/lia";
 import { AiOutlineUserDelete } from "react-icons/ai";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
 const ComplaintForm = ({ currentUser }) => {
   const [townTree, setTownTree] = useState({});
@@ -23,7 +24,7 @@ const ComplaintForm = ({ currentUser }) => {
     evidences: [],
   });
   const [personDetails, setPersonDetails] = useState("");
-
+  const [anonymous, setAnonymous] = useState(!currentUser);
   useEffect(() => {
     const fetch = async () => {
       try {
@@ -42,7 +43,9 @@ const ComplaintForm = ({ currentUser }) => {
   const registerHandler = async () => {
     try {
       const formData = new FormData();
-      formData.append("userId", currentUser._id);
+      if (!currentUser._id) {
+        setAnonymous(true);
+      } else formData.append("userId", currentUser._id);
       formData.append(
         "IncidentDetails",
         JSON.stringify(complaintDetails.IncidentDetail)
@@ -108,6 +111,7 @@ const ComplaintForm = ({ currentUser }) => {
 
   useEffect(() => {
     console.log(complaintDetails);
+    
   }, [complaintDetails]);
 
   return (
@@ -157,7 +161,9 @@ const ComplaintForm = ({ currentUser }) => {
                   >
                     <option selected>Select Districts</option>
                     {Object.keys(townTree).map((ele) => (
-                      <option id={ele}>{ele}</option>
+                      <option key={ele} value={ele}>
+                        {ele}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -174,7 +180,7 @@ const ComplaintForm = ({ currentUser }) => {
                     {townTree &&
                       townTree[complaintDetails.IncidentDetail.District] &&
                       townTree[complaintDetails.IncidentDetail.District].map(
-                        (ele) => <option>{ele}</option>
+                        (ele, index) => <option key={index}>{ele}</option>
                       )}
                   </select>
                 </div>
@@ -414,8 +420,11 @@ const ComplaintForm = ({ currentUser }) => {
             </label>
           </div>
           <div className="flex flex-col gap-1">
-            {complaintDetails.evidences.map((ele) => (
-              <div className="flex gap-2 items-center text-sm bg-slate-100 w-fit px-2 py-1 rounded-lg ">
+            {complaintDetails.evidences.map((ele, index) => (
+              <div
+                key={index}
+                className="flex gap-2 items-center text-sm bg-slate-100 w-fit px-2 py-1 rounded-lg "
+              >
                 <div>{ele.name}</div>
                 <IoMdRemoveCircleOutline
                   onClick={() =>
@@ -444,13 +453,35 @@ const ComplaintForm = ({ currentUser }) => {
           complaintDetails={complaintDetails}
         />
       )}
-      <div className="w-full justify-center flex my-4">
+      <div className="w-full justify-center items-center flex mt-4  gap-x-3 ">
         <button
           onClick={registerHandler}
-          className="font-bold font-poppins py-1 px-2 bg-green-500 hover:bg-green-700 text-white rounded-lg hover:scale-105 transition-all duration-500"
+          className="font-bold font-poppins py-1 px-2 text-sm md:text-base 
+          
+          bg-green-500 hover:bg-green-700 text-white rounded-lg hover:scale-105 transition-all duration-500"
         >
           Register Complaint
         </button>
+        <div className="flex  items-center">
+          <input
+            type="checkbox"
+            checked={anonymous}
+            onChange={() => {
+              setAnonymous(!anonymous);
+            }}
+          />
+          <label className=" text-xs font-semibold">File anonymously</label>
+        </div>
+      </div>
+      <div className=" text-center">
+        {!currentUser && ( // Show the link if user is not logged in
+          <Link
+            to="/login"
+            className="text-sm font-semibold ml-2 text-blue-500 hover:underline text-center   "
+          >
+            Login to file with your details
+          </Link>
+        )}
       </div>
     </div>
   );
