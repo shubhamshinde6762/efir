@@ -1,6 +1,12 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
-import { Routes, Route, NavLink, useNavigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  NavLink,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import { motion } from "framer-motion"; // Import motion from Framer Motion
 import Login from "./components/Login";
 import axios from "axios";
@@ -79,15 +85,23 @@ function App() {
 
     autoLogin();
   }, []);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    console.log(location);
+  }, [location]);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      className=" overflow-x-hidden"
     >
       <Intro />
       {renderUi && (
-        <div className="w-full">
+        <div className="overflow-x-hidden">
           <div>
             <Toaster />
           </div>
@@ -95,7 +109,11 @@ function App() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.5 }}
-            className="w- z-50 rounded-b-2xl font-poppins py-1 bg-white bg-opacity-25 text-white font-bold flex justify-between mx-2 px-4 items-center"
+            className={
+              location.pathname === "/"
+                ? "hidden w-[0px] h-[0px]"
+                : " z-20 rounded-b-2xl w-full mx-1 font-poppins py-1 bg-white bg-opacity-25 text-white font-bold flex justify-between px-4 items-center"
+            }
           >
             <NavLink to="/">
               <motion.img
@@ -107,36 +125,36 @@ function App() {
                 alt="logo"
               />
             </NavLink>
-            <div className="flex gap-7 mx-4">
+            <div className="flex justify-center items-center gap-7 mx-4">
               <NavLink to="/register">Register</NavLink>
               {currentUser && currentUser.role === "super" ? (
                 <NavLink className={"xs:hidden"} to="/complaints/dashboard">
                   Dashboard
                 </NavLink>
               ) : (
-                <NavLink className={"xs:hidden"} to="/mycomplaints">
-                  My Complaints
-                </NavLink>
+                currentUser && (
+                  <NavLink className={"xs:hidden"} to="/mycomplaints">
+                    My Complaints
+                  </NavLink>
+                )
               )}
               <NavLink to="/about" className={"xs:hidden"}>
                 About
               </NavLink>
               {currentUser ? (
-                <div
+                <NavLink
                   onClick={() => {
                     setCurrentUser();
                     localStorage.clear();
                   }}
                 >
                   LogOut
-                </div>
-              ) : (
-                <NavLink className={"xs:hidden"} to="/login">
-                  Login
                 </NavLink>
+              ) : (
+                <NavLink to="/login">Login</NavLink>
               )}
+              <Menu currentUser={currentUser} setCurrentUser={setCurrentUser} />
             </div>
-            <Menu currentUser={currentUser} />
           </motion.nav>
           <Routes>
             <Route
@@ -196,6 +214,7 @@ function App() {
               }
             />
             <Route
+              className="mt-10"
               path="/register"
               element={
                 <motion.div
@@ -260,7 +279,15 @@ function App() {
               }
             />
 
-            <Route path="/" element={<Home currentUser={currentUser} />} />
+            <Route
+              path="/"
+              element={
+                <Home
+                  setCurrentUser={setCurrentUser}
+                  currentUser={currentUser}
+                />
+              }
+            />
           </Routes>
         </div>
       )}

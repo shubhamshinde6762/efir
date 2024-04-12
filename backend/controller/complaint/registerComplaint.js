@@ -114,6 +114,7 @@ exports.register = async (req, res) => {
 
     res.status(200).json({
       message: "Complaint Filed Successfully",
+      complaintId : newComplaint.firId
     });
   } catch (err) {
     console.error("Error registering complaint:", err);

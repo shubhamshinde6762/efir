@@ -11,6 +11,7 @@ const otpHandler = require("./routes/sendOtp.js");
 const complainant = require("./routes/complaints.js");
 const { initSocket } = require("./socket.js");
 const {cdnConnect} = require("./config/cdn.js")
+const genAi = require("./routes/genAi.js")
 
 require("dotenv").config();
 
@@ -35,6 +36,7 @@ app.use("/api/v1", logIn);
 app.use("/api/v1", townTreeFetch);
 app.use("/api/v1", otpHandler);
 app.use("/api/v1/complaints", complainant);
+app.use("/api/v1", genAi)
 
 dbConnect();
 cdnConnect();

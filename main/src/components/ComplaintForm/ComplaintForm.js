@@ -5,11 +5,14 @@ import AddPeople from "./AddPeople";
 import { LiaUserEditSolid } from "react-icons/lia";
 import { AiOutlineUserDelete } from "react-icons/ai";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { Link, NavLink } from "react-router-dom"; // Import Link from react-router-dom
+import { toast } from "react-hot-toast";
+import FirId from "./FirId";
 
 const ComplaintForm = ({ currentUser }) => {
   const [townTree, setTownTree] = useState({});
   const [addPersonFlag, setAddPersonFlag] = useState("");
+  const [displayFirId, setDisplayFirId] = useState();
   const [complaintDetails, setComplaintDetails] = useState({
     VictimArray: [],
     AccusedArray: [],
@@ -43,9 +46,9 @@ const ComplaintForm = ({ currentUser }) => {
   const registerHandler = async () => {
     try {
       const formData = new FormData();
-      if (!currentUser._id) {
-        setAnonymous(true);
-      } else formData.append("userId", currentUser._id);
+      if (currentUser && currentUser._id && !anonymous) {
+        formData.append("userId", currentUser._id);
+      }
       formData.append(
         "IncidentDetails",
         JSON.stringify(complaintDetails.IncidentDetail)
@@ -66,19 +69,49 @@ const ComplaintForm = ({ currentUser }) => {
         formData.append(`evidences[${index}]`, file);
       });
 
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/complaints/register-complaint",
-        formData,
+      const response = await toast.promise(
+        axios.post(
+          "http://localhost:5000/api/v1/complaints/register-complaint",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        ),
         {
-          headers: {
-            "Content-Type": "multipart/form-data",
+          loading: "Filing FIR...",
+          success: (data) => {
+            console.log("FIR filed successfully:", data);
+            setDisplayFirId(data.data.complaintId);
+
+            return "FIR filed successfully";
+          },
+          error: () => {
+            console.error("Error filing FIR");
+            return "Error filing FIR";
           },
         }
       );
 
-      console.log("FIR filed successfully:", response.data);
+      if (response) {
+        setComplaintDetails({
+          VictimArray: [],
+          AccusedArray: [],
+          WitnessArray: [],
+          IncidentDetail: {
+            TimeDateofIncident: "",
+            LandMark: "",
+            District: "",
+            SubDistrict: "",
+            IncidentDescription: "",
+          },
+          evidences: [],
+        });
+      }
     } catch (error) {
       console.error("Error filing FIR:", error);
+      toast.error("An error occurred");
     }
   };
 
@@ -111,11 +144,18 @@ const ComplaintForm = ({ currentUser }) => {
 
   useEffect(() => {
     console.log(complaintDetails);
-    
   }, [complaintDetails]);
 
   return (
     <div className="min-w-[275px] p-4  w-full max-w-[900px] shadow-2xl rounded-xl">
+      {displayFirId && (
+        <div className="fixed top-0 left-0 h-screen w-screen flex justify-center items-center z-50 bg-black bg-opacity-30">
+          <FirId
+            displayFirId={displayFirId}
+            setDisplayFirId={setDisplayFirId}
+          />
+        </div>
+      )}
       <div className="  flex flex-col gap-y-6 justify-center items-center ">
         <div className="text-2xl font-bold font-poppins ">
           Complaint Registration
@@ -441,6 +481,30 @@ const ComplaintForm = ({ currentUser }) => {
             ))}
           </div>
         </div>
+        <div className="flex cursor-pointer w-full select-none ml-10 text-md font-poppins gap-2  items-center">
+          <input
+            type="checkbox"
+            checked={anonymous}
+            id="anon"
+            value={anonymous}
+            onChange={() => {
+              if (currentUser) setAnonymous((pre) => !pre);
+            }}
+          />
+          <label htmlFor="anon" className=" font-semibold">
+            File Complaint as Anonymously
+          </label>
+        </div>
+        <div className=" text-left w-full ">
+          {!currentUser && (
+            <NavLink
+              to="/login"
+              className="text-sm font-semibold ml-2 text-blue-500 hover:underline text-center   "
+            >
+              Login to file with your details
+            </NavLink>
+          )}
+        </div>
       </div>
 
       {addPersonFlag && (
@@ -462,26 +526,6 @@ const ComplaintForm = ({ currentUser }) => {
         >
           Register Complaint
         </button>
-        <div className="flex  items-center">
-          <input
-            type="checkbox"
-            checked={anonymous}
-            onChange={() => {
-              setAnonymous(!anonymous);
-            }}
-          />
-          <label className=" text-xs font-semibold">File anonymously</label>
-        </div>
-      </div>
-      <div className=" text-center">
-        {!currentUser && ( // Show the link if user is not logged in
-          <Link
-            to="/login"
-            className="text-sm font-semibold ml-2 text-blue-500 hover:underline text-center   "
-          >
-            Login to file with your details
-          </Link>
-        )}
       </div>
     </div>
   );

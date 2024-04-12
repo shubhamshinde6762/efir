@@ -1,12 +1,77 @@
-import React from 'react'
-import Landing from './Landing'
+import React from "react";
+import Landing from "./Landing";
+import GenAi from "./GenAi";
+import { motion } from "framer-motion";
+import {
+  Routes,
+  Route,
+  NavLink,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
+import { HiMenu } from "react-icons/hi";
+import Menu from "./Menu";
 
-const Home = () => {
+const Home = ({ currentUser, setCurrentUser }) => {
   return (
-    <div className='absolute -z-10 top-0 left-0 w-screen overflow-x-hidden'>
-        <Landing/>
-    </div>
-  )
-}
+    <div className="  flex flex-col gap-0 top-0 left-0 w-screen overflow-x-clip">
+      <motion.nav
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1, duration: 0.5 }}
+        className={
+          " z-20 fixed rounded-b-2xl w-full mx-1    font-poppins py-1 bg-white bg-opacity-25 text-white font-bold flex justify-between px-4 items-center"
+        }
+      >
+        <NavLink to="/">
+          <motion.img
+            initial={{ scale: 10 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.3, duration: 0.3 }}
+            className="w-36"
+            src="https://res.cloudinary.com/dd6sontgf/image/upload/v1712742588/efir-high-resolution-logo-transparent-removebg-preview_ynbiu0.png"
+            alt="logo"
+          />
+        </NavLink>
+        <div className="flex gap-7 justify-center items-center mx-4">
+          <NavLink to="/register">Register</NavLink>
+          {currentUser && currentUser.role === "super" ? (
+            <NavLink className={"xs:hidden"} to="/complaints/dashboard">
+              Dashboard
+            </NavLink>
+          ) : (
+            currentUser && (
+              <NavLink className={"xs:hidden"} to="/mycomplaints">
+                My Complaints
+              </NavLink>
+            )
+          )}
+          <NavLink to="/about" className={"xs:hidden"}>
+            About
+          </NavLink>
+          {currentUser ? (
+            <div
+              onClick={() => {
+                setCurrentUser("");
+                localStorage.clear();
+              }}
+              className="cursor-pointer"
+            >
+              LogOut
+            </div>
+          ) : (
+            <NavLink to="/login">
+              Login
+            </NavLink>
+          )}
+          <Menu currentUser={currentUser} setCurrentUser={setCurrentUser}/>
 
-export default Home
+        </div>
+      </motion.nav>
+      <Landing />
+      <GenAi />
+    </div>
+  );
+};
+
+export default Home;

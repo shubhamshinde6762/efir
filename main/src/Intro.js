@@ -31,7 +31,7 @@ const Intro = () => {
       className={`fixed z-50 left-0 top-0 w-screen h-screen bg-gradient-to-br from-indigo-100 via-blue-300 via-violet-300 to-purple-300 transition-opacity duration-1000 flex flex-col gap-2  justify-center items-center ${
         animationFinished ? "opacity-0" : " opacity-100"
       }
-        ${animationFinished3 ? "" : "hidden"}`}
+        ${animationFinished3 ? "" : "hidden w-[0px]"}`}
     >
       <h1 className=" max-w-[50%] flex justify-center items-center  text-center">
         <img

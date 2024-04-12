@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MdVisibilityOff, MdVisibility } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { toast } from "react-hot-toast";
 
 import axios from "axios";
 
@@ -10,30 +11,33 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
 
   const SignUpHandler = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/signUp",
-        userDetails
+      const response = await toast.promise(
+        axios.post("http://localhost:5000/api/v1/signUp", userDetails),
+        {
+          loading: "Signing up...",
+          success: (data) => {
+            localStorage.setItem("token", data.token);
+            setCurrentUser(data.data.data);
+            socket.emit("login", {
+              userId: data.data.data._id,
+              socketId: socket.id,
+            });
+            navigate(`/`);
+            return "Sign up successful";
+          },
+          error: () => {
+            setCurrentUser("");
+            return "Sign up failed";
+          },
+        }
       );
 
-      if (response.status === 200) {
-        localStorage.setItem("token", response.data.data.token);
-        setCurrentUser(response.data.data);
-        socket.emit("login", {
-          userId: response.data.data._id,
-          socketId: socket.id,
-        });
-        navigate(`/`);
-      } else {
-        setCurrentUser();
-      }
+      if (response) navigate("/");
     } catch (error) {
       const { response } = error;
+      toast.error("An error occurred");
     }
-
-    // const output = await response.json();
-    //console.log(response)
   };
-
   const [userDetails, setUserDetails] = useState({
     name: "",
     mobile: "",

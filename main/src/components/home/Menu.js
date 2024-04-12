@@ -40,7 +40,7 @@ const Menu = ({ currentUser, setCurrentUser }) => {
           {currentUser && currentUser.role === "super" ? (
             <NavLink to="/complaints/dashboard">Dashboard</NavLink>
           ) : (
-            <NavLink to="/mycomplaints">My Complaints</NavLink>
+            currentUser && <NavLink to="/mycomplaints">My Complaints</NavLink>
           )}
           {currentUser ? (
             <div

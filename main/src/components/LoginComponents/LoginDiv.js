@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { motion } from "framer-motion"; // Import motion from Framer Motion
+import FirId from "../ComplaintForm/FirId";
 
 const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
   const [otp, setOtp] = useState(new Array(6).fill(""));
@@ -65,29 +66,36 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
       }
 
       console.log(OTP);
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/verifyOtp",
-        {
+
+      const response = await toast.promise(
+        axios.post("http://localhost:5000/api/v1/verifyOtp", {
           email: userDetails.mobile,
           socketId: socket.id,
           OTP,
+        }),
+        {
+          loading: "Verifying OTP...",
+          success: (data) => {
+            localStorage.setItem("token", data.token);
+            setCurrentUser(data.data.data);
+            socket.emit("login", {
+              userId: data.data.data._id,
+              socketId: socket.id,
+            });
+            navigate(`/`);
+            return "Login successful";
+          },
+          error: () => {
+            setCurrentUser("");
+            return "Login failed";
+          },
         }
       );
 
-      if (response.status === 200) {
-        localStorage.setItem("token", response.data.data.token);
-        setCurrentUser(response.data.data);
-        socket.emit("login", {
-          userId: response.data.data._id,
-          socketId: socket.id,
-        });
-        navigate(`/`);
-      } else {
-        setCurrentUser("");
-      }
-
       if (response) navigate("/");
-    } catch (err) {}
+    } catch (err) {
+      toast.error("An error occurred");
+    }
   };
 
   const LogInHandler = async () => {
@@ -95,25 +103,36 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
       let email = null;
       if (!isNumber(userDetails.mobile)) email = userDetails.mobile;
 
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/login",
-        userDetails,
-        email
+      const response = await toast.promise(
+        axios.post(
+          "http://localhost:5000/api/v1/login",
+          userDetails,
+          { params: { email } } // Passing email as a query parameter
+        ),
+        {
+          loading: "Logging in...",
+          success: (data) => {
+            localStorage.setItem("token", data.token);
+            setCurrentUser(data.data.data);
+            socket.emit("login", {
+              userId: data.data.data._id,
+              socketId: socket.id,
+            });
+            console.log(data);
+            navigate(`/`);
+            return "Login successful";
+          },
+          error: () => {
+            setCurrentUser("");
+            return "Login failed";
+          },
+        }
       );
 
-      if (response.status === 200) {
-        localStorage.setItem("token", response.data.data.token);
-        setCurrentUser(response.data.data);
-        socket.emit("login", {
-          userId: response.data.data._id,
-          socketId: socket.id,
-        });
-        navigate(`/`);
-      } else {
-        setCurrentUser("");
-      }
+      if (response) navigate("/");
     } catch (error) {
       const { response } = error;
+      toast.error("An error occurred");
     }
   };
 
@@ -177,13 +196,14 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 0, x: 100 }}
       animate={{ opacity: 1, y: 0, x: 0 }}
       exit={{ opacity: 0, y: 0, x: -100 }}
       transition={{ duration: 0.5, delay: 0.1 }}
       className="w-full h-full flex justify-center z-10 items-center "
     >
+      {}
       <div className="flex flex-col bg-white bg-opacity-50 items-center shadow p-6 m-4 gap-2 py-4 rounded-xl min-w-[280px] w-[400px]">
         <div className="w-fit text-xl text-white font-bold">Login</div>
         <div className="w-full flex   justify-center cursor-pointer items-center py-2 bg-slate-100 bg-opacity-70 px-3 rounded-2xl">

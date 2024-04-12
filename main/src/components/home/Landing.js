@@ -8,14 +8,14 @@ const Landing = ({}) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="w-screen select-none relative h-screen flex justify-center items-center"
+      className="w-screen select-none relative h-screen overflow-hidden flex justify-center items-center"
     >
       <motion.img
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0 }}
         transition={{ delay: 0 }}
-        className="object-cover h-full w-full absolute -z-10"
+        className="object-cover h-screen max-w-[100vw] w-screen overflow-hidden left-0 top-0 absolute -z-10"
         src="https://res.cloudinary.com/dd6sontgf/image/upload/v1712744608/2151228100_aje1od.jpg"
         alt="Background Image"
       />
@@ -25,7 +25,7 @@ const Landing = ({}) => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 100 }}
         transition={{ delay: 1 }}
-        className="bg-white max-w-[50%] flex flex-col  xs:max-w-max xs:w-5/6  w-[600px] rounded-xl p-4 bg-opacity-25"
+        className="bg-white max-w-[50%] flex flex-col  xs:max-w-max xs:w-5/6 overflow-hidden  w-[600px] rounded-xl p-4 bg-opacity-25"
       >
         <motion.img
           initial={{ y: 100, opacity: 0, rotate: 30 }}
