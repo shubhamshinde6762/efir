@@ -269,7 +269,7 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
           <div className="w-full relative flex justify-center items-center mt-2 flex-col">
             <div
               onClick={sentOtpHandler}
-              className="w-fit text-center px-2 py-1 bg-green-500 shadow-inner  text-white rounded-xl transition-all duration-500 hover:bg-green-600 hover:scale-105"
+              className="w-fit text-center px-2 py-1 bg-green-500 shadow-inner cursor-pointer text-white rounded-xl transition-all duration-500 hover:bg-green-600 hover:scale-105"
             >
               Send Otp
             </div>
@@ -317,7 +317,7 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
               if (loginMode === "password") LogInHandler(event);
               else otpLogin();
             }}
-            className="w-fit text-center px-2 py-1 bg-green-500 shadow-inner  text-white rounded-xl transition-all duration-500 hover:bg-green-600 hover:scale-105"
+            className="w-fit text-center cursor-pointer px-2 py-1 bg-green-500 shadow-inner  text-white rounded-xl transition-all duration-500 hover:bg-green-600 hover:scale-105"
           >
             Login
           </div>

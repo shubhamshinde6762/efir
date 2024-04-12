@@ -208,6 +208,7 @@ function App() {
                       setComplaintList={setComplaintList}
                       currentUser={currentUser}
                       heading={"Complaints"}
+                      myComplaints={false}
                     />
                   </motion.div>
                 </motion.div>
