@@ -141,13 +141,29 @@ const ComplaintForm = ({ currentUser }) => {
       evidences: [...prev.evidences, ...fileArray],
     }));
   };
-
+  const validateForm = () => {
+    const { TimeDateofIncident, IncidentDescription } = complaintDetails.IncidentDetail;
+    
+    if (!TimeDateofIncident || !IncidentDescription) {
+      // console.log("Validation failed: Incident date and description are required fields.");
+      toast.error("Date of incident and description are required fields.");
+      return false;
+    }
+    
+    return true;
+  };
+  
+  const onSubmitHandler = () => {
+    if (validateForm()) {
+      registerHandler();
+    }
+  };
   useEffect(() => {
     console.log(complaintDetails);
   }, [complaintDetails]);
 
   return (
-    <div className="min-w-[275px] p-4  w-full max-w-[900px] shadow-2xl rounded-xl">
+    <div className="min-w-[275px] p-4 w-full max-w-[900px] shadow-2xl rounded-xl">
       {displayFirId && (
         <div className="fixed top-0 left-0 h-screen w-screen flex justify-center items-center z-50 bg-black bg-opacity-30">
           <FirId
@@ -167,7 +183,7 @@ const ComplaintForm = ({ currentUser }) => {
           </div>
           <lable className="mx-2  ">
             <span className="mr-4 text-[1rem] font-bold">
-              Date Of Incident:
+              Date Of Incident:<span className="text-red-500">*</span>
             </span>
             <input
               type="date"
@@ -230,6 +246,7 @@ const ComplaintForm = ({ currentUser }) => {
           <lable className="mx-2 flex flex-col space-y-3">
             <div className="mr-4 text-[1rem] font-bold">
               Incident Description:
+              <span className="text-red-500">*</span>
             </div>
             <textarea
               id="IncidentDescription"
@@ -519,7 +536,7 @@ const ComplaintForm = ({ currentUser }) => {
       )}
       <div className="w-full justify-center items-center flex mt-4  gap-x-3 ">
         <button
-          onClick={registerHandler}
+          onClick={onSubmitHandler}
           className="font-bold font-poppins py-1 px-2 text-sm md:text-base 
           
           bg-green-500 hover:bg-green-700 text-white rounded-lg hover:scale-105 transition-all duration-500"

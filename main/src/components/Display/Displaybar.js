@@ -133,7 +133,7 @@ function Displaybar({
                         </button>
                       </div>
                     </div>
-                    {hoveredIndex === index && (
+                    {myComplaints && hoveredIndex === index && (
                       <div className="flex justify-around border-x-2 border-b-2 border-x-slate-200 mb-2 p-2 rounded-b-xl shadow-md">
                         <div className={`status-overlay font-semibold ${getStatusColor(complaint.complaintStatus.status)} font-poppins rounded-full py-1 px-2 text-center sm:text-base text-sm`}>
                           Status: {complaint.complaintStatus.status}

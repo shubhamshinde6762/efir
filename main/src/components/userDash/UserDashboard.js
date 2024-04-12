@@ -30,15 +30,17 @@ const UserDashboard = ({ currentUser, setFilters }) => {
   }, [complaintList]);
 
   return (
-    <div className="w-[99%]">
-      <Displaybar
-        complaints={complaintList}
-        setComplaintList={setComplaintList}
-        setFilters={setFilters}
-        heading={"My Complaints"}
-        myComplaints={true}
-      />
-    </div>
+      (<div className="w-[99%]">
+       <Displaybar
+         complaints={complaintList}
+         setComplaintList={setComplaintList}
+         setFilters={setFilters}
+         heading={"My Complaints"}
+         myComplaints={true}
+       />
+     </div>)
+
+    
   );
 };
 

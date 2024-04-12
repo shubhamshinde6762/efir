@@ -47,6 +47,25 @@ function Filterbar({
     }));
   };
 
+  const handleClearAll = () => {
+    setFilters({
+      page: 1,
+      limit: "",
+      fromDateIncident: "",
+      toDateIncident: "",
+      fromDateLastEdited: "",
+      toDateLastEdited: "",
+      district: "",
+      subDistrict: "",
+      status: "",
+      uniqueUserId: "",
+      aadhar: "",
+    });
+  };
+
+  // Check if any filter value is non-empty
+  const isFilterActive = Object.keys(filters).some(key => filters[key] !== "");
+
   useEffect(() => {
     const fetch = async () => {
       try {
@@ -125,6 +144,14 @@ function Filterbar({
           onClick={() => setIsVisible(false)}
           className="text-3xl text-white p-1 absolute -top-2 xs:block hidden  -right-2 bg-red-400 rounded-full"
         />
+        {isFilterActive && (
+          <div
+            className="text-xs text-blue-500 font-medium text-right cursor-pointer"
+            onClick={handleClearAll}
+          >
+            CLEAR ALL
+          </div>
+        )}
         <div className="flex flex-col justify-center items-center gap-2">
           <label className="block text-gray-700 text-sm font-bold text-left ">
             Expected date of Incident:

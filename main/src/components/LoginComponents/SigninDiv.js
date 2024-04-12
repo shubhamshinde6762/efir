@@ -235,7 +235,7 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
         </div>
         <div
           onClick={SignUpHandler}
-          className="w-fit text-center px-2 py-1 bg-green-500 shadow-inner  text-white rounded-xl transition-all duration-500 hover:bg-green-600 hover:scale-105"
+          className="w-fit text-center px-2 py-1 bg-green-500 shadow-inner cursor-pointer text-white rounded-xl transition-all duration-500 hover:bg-green-600 hover:scale-105"
         >
           SignUp
         </div>
