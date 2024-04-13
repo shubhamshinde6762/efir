@@ -10,7 +10,7 @@ function Displaybar({
   setFilters,
   currentUser,
   filters,
-  heading
+  heading,
 }) {
   const [currentComplaint, setCurrentComplaint] = useState("");
   const [totalPage, setTotalPage] = useState(1);
@@ -18,6 +18,8 @@ function Displaybar({
   const [numbers, setNumbers] = useState([0]);
   const [key, setKey] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [categoryPopup, setCategoryPopup] = useState(false);
+  const [summaryPopup, setSummaryPopup] = useState(false);
 
   useEffect(() => {
     try {
@@ -77,7 +79,17 @@ function Displaybar({
         return "bg-gray-200";
     }
   };
-
+  const categoryHandler = (category, pop) => {
+    if (!category.length || category[0] === "Not Identified")
+      return "Not identified";
+    if (pop) return category.join(", ");
+    return `${category[0]}...`;
+  };
+  const summaryHandler = (summary, pop) => {
+    if (summary == "") return "Summary not provided";
+    if (pop) return summary;
+    return `${summary.substring(0, 70)}...`;
+  };
   return (
     <div className="w-full flex-grow transition-all duration-500">
       {!currentComplaint && (
@@ -106,9 +118,9 @@ function Displaybar({
                 let color = "";
                 if (index % 2) color = "#F5F5F5";
                 return (
-                  <div key={index} className="flex-col">
+                  <div key={index} className="flex-col space-y-[0.1]">
                     <div
-                      className="flex relative cursor-pointer text-center"
+                      className="flex relative cursor-pointer text-center "
                       style={{ backgroundColor: color }}
                       onMouseEnter={() => setHoveredIndex(index)}
                       onMouseLeave={() => setHoveredIndex(null)}
@@ -135,19 +147,75 @@ function Displaybar({
                     </div>
                     {myComplaints && hoveredIndex === index && (
                       <div className="flex justify-around border-x-2 border-b-2 border-x-slate-200 mb-2 p-2 rounded-b-xl shadow-md">
-                        <div className={`status-overlay font-semibold ${getStatusColor(complaint.complaintStatus.status)} font-poppins rounded-full py-1 px-2 text-center sm:text-base text-sm`}>
+                        <div
+                          className={`status-overlay font-semibold ${getStatusColor(
+                            complaint.complaintStatus.status
+                          )} font-poppins rounded-full py-1 px-2 text-center sm:text-base text-sm`}
+                        >
                           Status: {complaint.complaintStatus.status}
                         </div>
-                        {complaint.complaintStatus.status === "Pending" && !complaint.complaintStatus.remark && (
-                          <div className={`status-overlay font-semibold font-poppins rounded-full py-1 px-2 text-center sm:text-base text-sm `}>
-                            Remark: Not assessed
-                          </div>
-                        )}
-                        {complaint.complaintStatus.status !== "Pending" && complaint.complaintStatus.remark && (
-                          <div className={`status-overlay font-semibold font-poppins rounded-full py-1 px-2 text-center sm:text-base text-sm`}>
-                            Remark: {complaint.complaintStatus.remark}
-                          </div>
-                        )}
+                        {complaint.complaintStatus.status === "Pending" &&
+                          !complaint.complaintStatus.remark && (
+                            <div
+                              className={`status-overlay font-semibold font-poppins rounded-full py-1 px-2 text-center sm:text-base text-sm `}
+                            >
+                              Remark: Not assessed
+                            </div>
+                          )}
+                        {complaint.complaintStatus.status !== "Pending" &&
+                          complaint.complaintStatus.remark && (
+                            <div
+                              className={`status-overlay font-semibold font-poppins rounded-full py-1 px-2 text-center sm:text-base text-sm`}
+                            >
+                              Remark: {complaint.complaintStatus.remark}
+                            </div>
+                          )}
+                      </div>
+                    )}
+                    {!myComplaints && hoveredIndex === index && (
+                      <div
+                        className="flex justify-around border-x-2 border-b-2 border-x-slate-200 mb-2 p-2 rounded-b-xl shadow-md "
+                        onMouseEnter={() => setHoveredIndex(index)}
+                        onMouseLeave={() => setHoveredIndex(null)}
+                      >
+                        <div
+                          className={`status-overlay font-medium font-poppins rounded-full py-1 px-2  max-w-92 text-center text-sm relative`}
+                        >
+                          <span
+                            className="font-semibold rounded-sm py-1 px-2 bg-blue-200 cursor-pointer sm:text-base text-sm "
+                            onClick={() => setCategoryPopup(!categoryPopup)}
+                            onMouseEnter={() => setCategoryPopup(true)}
+                            onMouseLeave={() => setCategoryPopup(false)}
+                          >
+                            Category:
+                          </span>{" "}
+                          {categoryHandler(complaint.Categories, false)}
+                          {categoryPopup && (
+                            <div className=" bg-white border b-[-1px] -right-0  border-gray-300 shadow-md p-2 z-40 absolute ">
+                              {categoryHandler(complaint.Categories, true)}{" "}
+                              
+                            </div>
+                          )}
+                        </div>
+
+                        <div
+                          className={`status-overlay font-medium font-poppins rounded-full py-1 px-2 max-w-92 text-center text-sm relative`}
+                        >
+                          <span
+                            className="font-semibold rounded-sm py-1 px-2 bg-blue-200 cursor-pointer sm:text-base text-sm "
+                            onClick={() => setSummaryPopup(!summaryPopup)}
+                            onMouseEnter={() => setSummaryPopup(true)}
+                            onMouseLeave={() => setSummaryPopup(false)}
+                          >
+                            Summary:
+                          </span>{" "}
+                          {summaryHandler(complaint.Summary, false)}
+                          {summaryPopup && (
+                            <div className="absolute b-[2px] -right-0 bg-white border border-gray-300 shadow-md p-2 z-10">
+                              {summaryHandler(complaint.Summary, true)}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     )}
                   </div>
