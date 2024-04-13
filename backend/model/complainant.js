@@ -34,10 +34,10 @@ const complainantInfo = mongoose.Schema({
       },
 
       user: {
-        type: mongoose.Schema.Types.ObjectId, 
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Users",
       },
- 
+
       uniqueUserId: {
         type: "String",
         // default: "12345",
@@ -89,6 +89,14 @@ const complainantInfo = mongoose.Schema({
   LastEdited: {
     type: Date,
     default: Date.now,
+  },
+
+  Summary: {
+    type: String,
+  },
+
+  Categories: {
+    type: [String],
   },
 });
 

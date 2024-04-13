@@ -3,19 +3,114 @@ const Complaint = require("../../model/complainant");
 const personSchema = require("../../model/person");
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary").v2;
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const genAI = new GoogleGenerativeAI(process.env.API_KEY_GEN_AI);
+
+const generateSummary = async (data) => {
+  try {
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const prompt =
+      JSON.stringify(data) +
+      " " +
+      "generate the summary of the complaint in short paragraph";
+
+    // console.log(prompt);
+    const result = await model.generateContent(prompt, { maxLength: 100 });
+    const response = await result.response;
+    return response.text();
+  } catch (err) {
+    console.error("Error generating summary:", err);
+    throw err;
+  }
+};
+
+const getCategories = async (data) => {
+  try {
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const prompt =
+      JSON.stringify(data) +
+      `[
+      "Cognizable Offenses",
+      "Non-Cognizable Offenses",
+      "Bailable Offenses",
+      "Non-Bailable Offenses",
+      "Compoundable Offenses",
+      "Non-Compoundable Offenses",
+      "Offenses against Women",
+      "Offenses against Children",
+      "Economic Offenses",
+      "Cyber Crimes",
+      "Drug Offenses",
+      "Environmental Offenses",
+      "Traffic Offenses",
+      "Property Offenses",
+      "Terrorism-related Offenses",
+      "White-collar Crimes",
+      "Corruption Offenses",
+      "Fraudulent Practices",
+      "Domestic Violence Offenses",
+      "Sexual Harassment Offenses",
+      "Human Trafficking Offenses",
+      "Intellectual Property Crimes",
+      "Hate Crimes",
+      "Juvenile Offenses",
+      "Organized Crime",
+      "Money Laundering Offenses",
+      "Forgery and Counterfeiting Offenses",
+      "Alcohol-related Offenses",
+      "Public Order Offenses",
+      "Violation of Intellectual Property Rights",
+      "Cyberbullying Offenses",
+      "Religious Offenses",
+      "Wildlife Crimes",
+      "Labour Law Violations",
+      "Immigration Offenses",
+      "Not Classified"
+    ]` +
+      " " +
+      "from above json identify and return the array of categories they are fitting refers the categories array";
+
+    console.log(prompt);
+    const result = await model.generateContent(prompt, { maxLength: 100 });
+    const response = await result.response;
+    const arrayString = response.text();
+
+    return categories.filter((ele) => arrayString.includes(ele));
+  } catch (err) {
+    console.error("Error generating summary:", err);
+    throw err;
+  }
+};
 
 exports.register = async (req, res) => {
   try {
     const { VictimArray, AccusedArray, WitnessArray, IncidentDetails, userId } =
       req.body;
 
+    const Summary = await generateSummary({
+      VictimArray,
+      AccusedArray,
+      WitnessArray,
+      IncidentDetails,
+    }) || "";
+
+    console.log(Summary);
+
+    const Categories = await getCategories({
+      VictimArray,
+      AccusedArray,
+      WitnessArray,
+      IncidentDetails,
+    }) || [];
+
+    console.log(Categories);
+
     const evidences = req.files
       ? Object.values(req.files).map((file) => file)
       : [];
-    console.log(123);
-    console.log(evidences);
-
-    console.log(evidences);
+    // console.log(123);
+    // console.log(evidences);
+    // console.log(evidences);
 
     const createPersonArray = async (personArray) => {
       const personIds = [];
@@ -43,7 +138,7 @@ exports.register = async (req, res) => {
     const parsedAccusedArray = JSON.parse(AccusedArray);
     const parsedWitnessArray = JSON.parse(WitnessArray);
     let parsedIncidentDetails = JSON.parse(IncidentDetails);
-    console.log(parsedIncidentDetails)
+    console.log(parsedIncidentDetails);
     parsedIncidentDetails = {
       ...parsedIncidentDetails,
       TimeDateofIncident: new Date(parsedIncidentDetails.TimeDateofIncident),
@@ -99,6 +194,8 @@ exports.register = async (req, res) => {
       filedBy,
       Evidence: uploadedUrls,
       firId,
+      Summary,
+      Categories,
     });
 
     if (userId) {
@@ -114,10 +211,49 @@ exports.register = async (req, res) => {
 
     res.status(200).json({
       message: "Complaint Filed Successfully",
-      complaintId : newComplaint.firId
+      complaintId: newComplaint.firId,
     });
   } catch (err) {
     console.error("Error registering complaint:", err);
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+const categories = [
+  "Cognizable Offenses",
+  "Non-Cognizable Offenses",
+  "Bailable Offenses",
+  "Non-Bailable Offenses",
+  "Compoundable Offenses",
+  "Non-Compoundable Offenses",
+  "Offenses against Women",
+  "Offenses against Children",
+  "Economic Offenses",
+  "Cyber Crimes",
+  "Drug Offenses",
+  "Environmental Offenses",
+  "Traffic Offenses",
+  "Property Offenses",
+  "Terrorism-related Offenses",
+  "White-collar Crimes",
+  "Corruption Offenses",
+  "Fraudulent Practices",
+  "Domestic Violence Offenses",
+  "Sexual Harassment Offenses",
+  "Human Trafficking Offenses",
+  "Intellectual Property Crimes",
+  "Hate Crimes",
+  "Juvenile Offenses",
+  "Organized Crime",
+  "Money Laundering Offenses",
+  "Forgery and Counterfeiting Offenses",
+  "Alcohol-related Offenses",
+  "Public Order Offenses",
+  "Violation of Intellectual Property Rights",
+  "Cyberbullying Offenses",
+  "Religious Offenses",
+  "Wildlife Crimes",
+  "Labour Law Violations",
+  "Immigration Offenses",
+  "Not Classified",
+];
