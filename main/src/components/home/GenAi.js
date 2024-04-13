@@ -43,7 +43,7 @@ const GenAi = () => {
   };
 
   return (
-    <div className="w-full relative flex justify-center items-center min-h-screen bg-gradient-to-b from-black via-gray-900 to-gray-700">
+    <div className="w-full relative flex justify-center items-center min-h-screen bg-gradient-to-t to-sky-50 from-lime-100  " >
       <motion.div
         className="absolute w-full h-full opacity-20 justify-center items-center flex z-0 top-0 left-0"
         initial={{ opacity: 0 }}

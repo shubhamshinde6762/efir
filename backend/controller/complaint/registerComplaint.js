@@ -17,6 +17,7 @@ const generateSummary = async (data) => {
     // console.log(prompt);
     const result = await model.generateContent(prompt, { maxLength: 100 });
     const response = await result.response;
+    console.log(response.text());
     return response.text();
   } catch (err) {
     console.error("Error generating summary:", err);
@@ -65,17 +66,19 @@ const getCategories = async (data) => {
       "Wildlife Crimes",
       "Labour Law Violations",
       "Immigration Offenses",
-      "Not Classified"
     ]` +
       " " +
-      "from above json identify and return the array of categories they are fitting refers the categories array";
+      "from above json identify and return the array of categories they are fitting refers the categories array (if not matches return 'Not Identified'";
 
-    console.log(prompt);
+    // console.log(prompt);
     const result = await model.generateContent(prompt, { maxLength: 100 });
     const response = await result.response;
     const arrayString = response.text();
+    console.log(response.text());
 
-    return categories.filter((ele) => arrayString.includes(ele));
+    if (arrayString)
+      return categories.filter((ele) => arrayString.includes(ele));
+    return ""
   } catch (err) {
     console.error("Error generating summary:", err);
     throw err;
@@ -87,23 +90,30 @@ exports.register = async (req, res) => {
     const { VictimArray, AccusedArray, WitnessArray, IncidentDetails, userId } =
       req.body;
 
-    const Summary = await generateSummary({
-      VictimArray,
-      AccusedArray,
-      WitnessArray,
-      IncidentDetails,
-    }) || "";
+    let Summary = "";
+    let Categories = [];
 
-    console.log(Summary);
+    try {
+      Summary = await generateSummary({
+        VictimArray,
+        AccusedArray,
+        WitnessArray,
+        IncidentDetails,
+      });
+    } catch (summaryErr) {
+      console.error("Error generating summary:", summaryErr);
+    }
 
-    const Categories = await getCategories({
-      VictimArray,
-      AccusedArray,
-      WitnessArray,
-      IncidentDetails,
-    }) || [];
-
-    console.log(Categories);
+    try {
+      Categories = await getCategories({
+        VictimArray,
+        AccusedArray,
+        WitnessArray,
+        IncidentDetails,
+      });
+    } catch (categoriesErr) {
+      console.error("Error getting categories:", categoriesErr);
+    }
 
     const evidences = req.files
       ? Object.values(req.files).map((file) => file)
@@ -255,5 +265,5 @@ const categories = [
   "Wildlife Crimes",
   "Labour Law Violations",
   "Immigration Offenses",
-  "Not Classified",
+  "Not Identified",
 ];

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Complaintview from "./Complaintview";
 import { IoMdArrowBack, IoMdArrowForward } from "react-icons/io";
+import { IoFilter } from "react-icons/io5";
 
 function Displaybar({
   complaints,
@@ -10,7 +11,8 @@ function Displaybar({
   setFilters,
   currentUser,
   filters,
-  heading
+  setIsVisible,
+  heading,
 }) {
   const [currentComplaint, setCurrentComplaint] = useState("");
   const [totalPage, setTotalPage] = useState(1);
@@ -85,7 +87,25 @@ function Displaybar({
           key={key}
           className="h-[90vh] flex-grow my-2 mr-2 transition-all duration-500"
         >
-          <h2 className="text-center text-2xl  mb-2 font-bold">{heading}</h2>
+          <div className="w-full flex relative">
+            {!myComplaints && (
+              <motion.div
+                initial={{ opacity: 0, x: -100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ duration: 0.5 }}
+                onClick={() => setIsVisible((pre) => !pre)}
+                className="text-xl cursor-pointer flex items-center gap-2 text-violet-700 absolute top-1 left-2"
+              >
+                <IoFilter />
+                <span className="font-poppins text-lg">Filters</span>
+              </motion.div>
+            )}
+
+            <h2 className="text-center text-2xl w-full  mb-2 font-bold">
+              {heading}
+            </h2>
+          </div>
           <div
             className="flex text-center justify-between  font-bold"
             style={{ backgroundColor: "#AEDEFC" }}
@@ -135,19 +155,29 @@ function Displaybar({
                     </div>
                     {myComplaints && hoveredIndex === index && (
                       <div className="flex justify-around border-x-2 border-b-2 border-x-slate-200 mb-2 p-2 rounded-b-xl shadow-md">
-                        <div className={`status-overlay font-semibold ${getStatusColor(complaint.complaintStatus.status)} font-poppins rounded-full py-1 px-2 text-center sm:text-base text-sm`}>
+                        <div
+                          className={`status-overlay font-semibold ${getStatusColor(
+                            complaint.complaintStatus.status
+                          )} font-poppins rounded-full py-1 px-2 text-center sm:text-base text-sm`}
+                        >
                           Status: {complaint.complaintStatus.status}
                         </div>
-                        {complaint.complaintStatus.status === "Pending" && !complaint.complaintStatus.remark && (
-                          <div className={`status-overlay font-semibold font-poppins rounded-full py-1 px-2 text-center sm:text-base text-sm `}>
-                            Remark: Not assessed
-                          </div>
-                        )}
-                        {complaint.complaintStatus.status !== "Pending" && complaint.complaintStatus.remark && (
-                          <div className={`status-overlay font-semibold font-poppins rounded-full py-1 px-2 text-center sm:text-base text-sm`}>
-                            Remark: {complaint.complaintStatus.remark}
-                          </div>
-                        )}
+                        {complaint.complaintStatus.status === "Pending" &&
+                          !complaint.complaintStatus.remark && (
+                            <div
+                              className={`status-overlay font-semibold font-poppins rounded-full py-1 px-2 text-center sm:text-base text-sm `}
+                            >
+                              Remark: Not assessed
+                            </div>
+                          )}
+                        {complaint.complaintStatus.status !== "Pending" &&
+                          complaint.complaintStatus.remark && (
+                            <div
+                              className={`status-overlay font-semibold font-poppins rounded-full py-1 px-2 text-center sm:text-base text-sm`}
+                            >
+                              Remark: {complaint.complaintStatus.remark}
+                            </div>
+                          )}
                       </div>
                     )}
                   </div>

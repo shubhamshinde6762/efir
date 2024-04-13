@@ -15,6 +15,45 @@ function Filterbar({
   const [townTree, setTownTree] = useState({});
   const navidateIo = useNavigate();
 
+  const Categories = [
+    "Cognizable Offenses",
+    "Non-Cognizable Offenses",
+    "Bailable Offenses",
+    "Non-Bailable Offenses",
+    "Compoundable Offenses",
+    "Non-Compoundable Offenses",
+    "Offenses against Women",
+    "Offenses against Children",
+    "Economic Offenses",
+    "Cyber Crimes",
+    "Drug Offenses",
+    "Environmental Offenses",
+    "Traffic Offenses",
+    "Property Offenses",
+    "Terrorism-related Offenses",
+    "White-collar Crimes",
+    "Corruption Offenses",
+    "Fraudulent Practices",
+    "Domestic Violence Offenses",
+    "Sexual Harassment Offenses",
+    "Human Trafficking Offenses",
+    "Intellectual Property Crimes",
+    "Hate Crimes",
+    "Juvenile Offenses",
+    "Organized Crime",
+    "Money Laundering Offenses",
+    "Forgery and Counterfeiting Offenses",
+    "Alcohol-related Offenses",
+    "Public Order Offenses",
+    "Violation of Intellectual Property Rights",
+    "Cyberbullying Offenses",
+    "Religious Offenses",
+    "Wildlife Crimes",
+    "Labour Law Violations",
+    "Immigration Offenses",
+    "Not Identified",
+  ];
+
   useEffect(() => {
     try {
       if (!currentUser || (currentUser.role && currentUser.role !== "super"))
@@ -60,11 +99,14 @@ function Filterbar({
       status: "",
       uniqueUserId: "",
       aadhar: "",
+      Categories: "",
     });
   };
 
   // Check if any filter value is non-empty
-  const isFilterActive = Object.keys(filters).some(key => filters[key] !== "");
+  const isFilterActive = Object.keys(filters).some(
+    (key) => filters[key] !== ""
+  );
 
   useEffect(() => {
     const fetch = async () => {
@@ -128,18 +170,22 @@ function Filterbar({
       url.searchParams.set("aadhar", filters.aadhar);
     }
 
+    if (filters.Categories) {
+      url.searchParams.set("Categories", filters.Categories);
+    }
+
     return url.toString();
   };
 
   return (
     <div
-      className={`w-fit h-[95vh] sticky xs:absolute xs:w-screen xs:h-screen xs:top-0 xs:left-0   xs:bg-opacity-30 flex items-center transition-all duration-500 justify-left xs:justify-center ${
+      className={`w-fit z-50 h-[90vh] sticky xs:fixed xs:w-screen xs:h-screen xs:top-0 xs:left-0   xs:bg-opacity-30 flex items-center transition-all duration-500 justify-left xs:justify-center ${
         isVisible
           ? " translate-x-[0] xs:translate-y-[0] xs:bg-black "
           : " -translate-x-[100vw] xs:translate-x-[0] xs:-translate-y-[200vh] max-w-[0px] "
       }`}
     >
-      <div className="flex-col justify-center gap-3 relative max-w-[400px]   font-poppins w-fit h-fit p-5 items-center bg-rose-100 rounded-r-xl xs:rounded-xl border text-center">
+      <div className="flex-col justify-center gap-3 relative max-w-[400px]   font-poppins w-fit h-fit p-3 items-center bg-rose-100 rounded-r-xl xs:rounded-xl border text-center">
         <IoCloseOutline
           onClick={() => setIsVisible(false)}
           className="text-3xl text-white p-1 absolute -top-2 xs:block hidden  -right-2 bg-red-400 rounded-full"
@@ -152,8 +198,8 @@ function Filterbar({
             CLEAR ALL
           </div>
         )}
-        <div className="flex flex-col justify-center items-center gap-2">
-          <label className="block text-gray-700 text-sm font-bold text-left ">
+        <div className="flex flex-col justify-center items-center gap-1 mb-1">
+          <label className="block text-gray-700 text-sm w-full font-bold text-left ">
             Expected date of Incident:
           </label>
           <div className="flex gap-1 items-center">
@@ -183,7 +229,7 @@ function Filterbar({
           </div>
         </div>
 
-        <div className="flex flex-col justify-center items-center gap-2 my-2">
+        <div className="flex flex-col justify-center items-center gap-1 my-1">
           <label className="block text-gray-700 text-sm font-bold  text-left">
             Expected date of filing complaint:
           </label>
@@ -245,8 +291,27 @@ function Filterbar({
               ))}
           </select>
         </div>
-        <div className=" flex flex-col justify-center  gap-1 my-2">
+        <div className="  flex flex-col justify-center  gap-1 my-2">
           <label className="block text-gray-700 text-sm font-bold text-left">
+            Categories:
+          </label>
+          <select
+            name="Categories"
+            value={filters.Categories}
+            onChange={handleFilterChange}
+            className="px-2 py-1 text-sm shadow overflow-hidden max-w-52 rounded-lg"
+          >
+            <option value="">Select Categories</option>
+            {Categories &&
+              Categories.map((ele) => (
+                <option className="" key={ele} value={ele}>
+                  {ele}
+                </option>
+              ))}
+          </select>
+        </div>
+        <div className=" flex flex-col justify-center  gap-1 my-2">
+          <label className="block text-gray-700 text-sm font-bold  text-left">
             Status:
           </label>
           <select
@@ -273,7 +338,7 @@ function Filterbar({
             onChange={handleFilterChange}
           />
         </div>
-        <div className="flex flex-col gap-1  my-2">
+        <div className="flex flex-col gap-1  mt-2">
           <label className="block text-gray-700 text-sm font-bold text-left">
             Aadhaar Number
           </label>

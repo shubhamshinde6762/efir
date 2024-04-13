@@ -20,7 +20,7 @@ const Home = ({ currentUser, setCurrentUser }) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1, duration: 0.5 }}
         className={
-          " z-20 fixed rounded-b-2xl w-full mx-1    font-poppins py-1 bg-white bg-opacity-25 text-white font-bold flex justify-between px-4 items-center"
+          " z-20 fixed rounded-b-2xl w-full mx-1    font-poppins py-1 bg-orange-500 bg-opacity-40 text-white font-bold flex justify-between px-4 items-center"
         }
       >
         <NavLink to="/">

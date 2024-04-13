@@ -40,6 +40,7 @@ function App() {
     district: "",
     subDistrict: "",
     uniqueUserId: "",
+    Categories: "",
     status: "",
     page: 1,
     limit: 10,
@@ -167,16 +168,7 @@ function App() {
                   transition={{ duration: 0.2 }}
                   className="flex gap-3 w-full select-none"
                 >
-                  <motion.div
-                    initial={{ opacity: 0, x: -100 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -100 }}
-                    transition={{ duration: 0.5 }}
-                    onClick={() => setIsVisible((pre) => !pre)}
-                    className="absolute w-full top-0 left-0 text-2xl cursor-pointer"
-                  >
-                    <IoFilter />
-                  </motion.div>
+                  
                   <motion.div
                     initial={{ opacity: 0, x: -100 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -204,6 +196,7 @@ function App() {
                     <Displaybar
                       filters={filters}
                       setFilters={setFilters}
+                      setIsVisible={setIsVisible}
                       complaints={complaints}
                       setComplaintList={setComplaintList}
                       currentUser={currentUser}

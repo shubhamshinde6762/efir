@@ -89,6 +89,12 @@ exports.fetchComplaintSuper = async (req, res) => {
       filter["IncidentDetail.SubDistrict"] = req.query.subDistrict;
     }
 
+    if (req.query.Categories) {
+      filter["Categories"] = {
+        $in: req.query.Categories,
+      };
+    }
+
     if (req.query.aadhar) {
       console.log(req.query.aadhar);
       const person = await personSchema.findOne({ aadhar: req.query.aadhar });
