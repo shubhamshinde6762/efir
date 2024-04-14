@@ -13,7 +13,7 @@ import axios from "axios";
 import { Toaster } from "react-hot-toast";
 import ComplaintForm from "./components/ComplaintForm/ComplaintForm";
 import { IoFilter } from "react-icons/io5";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import UserDashboard from "./components/userDash/UserDashboard";
 import Filterbar from "./components/Filter/Filterbar";
 import { useMediaQuery } from "@react-hook/media-query";
@@ -23,7 +23,8 @@ import { HiMenu } from "react-icons/hi";
 import Home from "./components/home/Home";
 import Menu from "./components/home/Menu";
 import SearchBar from "./components/Anonymous/Anonymous";
-const socket = io("http://localhost:5000");
+// const socket = io("http://localhost:5000");
+const socket = null;
 
 function App() {
   const navigate = useNavigate();
@@ -73,19 +74,22 @@ function App() {
       try {
         console.log(localStorage.getItem("token"));
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:5000/api/v1/login", {
-          headers: {
-            Authorization: `${token}`,
-          },
-        });
+        const response = await axios.get(
+          "https://efir-ecru.vercel.app/api/v1/login",
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
 
         console.log("autoLogin", response);
         if (response.data) {
           setCurrentUser(response.data.data);
-          socket.emit("login", {
-            userId: response.data.data._id,
-            socketId: socket.id,
-          });
+          // socket.emit("login", {
+          //   userId: response.data.data._id,
+          //   socketId: socket.id,
+          // });
         } else {
           navigate("/");
         }

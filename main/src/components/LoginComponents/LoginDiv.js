@@ -26,9 +26,9 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
     try {
       await toast.promise(
         axios
-          .post("http://localhost:5000/api/v1/sendOtp", {
+          .post("https://efir-ecru.vercel.app/api/v1/sendOtp", {
             email: userDetails.mobile,
-            socketId: socket.id,
+            socketId: socket.id || 123,
           })
           .then(() => setOtpSentFlag(true))
           .catch((error) => {
@@ -68,7 +68,7 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
       console.log(OTP);
 
       const response = await toast.promise(
-        axios.post("http://localhost:5000/api/v1/verifyOtp", {
+        axios.post("https://efir-ecru.vercel.app/api/v1/verifyOtp", {
           email: userDetails.mobile,
           socketId: socket.id,
           OTP,
@@ -78,10 +78,10 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
           success: (data) => {
             localStorage.setItem("token", data.token);
             setCurrentUser(data.data.data);
-            socket.emit("login", {
-              userId: data.data.data._id,
-              socketId: socket.id,
-            });
+            // socket.emit("login", {
+            //   userId: data.data.data._id,
+            //   socketId: socket.id,
+            // });
             navigate(`/`);
             return "Login successful";
           },
@@ -105,7 +105,7 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
 
       const response = await toast.promise(
         axios.post(
-          "http://localhost:5000/api/v1/login",
+          "https://efir-ecru.vercel.app/api/v1/login",
           userDetails,
           { params: { email } } // Passing email as a query parameter
         ),
@@ -114,10 +114,10 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
           success: (data) => {
             localStorage.setItem("token", data.token);
             setCurrentUser(data.data.data);
-            socket.emit("login", {
-              userId: data.data.data._id,
-              socketId: socket.id,
-            });
+            // socket.emit("login", {
+            //   userId: data.data.data._id,
+            //   socketId: socket.id,
+            // });
             console.log(data);
             navigate(`/`);
             return "Login successful";

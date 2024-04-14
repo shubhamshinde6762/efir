@@ -41,7 +41,7 @@ const Complaintview = ({
     } else {
       console.log(123);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/complaints/handleComlplaints/superUser?state=${e.target.name}`,
+        `https://efir-ecru.vercel.app/api/v1/complaints/handleComlplaints/superUser?state=${e.target.name}`,
         {
           userId: currentUser._id,
           remark,

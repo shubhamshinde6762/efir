@@ -9,7 +9,7 @@ const UserDashboard = ({ currentUser, setFilters }) => {
     const fetch = async () => {
       try {
         const result = await axios.post(
-          "http://localhost:5000/api/v1/complaints/fetchComplaint",
+          "https://efir-ecru.vercel.app/api/v1/complaints/fetchComplaint",
           {
             userId: currentUser._id,
           }

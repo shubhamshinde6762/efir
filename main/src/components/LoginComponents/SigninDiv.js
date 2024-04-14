@@ -12,16 +12,16 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
   const SignUpHandler = async () => {
     try {
       const response = await toast.promise(
-        axios.post("http://localhost:5000/api/v1/signUp", userDetails),
+        axios.post("https://efir-ecru.vercel.app/api/v1/signUp", userDetails),
         {
           loading: "Signing up...",
           success: (data) => {
             localStorage.setItem("token", data.token);
             setCurrentUser(data.data.data);
-            socket.emit("login", {
-              userId: data.data.data._id,
-              socketId: socket.id,
-            });
+            // socket.emit("login", {
+            //   userId: data.data.data._id,
+            //   socketId: socket.id,
+            // });
             navigate(`/`);
             return "Sign up successful";
           },
@@ -64,7 +64,7 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
     const fetch = async () => {
       try {
         const res = await axios.post(
-          "http://localhost:5000/api/v1/fetchTownTree",
+          "https://efir-ecru.vercel.app/api/v1/fetchTownTree",
           {}
         );
         console.log(res);

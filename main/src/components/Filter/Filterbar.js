@@ -65,7 +65,7 @@ function Filterbar({
     const fetchTownTree = async () => {
       try {
         const res = await axios.post(
-          "http://localhost:5000/api/v1/fetchTownTree",
+          "https://efir-ecru.vercel.app/api/v1/fetchTownTree",
           {}
         );
         setTownTree(res.data.data.TownTree);
@@ -123,7 +123,7 @@ function Filterbar({
   }, [filters]);
 
   const generateComplaintFetchLink = () => {
-    let baseUrl = `http://localhost:5000/api/v1/complaints/fetchSuper/${currentUser._id}`;
+    let baseUrl = `https://efir-ecru.vercel.app/api/v1/complaints/fetchSuper/${currentUser._id}`;
     const url = new URL(baseUrl);
 
     if (filters.page) {

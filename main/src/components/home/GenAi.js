@@ -19,7 +19,7 @@ const GenAi = () => {
     try {
       setLoading(true);
       setAnswer("Generating...");
-      const response = await axios.post("http://localhost:5000/api/v1/genAi", {
+      const response = await axios.post("https://efir-ecru.vercel.app/api/v1/genAi", {
         prompt,
       });
 

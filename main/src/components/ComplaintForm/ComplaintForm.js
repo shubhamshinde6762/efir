@@ -32,7 +32,7 @@ const ComplaintForm = ({ currentUser }) => {
     const fetch = async () => {
       try {
         const res = await axios.post(
-          "http://localhost:5000/api/v1/fetchTownTree",
+          "https://efir-git-main-shubhamshinde6762s-projects.vercel.app/api/v1/fetchTownTree",
           {}
         );
         console.log(res);
@@ -71,7 +71,7 @@ const ComplaintForm = ({ currentUser }) => {
 
       const response = await toast.promise(
         axios.post(
-          "http://localhost:5000/api/v1/complaints/register-complaint",
+          "https://efir-ecru.vercel.app/api/v1/complaints/register-complaint",
           formData,
           {
             headers: {
