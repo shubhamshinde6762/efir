@@ -45,7 +45,7 @@ const Menu = ({ currentUser, setCurrentUser }) => {
       {isOpen ? (
         <div
           onClick={() => setIsOpen(false)}
-          className=" bg-white bg-opacity-60 text-sm min-w-48 flex flex-col text-black justify-center items-center text-center shadow-lime-200 hover:scale-105 shadow-xl py-2 transition-all duration-1000 rounded-lg px-2 space-y-0 max-w-84 absolute right-1 top-12  z-50"
+          className=" bg-white bg-opacity-90 text-sm min-w-48 flex flex-col text-black justify-center items-center text-center shadow-lime-200 hover:scale-105 shadow-xl py-2 transition-all duration-1000 rounded-lg px-2 space-y-0 max-w-84 absolute right-1 top-12  z-50"
           ref={dropdownRef}
         >
           <NavLink
