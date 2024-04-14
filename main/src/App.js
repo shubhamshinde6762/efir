@@ -113,7 +113,7 @@ function App() {
             className={
               location.pathname === "/"
                 ? "hidden w-[0px] h-[0px]"
-                : " z-20 rounded-b-2xl w-full mx-1 font-poppins py-1 bg-white bg-opacity-25 text-white font-bold flex justify-between px-4 items-center"
+                : "z-20  w-full font-poppins py-1  bg-indigo-400  text-white font-bold flex justify-between px-5 items-center"
             }
           >
             <NavLink to="/">
@@ -126,7 +126,7 @@ function App() {
                 alt="logo"
               />
             </NavLink>
-            <div className="flex justify-center items-center gap-7 mx-4">
+            <div className="flex justify-center items-center gap-7 xs:gap-3 xs:text-base xs:mx-1 mx-4">
               <NavLink to="/register">Register</NavLink>
               {currentUser && currentUser.role === "super" ? (
                 <NavLink className={"xs:hidden"} to="/complaints/dashboard">
@@ -148,11 +148,12 @@ function App() {
                     setCurrentUser();
                     localStorage.clear();
                   }}
+                  className={"xs:hidden"}
                 >
                   LogOut
                 </NavLink>
               ) : (
-                <NavLink to="/login">Login</NavLink>
+                <NavLink   className={"xs:hidden"}  to="/login">Login</NavLink>
               )}
               <Menu currentUser={currentUser} setCurrentUser={setCurrentUser} />
             </div>
@@ -168,7 +169,6 @@ function App() {
                   transition={{ duration: 0.2 }}
                   className="flex gap-3 w-full select-none"
                 >
-                  
                   <motion.div
                     initial={{ opacity: 0, x: -100 }}
                     animate={{ opacity: 1, x: 0 }}

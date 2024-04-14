@@ -6,5 +6,5 @@ const {logIn} = require("../controller/log");
 router.post("/sendOtp", sentOtp);
 router.post("/verifyOtp", verifyOtp, logIn);
 
- 
+  
 module.exports = router;  

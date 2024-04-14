@@ -201,10 +201,10 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
       animate={{ opacity: 1, y: 0, x: 0 }}
       exit={{ opacity: 0, y: 0, x: -100 }}
       transition={{ duration: 0.5, delay: 0.1 }}
-      className="w-full h-full flex justify-center z-10 items-center "
+      className=" flex justify-center z-10 items-center "
     >
       {}
-      <div className="flex flex-col bg-white bg-opacity-50 items-center shadow p-6 m-4 gap-2 py-4 rounded-xl min-w-[280px] w-[400px]">
+      <div className="flex flex-col bg-white bg-opacity-70 items-center shadow p-6 m-4 gap-2 py-4 rounded-xl min-w-[280px] w-[400px]">
         <div className="w-fit text-xl text-white font-bold">Login</div>
         <div className="w-full flex   justify-center cursor-pointer items-center py-2 bg-slate-100 bg-opacity-70 px-3 rounded-2xl">
           <div

@@ -34,11 +34,11 @@ const Menu = ({ currentUser, setCurrentUser }) => {
       {isOpen ? (
         <div
           onClick={() => setIsOpen(false)}
-          className=" bg-black bg-opacity-30 text-sm min-w-48 flex flex-col justify-center items-center text-center shadow-sky-950 hover:scale-105 shadow-xl py-4 transition-all duration-1000 rounded-3xl px-4 space-y-3 max-w-84 absolute right-1 top-12  z-50"
+          className=" bg-white bg-opacity-60 text-sm min-w-48 flex flex-col text-black justify-center items-center text-center shadow-lime-200 hover:scale-105 shadow-xl py-2 transition-all duration-1000 rounded-lg px-2 space-y-0 max-w-84 absolute right-1 top-12  z-50"
           ref={dropdownRef}
         >
           {currentUser && currentUser.role === "super" ? (
-            <NavLink to="/complaints/dashboard">Dashboard</NavLink>
+            <NavLink className={" hover:bg-orange-200 py-2 rounded-lg w-full transition-all duration-200"} to="/complaints/dashboard">Dashboard</NavLink>
           ) : (
             currentUser && <NavLink to="/mycomplaints">My Complaints</NavLink>
           )}
@@ -48,13 +48,14 @@ const Menu = ({ currentUser, setCurrentUser }) => {
                 setCurrentUser();
                 localStorage.clear();
               }}
+              className={" hover:bg-orange-200 py-2 rounded-lg w-full transition-all duration-200"}
             >
               LogOut
             </div>
           ) : (
-            <NavLink to="/login">Login</NavLink>
+            <NavLink className={" hover:bg-orange-200 py-2 rounded-lg w-full transition-all duration-200"} to="/login">Login</NavLink>
           )}
-          <NavLink to="/register">About</NavLink>
+          <NavLink className={" hover:bg-orange-200 py-2 rounded-lg w-full transition-all duration-200"} to="/register">About</NavLink>
         </div>
       ) : (
         <div></div>

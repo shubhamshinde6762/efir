@@ -97,7 +97,7 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
       animate={{ opacity: 1, y: 0, x: 0 }}
       exit={{ opacity: 0, y: 0, x: 100 }}
       transition={{ duration: 0.5, delay: 0.1 }}
-      className="w-full h-full flex justify-center items-center"
+      className="flex justify-center items-center"
     >
       <div className="flex flex-col bg-white  bg-opacity-50 text-white items-center shadow p-6 m-4 gap-2 py-4 rounded-xl min-w-[260px] w-[400px]">
         <div className="w-fit text-xl font-bold">Register Here</div>

@@ -28,7 +28,7 @@ const Intro = () => {
 
   return (
     <div
-      className={`fixed z-50 left-0 top-0 w-screen h-screen bg-gradient-to-br from-indigo-100 via-blue-300 via-violet-300 to-purple-300 transition-opacity duration-1000 flex flex-col gap-2  justify-center items-center ${
+      className={`fixed z-50 left-0 top-0 w-screen h-screen bg-gradient-to-br from-orange-300 via-sky-100 to-lime-300 transition-opacity duration-1000 flex flex-col gap-2  justify-center items-center ${
         animationFinished ? "opacity-0" : " opacity-100"
       }
         ${animationFinished3 ? "" : "hidden w-[0px]"}`}
@@ -50,7 +50,7 @@ const Intro = () => {
       <div className="text-center mx-4">
         {
           <ReactTyped
-            className="text-2xl font-bold font-poppins text-white"
+            className="text-2xl font-bold font-poppins text-indigo-600"
             strings={["Empowering Justice, One Click at a Time..."]}
             typeSpeed={25}
             backSpeed={50}
