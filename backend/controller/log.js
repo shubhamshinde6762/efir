@@ -1,10 +1,10 @@
 const user = require("../model/user");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const otpGenerator = require("otp-generator");
 
 const generateUniqueUserId = async () => {
-  const capitals = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const capitals = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
   const digits = "0123456789";
 
   const randomCapital = capitals.charAt(
