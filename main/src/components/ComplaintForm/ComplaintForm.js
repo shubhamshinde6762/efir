@@ -38,7 +38,7 @@ const ComplaintForm = ({ currentUser }) => {
         console.log(res);
         setTownTree(res.data.data.TownTree);
       } catch (err) {}
-    };
+    }; 
 
     fetch();
   }, []);
