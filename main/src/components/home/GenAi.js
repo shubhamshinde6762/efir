@@ -43,7 +43,7 @@ const GenAi = () => {
   };
 
   return (
-    <div className="w-full relative flex justify-center items-center min-h-screen bg-gradient-to-b from-sky-100 via-white to-lime-100  " >
+    <div className="w-full relative flex justify-center items-center min-h-[80vh] bg-gradient-to-b from-amber-100 via-amber-50 to-indigo-50  ">
       <motion.div
         className="absolute w-full h-full opacity-20 justify-center items-center flex z-0 top-0 left-0"
         initial={{ opacity: 0 }}
@@ -64,13 +64,13 @@ const GenAi = () => {
       </motion.div>
       <motion.div
         initial={{ opacity: 0, y: -200 }}
-        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0 , y:-200}}
+        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: -200 }}
         transition={{ duration: 1.5 }}
         ref={ref}
-        className="p-6  relative shadow-2xl shadow-lime-200 z-50 my-20 xs:p-2 flex flex-col justify-center items-center gap-7 min-w-[200px] w-[600px] md:w-[60%] max-w-[1400px] mx-6 xs:mx-4 bg-lime-200 bg-opacity-70 rounded-lg"
+        className="p-6  relative  z-50 my-20 xs:p-2 flex flex-col justify-center items-center gap-7 min-w-[200px] w-[600px] md:w-[60%] max-w-[1400px] mx-6 xs:mx-4 bg-amber-200 bg-opacity-60 rounded-lg"
       >
         <ReactTyped
-          className="text-3xl xs:text:xl text-center font-bold text-indigo-500 font-poppins"
+          className="text-5xl sx:text-3xl xs:text:xl text-center font-bold text-violet-500 font-poppins"
           strings={["Ask a Legal Question"]}
           typeSpeed={40}
         />
@@ -88,7 +88,7 @@ const GenAi = () => {
                 setAnswer("");
               }}
               placeholder="Ask your question here..."
-              className="placeholder:text-slate-600 z-0 min-w-[0px] resize-none custom-scrollbar pr-10 text-violet-500 py-1 font-bold font-poppins text-xl bg-lime-400 bg-opacity-20 ring-2 rounded-full px-4 w-full ring-white ring-offset-purple-900 focus:outline-none ring-offset-2"
+              className="placeholder:text-orange-600 z-0 min-w-[0px] resize-none custom-scrollbar pr-10 text-violet-500 py-1 font-bold font-poppins text-xl bg-amber-200 bg-opacity-20 ring-2 rounded-full px-4 w-full ring-white ring-offset-purple-900 focus:outline-none ring-offset-2"
             />
             <motion.div
               className="absolute top-4 right-3 z-50 text-amber-600 text-3xl"
@@ -118,7 +118,7 @@ const GenAi = () => {
             transition={{ delay: 0.5 }}
           >
             <ReactTyped
-              className="text-lg text-pretty text-justify xs:text-md font-bold text-slate-600 font-poppins"
+              className="text-lg text-pretty text-justify xs:text-md text-slate-600 font-poppins"
               strings={[answer]}
               typeSpeed={5}
             />

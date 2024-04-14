@@ -12,8 +12,20 @@ import {
 import { HiMenu } from "react-icons/hi";
 import Menu from "./Menu";
 import MiddleSection from "./MiddleSection";
+import Footer from "./Footer";
 
 const Home = ({ currentUser, setCurrentUser }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const handleSmoothScroll = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
   return (
     <div className="  flex flex-col gap-0 top-0 left-0 w-screen overflow-x-clip">
       <motion.nav
@@ -21,7 +33,7 @@ const Home = ({ currentUser, setCurrentUser }) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1, duration: 0.5 }}
         className={
-          " z-20 fixed rounded-b-2xl w-full mx-1 font-poppins py-1  bg-amber-200 bg-opacity-10 text-indigo-500 font-bold flex justify-between px-4 items-center"
+          " z-[60] fixed custom-scrollbar rounded-b-2xl w-full mx-1 font-poppins py-1  bg-amber-200 bg-opacity-10 text-indigo-500 font-bold flex justify-between px-4 items-center"
         }
       >
         <NavLink to="/">
@@ -36,6 +48,9 @@ const Home = ({ currentUser, setCurrentUser }) => {
         </NavLink>
         <div className="flex justify-center items-center gap-7 xs:gap-3 xs:text-base xs:mx-1 mx-4">
           <NavLink to="/register">Register</NavLink>
+          <NavLink to="/enquire" className={"xs:hidden"}>
+            Enquiry
+          </NavLink>
           {currentUser && currentUser.role === "super" ? (
             <NavLink className={"xs:hidden"} to="/complaints/dashboard">
               Dashboard
@@ -47,9 +62,17 @@ const Home = ({ currentUser, setCurrentUser }) => {
               </NavLink>
             )
           )}
-          <NavLink to="/about" className={"xs:hidden"}>
+          <a
+            onClick={(e) => {
+              e.preventDefault();
+              if (location.pathname !== "/") navigate("/#about");
+              handleSmoothScroll("about");
+            }}
+            href="#about"
+            className={"xs:hidden"}
+          >
             About
-          </NavLink>
+          </a>
           {currentUser ? (
             <div
               onClick={() => {
@@ -72,6 +95,7 @@ const Home = ({ currentUser, setCurrentUser }) => {
       <MiddleSection />
 
       <GenAi />
+      <Footer />
     </div>
   );
 };

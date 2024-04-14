@@ -9,9 +9,9 @@ const logIn = require("./routes/logIn.js");
 const townTreeFetch = require("./routes/townTreeFetch");
 const otpHandler = require("./routes/sendOtp.js");
 const complainant = require("./routes/complaints.js");
-const { initSocket } = require("./socket.js");
-const {cdnConnect} = require("./config/cdn.js")
-const genAi = require("./routes/genAi.js")
+// const { initSocket } = require("./socket.js");
+const { cdnConnect } = require("./config/cdn.js");
+const genAi = require("./routes/genAi.js");
 
 require("dotenv").config();
 
@@ -36,10 +36,11 @@ app.use("/api/v1", logIn);
 app.use("/api/v1", townTreeFetch);
 app.use("/api/v1", otpHandler);
 app.use("/api/v1/complaints", complainant);
-app.use("/api/v1", genAi)
+app.use("/api/v1", genAi);
 
 dbConnect();
 cdnConnect();
-const { server, io } = initSocket(app);
-server.listen(process.env.PORT, () => console.log("Listened to Port"));
-module.exports.io = io;
+// const { server, io } = initSocket(app);
+app.listen(process.env.PORT, () => console.log("Listened to Port"));
+module.exports = app;
+// module.exports.io = io;

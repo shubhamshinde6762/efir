@@ -204,14 +204,14 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
       className=" flex justify-center z-10 items-center "
     >
       {}
-      <div className="flex flex-col bg-white bg-opacity-70 items-center shadow p-6 m-4 gap-2 py-4 rounded-xl min-w-[280px] w-[400px]">
-        <div className="w-fit text-xl text-white font-bold">Login</div>
-        <div className="w-full flex   justify-center cursor-pointer items-center py-2 bg-slate-100 bg-opacity-70 px-3 rounded-2xl">
+      <div className="flex flex-col bg-white bg-opacity-50 items-center shadow p-6 m-4 gap-2 py-4 rounded-xl min-w-[280px] w-[400px]">
+        <div className="w-fit text-xl text-black font-bold">Login</div>
+        <div className="w-full flex   justify-center cursor-pointer items-center py-2 bg-slate-200 bg-opacity-70 px-3 rounded-2xl">
           <div
             onClick={() => setLoginMode("password")}
             className={`flex-grow transition-all duration-300 text-center px-2 py-1  ${
               loginMode === "password"
-                ? "bg-white shadow font-bold rounded-full scale-105"
+                ? "bg-gray-100 shadow font-bold rounded-full scale-105"
                 : "text-gray-700"
             }`}
           >
@@ -221,14 +221,14 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
             onClick={() => setLoginMode("otp")}
             className={`flex-grow  transition-all duration-300 py-1 text-center px-2  ${
               loginMode === "otp"
-                ? "bg-white shadow font-bold rounded-full scale-105"
+                ? "bg-gray-100 shadow font-bold rounded-full scale-105"
                 : "text-gray-700"
             }`}
           >
             <p>Login with Otp</p>
           </div>
         </div>
-        <div className="w-full text-white">
+        <div className="w-full text-black">
           <p>{loginMode == "password" ? "Email/Mobile" : "Email"}</p>
           <input
             placeholder={loginMode === "password" ? "Email/Mobile" : "Email"}
@@ -236,12 +236,12 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
             value={userDetails["mobile"]}
             name="mobile"
             onChange={changeHandler}
-            className="px-2 py-1 bg-gray-100  bg-opacity-70 rounded-lg shadow w-full"
+            className="px-2 py-1 bg-gray-50  bg-opacity-20 rounded-lg shadow w-full"
           />
         </div>
 
         {loginMode === "password" ? (
-          <div className="w-full relative text-white">
+          <div className="w-full relative text-black">
             <p>Password</p>
             <input
               placeholder="password"
@@ -250,11 +250,11 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
               value={userDetails["password"]}
               name="password"
               onChange={changeHandler}
-              className="px-2 py-1 bg-gray-100 bg-opacity-70 rounded-lg shadow w-full"
+              className="px-2 py-1 bg-gray-50 bg-opacity-20 rounded-lg shadow w-full"
             />
             <label
               id="password"
-              className="absolute right-2 text-black top-8"
+              className="absolute cursor-pointer right-2 text-black top-8"
               onClick={() =>
                 setPVisible((state) => {
                   state.password = !state.password;
@@ -274,7 +274,7 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
               Send Otp
             </div>
             {isOtpSent && (
-              <div className="w-full text-white">
+              <div className="w-full text-black">
                 <p>Otp</p>
                 <div className="flex gap-2">
                   {new Array(6).fill().map((ele, index) => (
@@ -294,7 +294,7 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
           </div>
         )}
         {(loginMode === "password" || isOtpSent) && (
-          <div className="w-full text-white">
+          <div className="w-full text-black">
             <label
               htmlFor="RememberMe"
               className="cursor-pointer select-none text-sm flex items-center gap-1 pl-2"
@@ -322,11 +322,11 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
             Login
           </div>
         )}
-        <div className="text-white">
+        <div className="text-black">
           Don't have an account?{" "}
           <span
             onClick={() => setLogin((state) => !state)}
-            className="text-yellow-400 font-bold cursor-pointer "
+            className="text-orange-400 font-bold cursor-pointer "
           >
             SignUp Here
           </span>

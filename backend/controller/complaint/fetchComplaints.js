@@ -6,7 +6,9 @@ const mongoose = require("mongoose");
 exports.fetchComplaint = async (req, res) => {
   try {
     console.log(123);
-    const firId = req.param.firId;
+    const firId = req.params.firId;
+
+    console.log(req.params);
 
     if (firId) {
       const fir = await Complaint.findOne({ firId }).populate({
@@ -14,7 +16,7 @@ exports.fetchComplaint = async (req, res) => {
       });
 
       if (!fir) {
-        return res.status(404).json({ message: "FIR not found" });
+        return res.status(401).json({ message: "FIR not found" });
       }
 
       return res.status(200).json({ fir: [fir] });

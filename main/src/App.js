@@ -22,6 +22,7 @@ import Displaybar from "./components/Display/Displaybar";
 import { HiMenu } from "react-icons/hi";
 import Home from "./components/home/Home";
 import Menu from "./components/home/Menu";
+import SearchBar from "./components/Anonymous/Anonymous";
 const socket = io("http://localhost:5000");
 
 function App() {
@@ -31,6 +32,15 @@ function App() {
   const [isVisible, setIsVisible] = useState(true);
   const isWideScreen = useMediaQuery("(min-width: 500px)");
   const [renderUi, setRenderUi] = useState(false);
+  const handleSmoothScroll = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
 
   const [filters, setFilters] = useState({
     fromDateIncident: "",
@@ -90,15 +100,17 @@ function App() {
   const location = useLocation();
 
   useEffect(() => {
-    console.log(location);
+    try {
+      console.log(location);
+      if (location.hash === "#about") handleSmoothScroll("about");
+    } catch (err) {}
   }, [location]);
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className=" overflow-x-hidden"
+      className=" overflow-x-hidden custom-scrollbar"
     >
       <Intro />
       {renderUi && (
@@ -113,7 +125,7 @@ function App() {
             className={
               location.pathname === "/"
                 ? "hidden w-[0px] h-[0px]"
-                : "z-20  w-full font-poppins py-1  bg-indigo-400  text-white font-bold flex justify-between px-5 items-center"
+                : "z-20  w-full font-poppins py-1 bg-orange-200  text-violet-500 font-bold flex justify-between px-5 items-center"
             }
           >
             <NavLink to="/">
@@ -128,6 +140,9 @@ function App() {
             </NavLink>
             <div className="flex justify-center items-center gap-7 xs:gap-3 xs:text-base xs:mx-1 mx-4">
               <NavLink to="/register">Register</NavLink>
+              <NavLink to="/enquire" className={"xs:hidden"}>
+                Enquiry
+              </NavLink>
               {currentUser && currentUser.role === "super" ? (
                 <NavLink className={"xs:hidden"} to="/complaints/dashboard">
                   Dashboard
@@ -139,9 +154,17 @@ function App() {
                   </NavLink>
                 )
               )}
-              <NavLink to="/about" className={"xs:hidden"}>
+              <a
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (location.pathname !== "/") navigate("/#about");
+                  handleSmoothScroll("about");
+                }}
+                href="#about"
+                className={"xs:hidden"}
+              >
                 About
-              </NavLink>
+              </a>
               {currentUser ? (
                 <NavLink
                   onClick={() => {
@@ -153,7 +176,9 @@ function App() {
                   LogOut
                 </NavLink>
               ) : (
-                <NavLink   className={"xs:hidden"}  to="/login">Login</NavLink>
+                <NavLink className={"xs:hidden"} to="/login">
+                  Login
+                </NavLink>
               )}
               <Menu currentUser={currentUser} setCurrentUser={setCurrentUser} />
             </div>
@@ -167,7 +192,7 @@ function App() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -100 }}
                   transition={{ duration: 0.2 }}
-                  className="flex gap-3 w-full select-none"
+                  className="flex bg-gradient-to-b min-h-[92vh] from-orange-200 via-sky-100 to-green-200 gap-3 w-full select-none"
                 >
                   <motion.div
                     initial={{ opacity: 0, x: -100 }}
@@ -217,7 +242,7 @@ function App() {
                   exit={{ opacity: 0 }}
                   s
                   transition={{ duration: 0.5 }}
-                  className="w-full flex justify-center items-center"
+                  className="w-full flex bg-gradient-to-b from-orange-200 via-sky-100 to-green-200 justify-center items-center"
                 >
                   <ComplaintForm currentUser={currentUser} />
                 </motion.div>
@@ -231,7 +256,7 @@ function App() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.5 }}
-                  className="w-full flex justify-center items-center"
+                  className="w-full flex justify-center bg-gradient-to-b from-orange-200 via-sky-100 to-green-200 items-center"
                 >
                   <UserDashboard
                     currentUser={currentUser}
@@ -280,6 +305,14 @@ function App() {
                   setCurrentUser={setCurrentUser}
                   currentUser={currentUser}
                 />
+              }
+            />
+            <Route
+              path="/enquire"
+              element={
+                <motion.div>
+                  <SearchBar />
+                </motion.div>
               }
             />
           </Routes>

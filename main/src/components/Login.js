@@ -21,7 +21,7 @@ const Login = ({ socket, currentUser, setCurrentUser }) => {
 
   return (
     <motion.div
-      className="w-full flex justify-center items-center h-[92vh] overflow-clip bg-gradient-to-br from-orange-100 via-sky-50 to-green-100"
+      className="w-full flex justify-center items-center h-[92vh] overflow-clip bg-gradient-to-b from-orange-200 via-sky-100 to-green-200"
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 1, y: -100 }}

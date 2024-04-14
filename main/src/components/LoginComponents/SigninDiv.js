@@ -99,7 +99,7 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
       transition={{ duration: 0.5, delay: 0.1 }}
       className="flex justify-center items-center"
     >
-      <div className="flex flex-col bg-white  bg-opacity-50 text-white items-center shadow p-6 m-4 gap-2 py-4 rounded-xl min-w-[260px] w-[400px]">
+      <div className="flex flex-col bg-white  bg-opacity-30 text-black items-center shadow p-6 m-4 gap-2 py-4 rounded-xl min-w-[260px] w-[400px]">
         <div className="w-fit text-xl font-bold">Register Here</div>
         <div className="w-full">
           <p className="">Name</p>
@@ -109,7 +109,7 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
             value={userDetails["name"]}
             name="name"
             onChange={changeHandler}
-            className="px-2 py-1 bg-gray-100 text-black bg-opacity-65 rounded-lg shadow w-full"
+            className="px-2 py-1 bg-gray-100 text-black bg-opacity-30 rounded-lg shadow w-full"
           />
         </div>
         <div className="w-full">
@@ -120,7 +120,7 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
             value={userDetails["mobile"]}
             name="mobile"
             onChange={changeHandler}
-            className="px-2 py-1 bg-gray-100 text-black bg-opacity-65 rounded-lg shadow w-full"
+            className="px-2 py-1 bg-gray-100 text-black bg-opacity-30 rounded-lg shadow w-full"
           />
         </div>
         <div className="w-full">
@@ -131,7 +131,7 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
             value={userDetails["email"]}
             name="email"
             onChange={changeHandler}
-            className="px-2 py-1 bg-gray-100 text-black bg-opacity-65  rounded-lg shadow w-full"
+            className="px-2 py-1 bg-gray-100 text-black bg-opacity-30  rounded-lg shadow w-full"
           />
         </div>
         <div className="w-full">
@@ -141,7 +141,7 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
             value={userDetails["District"]}
             name="District"
             onChange={changeHandler}
-            className="px-2 py-1 bg-gray-100 text-black bg-opacity-65 rounded-lg shadow w-full"
+            className="px-2 py-1 bg-gray-100 text-black bg-opacity-30 rounded-lg shadow w-full"
           >
             <option selected>Select District</option>
             {Object.keys(townTree).map((ele) => (
@@ -161,7 +161,7 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
               value={userDetails["SubDistrict"]}
               name="SubDistrict"
               onChange={changeHandler}
-              className="px-2 py-1 bg-gray-100 text-black  bg-opacity-65 rounded-lg shadow w-full"
+              className="px-2 py-1 bg-gray-100 text-black  bg-opacity-30 rounded-lg shadow w-full"
             >
               <option selected>Select SubDistrict</option>
               {townTree[userDetails["District"]].map((ele) => (
@@ -179,11 +179,11 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
             value={userDetails["password"]}
             name="password"
             onChange={changeHandler}
-            className="px-2 py-1 text-black bg-gray-100 bg-opacity-65 rounded-lg shadow w-full"
+            className="px-2 py-1 text-black bg-gray-100 bg-opacity-30 rounded-lg shadow w-full"
           />
           <label
             id="password"
-            className="absolute right-2 text-black top-8"
+            className="absolute cursor-pointer right-2 text-black top-8"
             onClick={() =>
               setPVisible((state) => {
                 state.password = !state.password;
@@ -203,11 +203,11 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
             value={userDetails["CPassword"]}
             name="CPassword"
             onChange={changeHandler}
-            className="px-2 py-1 text-black bg-gray-100 bg-opacity-65 rounded-lg shadow w-full"
+            className="px-2 py-1 text-black bg-gray-100 bg-opacity-30 rounded-lg shadow w-full"
           />
           <label
             id="cpassword"
-            className="absolute right-2 top-8 text-black"
+            className="absolute cursor-pointer right-2 top-8 text-black"
             onClick={() =>
               setPVisible((state) => {
                 state.cpassword = !state.cpassword;
@@ -243,7 +243,7 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
           Already have an account?{" "}
           <span
             onClick={() => setLogin((state) => !state)}
-            className="text-yellow-400 font-bold cursor-pointer "
+            className="text-orange-400 font-bold cursor-pointer "
           >
             LogIn Here
           </span>
