@@ -178,7 +178,7 @@ const ComplaintForm = ({ currentUser }) => {
         </div>
 
         <div className=" border-gray-300  space-y-3 p-4  relative border-4 w-full flex flex-col  rounded-2xl">
-          <div className="absolute font-bold font-poppins    px-2 text-xl -top-3 left-2">
+          <div className="absolute font-bold font-poppins  bg-white  px-2 text-xl -top-3 left-2">
             Incident Details
           </div>
           <lable className="mx-2  ">

@@ -64,7 +64,7 @@ const SearchBar = () => {
           initial="hidden"
           animate="visible"
           variants={animationVariants}
-          className="w-full"
+          className="w-full bg-white rounded-xl bg-opacity-75"
         >
           <Complaintview
             complaintDetails={complaintDetails}
