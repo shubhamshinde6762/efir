@@ -68,6 +68,19 @@ const Menu = ({ currentUser, setCurrentUser }) => {
           ) : (
             currentUser && <NavLink to="/mycomplaints">My Complaints</NavLink>
           )}
+          <a
+            className={
+              " hover:bg-orange-200 py-2 rounded-lg w-full transition-all duration-200"
+            }
+            onClick={(e) => {
+              e.preventDefault();
+              if (location.pathname !== "/") navigate("/#about");
+              handleSmoothScroll("about");
+            }}
+            href="#about"
+          >
+            About
+          </a>
           {currentUser ? (
             <div
               onClick={() => {
@@ -90,19 +103,6 @@ const Menu = ({ currentUser, setCurrentUser }) => {
               Login
             </NavLink>
           )}
-          <a
-            className={
-              " hover:bg-orange-200 py-2 rounded-lg w-full transition-all duration-200"
-            }
-            onClick={(e) => {
-              e.preventDefault();
-              if (location.pathname !== "/") navigate("/#about");
-              handleSmoothScroll("about");
-            }}
-            href="#about"
-          >
-            About
-          </a>
         </div>
       ) : (
         <div></div>
