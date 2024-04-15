@@ -38,7 +38,7 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
           loading: "Sending Otp...",
           success: (response) => {
             console.log(response);
-            return <b>Media Sent!</b>;
+            return <b>OTP Sent!</b>;
           },
           error: (error) => {
             console.error(error);

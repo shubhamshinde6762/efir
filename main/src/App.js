@@ -24,7 +24,9 @@ import Home from "./components/home/Home";
 import Menu from "./components/home/Menu";
 import SearchBar from "./components/Anonymous/Anonymous";
 // const socket = io("http://localhost:5000");
-const socket = null;
+const socket = {
+  id: null,
+};
 
 function App() {
   const navigate = useNavigate();
