@@ -456,8 +456,8 @@ const Complaintview = ({
             )}
 
           {complaintDetails &&
-            complaintDetails.evidences &&
-            complaintDetails.evidences.length > 0 && (
+            complaintDetails.Evidence &&
+            complaintDetails.Evidence.length > 0 && (
               <div className=" border-gray-300  space-y-3 p-4  relative border-4 w-full flex flex-col  rounded-2xl">
                 <div className="absolute font-poppins font-bold bg-white px-2 text-xl -top-3 left-2">
                   Evidences
@@ -465,10 +465,12 @@ const Complaintview = ({
 
                 <div className="flex flex-col gap-1">
                   {complaintDetails &&
-                    complaintDetails.evidences &&
-                    complaintDetails.evidences.map((ele) => (
-                      <div className="flex gap-2 items-center text-sm bg-slate-100 w-fit px-2 py-1 rounded-lg ">
-                        <div>{ele}</div>
+                    complaintDetails.Evidence &&
+                    complaintDetails.Evidence.map((ele, i) => (
+                      <div className="flex cursor-pointer  gap-2 items-center text-sm bg-slate-100 w-fit px-2 py-1 rounded-lg ">
+                        <a href={ele} target="_blank">
+                          Evidence - {i + 1}
+                        </a>
                       </div>
                     ))}
                 </div>
@@ -566,13 +568,17 @@ const Complaintview = ({
                       Process
                     </button>
 
-                    <button
-                      class="inline-block min-w-max bg-gradient-to-br from-red-400 to-red-500 hover:from-red-500 hover:to-red-600 border-0 rounded-md shadow-md text-white font-medium text-sm py-2 px-4 focus:outline-none transition duration-300 ease-in-out mx-1"
-                      name="false"
-                      onClick={statusHandler}
-                    >
-                      Park
-                    </button>
+                    {remark && (
+                      <button
+                        class={
+                          "inline-block min-w-max bg-gradient-to-br from-red-400 to-red-500 hover:from-red-500 hover:to-red-600 border-0 rounded-md shadow-md text-white font-medium text-sm py-2 px-4 focus:outline-none transition duration-300 ease-in-out mx-1 "
+                        }
+                        name="false"
+                        onClick={statusHandler}
+                      >
+                        Park
+                      </button>
+                    )}
                   </div>
                 )}
             </div>

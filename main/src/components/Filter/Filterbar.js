@@ -332,7 +332,7 @@ function Filterbar({
           </label>
           <input
             type="text"
-            className="shadow rounded-lg text-sm  py-1  "
+            className="shadow rounded-lg text-sm px-3 py-1  "
             name="uniqueUserId"
             value={filters.uniqueUserId}
             onChange={handleFilterChange}
@@ -344,7 +344,7 @@ function Filterbar({
           </label>
           <input
             type="text"
-            className="shadow rounded-lg text-sm  py-1  "
+            className="shadow rounded-lg text-sm px-3  py-1  "
             name="aadhar"
             value={filters.aadhar}
             onChange={handleFilterChange}
