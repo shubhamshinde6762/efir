@@ -168,7 +168,11 @@ function Displaybar({
                       </div>
                     </div>
                     {myComplaints && hoveredIndex === index && (
-                      <div className="flex justify-around border-x-2 border-b-2 border-x-slate-200 mb-2 p-2 rounded-b-xl shadow-md">
+                      <div
+                        onMouseEnter={() => setHoveredIndex(index)}
+                        onMouseLeave={() => setHoveredIndex(null)}
+                        className="flex justify-around border-x-2 border-b-2 border-x-slate-200 mb-2 p-2 rounded-b-xl shadow-md"
+                      >
                         <div
                           className={`status-overlay font-semibold ${getStatusColor(
                             complaint.complaintStatus.status
