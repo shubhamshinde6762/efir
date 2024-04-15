@@ -76,7 +76,7 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
         {
           loading: "Verifying OTP...",
           success: (data) => {
-            localStorage.setItem("token", data.token);
+            localStorage.setItem("token", data.data.data.token);
             setCurrentUser(data.data.data);
             // socket.emit("login", {
             //   userId: data.data.data._id,
@@ -112,7 +112,8 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
         {
           loading: "Logging in...",
           success: (data) => {
-            localStorage.setItem("token", data.token);
+            localStorage.setItem("token", data.data.data.token);
+            console.log(data.data.data.token)
             setCurrentUser(data.data.data);
             // socket.emit("login", {
             //   userId: data.data.data._id,

@@ -16,7 +16,7 @@ const SigninDiv = ({ setCurrentUser, socket, setLogin }) => {
         {
           loading: "Signing up...",
           success: (data) => {
-            localStorage.setItem("token", data.token);
+            localStorage.setItem("token", data.data.data.token);
             setCurrentUser(data.data.data);
             // socket.emit("login", {
             //   userId: data.data.data._id,
