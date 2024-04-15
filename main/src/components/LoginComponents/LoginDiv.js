@@ -28,7 +28,7 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
         axios
           .post("https://efir-ecru.vercel.app/api/v1/sendOtp", {
             email: userDetails.mobile,
-            socketId: socket.id || 123,
+            socketId: socket.id || 1234,
           })
           .then(() => setOtpSentFlag(true))
           .catch((error) => {
@@ -70,7 +70,7 @@ const LoginDiv = ({ setCurrentUser, socket, setLogin }) => {
       const response = await toast.promise(
         axios.post("https://efir-ecru.vercel.app/api/v1/verifyOtp", {
           email: userDetails.mobile,
-          socketId: socket.id,
+          socketId: socket.id || 1234,
           OTP,
         }),
         {
